@@ -1,16 +1,20 @@
 <script setup>
-import UploadBtn from './qs-upload-btn.vue'
+import UploadBtn from "./qs-upload-btn.vue";
 </script>
 
 <template>
   <div>
     <div class="al-c">
-      <upload-btn @files="onFiles" :allow-drop="showPop && !uploading" />
+      <upload-btn
+        @files="onFiles"
+        :disabled="uploading && badgeNum > 0"
+        :allow-drop="showPop && !uploading"
+      />
       <q-btn class="ml-1" icon="upload" size="12px" round flat @click="showPop = true">
         <div>
           <!-- <q-spinner-hourglass color="primary" size="1em" /> -->
         </div>
-        <q-badge color="red" rounded floating :label="files.length" v-show="!isEmpty" />
+        <q-badge color="red" rounded floating :label="badgeNum" v-show="badgeNum > 0" />
       </q-btn>
     </div>
     <q-dialog v-model="showPop" position="top">
@@ -29,19 +33,33 @@ import UploadBtn from './qs-upload-btn.vue'
             <p class="mt-5">Drop or Paste files to upload</p>
           </div>
 
-          <q-item v-for="it in files" :key="it.name">
-            <q-item-section avatar>
-              <q-circular-progress :value="0" size="26px" color="orange" track-color="grey-3" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>{{ it.name }}</q-item-label>
-            </q-item-section>
-          </q-item>
+          <q-markup-table flat>
+            <tbody>
+              <tr v-for="it in files" :key="it.name">
+                <td>
+                  <q-circular-progress
+                    :value="it.progress"
+                    size="24px"
+                    color="orange"
+                    track-color="grey-3"
+                  />
+                </td>
+                <td>{{ it.name }}</td>
+                <td>{{ it.size }}</td>
+              </tr>
+            </tbody>
+          </q-markup-table>
         </q-card-section>
 
         <q-card-actions v-show="!isEmpty" align="right" class="text-primary pos-s btm-0 bg-white">
-          <q-btn no-caps flat label="Cancel" v-close-popup @click="files = []" />
-          <q-btn color="primary">OK</q-btn>
+          <template v-if="!isDone">
+            <q-btn v-if="uploading && !paused" flat @click="paused = true">Pause</q-btn>
+            <q-btn v-else flat label="Cancel" @click="onCancel" />
+          </template>
+          <q-btn v-if="isDone" @click="onDone" color="primary"> Done </q-btn>
+          <q-btn v-else color="primary" :loading="uploading && !paused" @click="onOk"
+            >Continue</q-btn
+          >
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -50,46 +68,93 @@ import UploadBtn from './qs-upload-btn.vue'
 
 <script>
 export default {
+  props: {
+    bucket: String,
+    prefix: String,
+  },
   data() {
     return {
       files: [],
       showPop: false,
       uploading: false,
-    }
+      paused: false,
+      isDone: false,
+      finishNum: 0,
+    };
   },
   computed: {
     isEmpty() {
-      return !this.files.length
+      return !this.files.length;
+    },
+    badgeNum() {
+      return this.files.length - this.finishNum;
+    },
+  },
+  watch: {
+    finishNum(val) {
+      if (val == this.files.length) {
+        this.isDone = true;
+      }
     },
   },
   methods: {
     onFiles(e) {
-      console.log(e)
-      this.files = e
-      this.showPop = true
+      this.files = e;
+      this.showPop = true;
+      this.finishNum = 0;
+      this.uploading = false;
+      this.isDone = false;
     },
-    getTree() {
-      // const arr = name.split("/");
-      arr.unshift('')
-      //  a/b.png
-      let pre = ''
-      for (const i in arr) {
-        const val = arr[i]
-        if (i == arr.length - 1) {
-        } else {
-          const cid = pre + '/' + val
-          if (list.filter((it) => it.cid == cid).length == 0) {
-            list.push({
-              cid,
-              pid: pre,
-              value: cid,
-              label: val,
-            })
-          }
-          pre = cid
-        }
+    onCancel() {
+      this.files = [];
+      this.uploading = false;
+    },
+    onDone() {
+      this.onFiles([]);
+    },
+    onOk() {
+      if (!this.uploading) {
+        this.uploading = true;
+      }
+      this.onStart();
+    },
+    async onStart() {
+      this.paused = false;
+      try {
+        const list = this.files.filter((it) => !it.finished);
+        await this.$bucket.limitTask(list, this.onUpload);
+        console.log("task");
+      } catch (error) {
+        console.log(error.message);
       }
     },
+
+    async onUpload(row) {
+      if (this.paused) throw new Error("user paused");
+      try {
+        await this.$bucket.uploadFile(
+          {
+            Bucket: this.bucket,
+            Key: this.prefix + row.name,
+            Body: row.file,
+            ContentType: row.file.type,
+          },
+          {
+            onProgress: (p) => {
+              //, point, res
+              console.log(p);
+              row.progress = Math.floor(p * 100);
+            },
+          }
+        );
+        row.progress = 100;
+      } catch (error) {
+        console.log(error);
+        row.error = error.message;
+      }
+      row.finished = true;
+      this.finishNum += 1;
+    },
   },
-}
+};
 </script>

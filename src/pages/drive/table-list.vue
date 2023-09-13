@@ -23,7 +23,7 @@
     <template #body="scope">
       <q-tr
         :class="{
-          active: activeIdx == scope.rowIndex
+          active: activeIdx == scope.rowIndex,
         }"
         :props="scope"
         @click="onRow(scope.row, scope.rowIndex)"
@@ -62,78 +62,78 @@
 
 <script>
 export default {
-  emits: ['row-click'],
+  emits: ["row-click"],
   props: {
     rows: Array,
-    loading: Boolean
+    loading: Boolean,
   },
   data() {
     return {
-      filter: '',
+      filter: "",
       selected: [],
       pagination: {
-        rowsPerPage: 30
+        rowsPerPage: 30,
       },
       columns: [
         {
-          name: 'Key',
+          name: "Key",
           required: true,
-          label: 'Name',
-          align: 'left',
-          field: 'name',
+          label: "Name",
+          align: "left",
+          field: "name",
           // field: (row) => row.name,
           // format: (val) => `${val}`,
-          sortable: true
+          sortable: true,
         },
         {
-          name: 'updatedAt',
-          align: 'left',
-          label: 'Update Time',
-          field: 'lastModified',
-          sortable: true
+          name: "updatedAt",
+          align: "left",
+          label: "Update Time",
+          field: "lastModified",
+          sortable: true,
         },
-        { name: 'size', align: 'left', label: 'Size', field: 'size', sortable: true }
+        { name: "size", align: "left", label: "Size", field: "size", sortable: true },
       ],
       showPop: false,
-      activeIdx: -1
-    }
+      activeIdx: -1,
+    };
   },
   methods: {
     getIcon(row) {
       if (row.prefix)
         return {
-          name: 'folder',
-          color: 'orange'
-        }
-      const type = /\.(\w+)$/.exec(row.name)[1]
-      let name = 'description'
-      let color = 'blue'
+          name: "folder",
+          color: "orange",
+        };
+      const type = /\.(\w+)$/.exec(row.name)[1];
+      let name = "description";
+      let color = "blue";
       if (/js|htm|css|java|vue|json/.test(type)) {
-        name = 'code'
+        name = "code";
       } else if (/png|jpg|jpeg|svg|gif|bmp|ico/.test(type)) {
-        name = 'image'
+        name = "image";
       } else if (/mp3/.test(type)) {
-        name = 'headphones'
-      } else if (/mp4|avi/.test(type)) {
-        name = 'videocam'
+        name = "headphones";
+      } else if (/mp4|avi|webm|m3u8/.test(type)) {
+        name = "videocam";
       }
       return {
         name,
-        color
-      }
+        color,
+      };
     },
     onRow(row, index) {
       if (row.prefix) {
-        this.$router.push(this.$route.path + '/' + row.name)
-        return
+        this.$router.push(this.$route.path + "/" + row.name);
+        return;
       }
-      this.showPop = true
+      this.showPop = true;
       // this.activeIdx = this.activeIdx == idx ? -1 : idx
-      this.$emit('row-click', {
+      this.$emit("row-click", {
         row,
-        index
-      })
-    }
-  }
-}
+        index,
+      });
+    },
+  },
+};
 </script>

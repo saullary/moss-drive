@@ -1,13 +1,13 @@
 <script setup>
-import UploadAct from './qs-upload-act.vue'
-import TableList from './table-list.vue'
-import FilePreview from './qs-preview.vue'
+import UploadAct from "./qs-upload-act.vue";
+import TableList from "./table-list.vue";
+import FilePreview from "./qs-preview.vue";
 </script>
 
 <template>
   <div class="q-pa-md">
     <div>
-      <upload-act />
+      <upload-act :bucket="bucketName" :prefix="bucketPrefix" />
     </div>
     <div class="q-mt-lg">
       <q-breadcrumbs gutter="sm">
@@ -38,32 +38,32 @@ export default {
       objLoading: false,
       showPreview: false,
       fileIdx: -1,
-    }
+    };
   },
   computed: {
     path() {
-      return this.$route.path
+      return this.$route.path;
     },
     breadLinks() {
-      let arr = this.path.split('/').slice(1)
-      let to = '/' + arr[0]
-      arr.splice(0, 1)
+      let arr = this.path.split("/").slice(1);
+      let to = "/" + arr[0];
+      arr.splice(0, 1);
       return arr.map((seg) => {
-        to += '/' + seg
-        console.log(to)
+        to += "/" + seg;
+        console.log(to);
         return {
           label: seg,
           to,
-        }
-      })
+        };
+      });
     },
     bucketPrefix() {
-      let prefix = this.path.split('/').slice(2).join('/')
-      if (prefix) prefix += '/'
-      return prefix
+      let prefix = this.path.split("/").slice(2).join("/");
+      if (prefix) prefix += "/";
+      return prefix;
     },
     fileList() {
-      return this.objList.filter((it) => !it.prefix)
+      return this.objList.filter((it) => !it.prefix);
     },
   },
   // activated() {},
@@ -71,60 +71,60 @@ export default {
     // console.log('updated', this.path)
   },
   created() {
-    this.initBucket()
+    this.initBucket();
   },
   watch: {
     path() {
-      if (this.$bucket.client) this.getList()
+      if (this.$bucket.client) this.getList();
     },
   },
   methods: {
     onRow({ row }) {
-      this.fileIdx = this.fileList.findIndex((it) => it.url == row.url)
-      this.showPreview = true
-      console.log(this.fileIdx)
+      this.fileIdx = this.fileList.findIndex((it) => it.url == row.url);
+      this.showPreview = true;
+      console.log(this.fileIdx);
     },
     onUpload(e) {
-      console.log(e)
+      console.log(e);
     },
     async initBucket() {
       try {
-        const testKey = this.$route.query.testKey
+        const testKey = this.$route.query.testKey;
         if (testKey) {
-          localStorage.testKey = testKey
+          localStorage.testKey = testKey;
         }
         if (localStorage.testKey) {
-          this.$bucket.setClient(localStorage.testKey, 'ZraPQHA7T6y0Ut3+Dd3eV5yDxE3hC2bvRFgcLYIE')
-          this.bucketName = 'qs3'
-          this.objLoading = true
-          await this.checkBucket()
-          await this.getList()
+          this.$bucket.setClient(localStorage.testKey, "ZraPQHA7T6y0Ut3+Dd3eV5yDxE3hC2bvRFgcLYIE");
+          this.bucketName = "qs3";
+          this.objLoading = true;
+          await this.checkBucket();
+          await this.getList();
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
         // window.$alert(error.message)
       }
-      this.objLoading = false
+      this.objLoading = false;
     },
     async getList() {
       try {
-        this.objLoading = true
+        this.objLoading = true;
         const data = await this.$bucket.listObjects({
           Bucket: this.bucketName,
           Prefix: this.bucketPrefix,
-        })
-        this.objList = data.rows
+        });
+        this.objList = data.rows;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-      this.objLoading = false
+      this.objLoading = false;
     },
     async checkBucket() {
-      const list = await this.$bucket.listBuckets()
+      const list = await this.$bucket.listBuckets();
       if (!list.find((it) => it.Name == this.bucketName)) {
-        await this.$bucket.createBucket(this.bucketName)
+        await this.$bucket.createBucket(this.bucketName);
       }
     },
   },
-}
+};
 </script>

@@ -15,7 +15,7 @@
 
         <!-- <div>Quasar v{{ $q.version }}</div> -->
         <div>
-          <q-btn no-caps outline color="primary" rounded>
+          <q-btn outline color="primary" rounded>
             <div class="al-c">
               <q-avatar size="22px">
                 <img src="/img/metamask.png" />
@@ -64,36 +64,36 @@
 
 <script>
 export default {
-  name: 'MainLayout',
+  name: "MainLayout",
   computed: {
     meta() {
-      return this.$route.meta
+      return this.$route.meta;
     },
     title() {
-      return this.meta?.title
-    }
+      return this.meta?.title;
+    },
   },
   data() {
     return {
       links: [
         {
-          title: 'My Drive',
-          icon: 'folder',
-          to: '/drive'
+          title: "My Drive",
+          icon: "folder",
+          to: "/drive",
         },
         {
-          title: 'My Stones',
-          icon: 'code',
-          to: '/stone'
+          title: "My Stones",
+          icon: "code",
+          to: "/stone",
         },
         {
-          title: 'My Collections',
-          icon: 'star',
-          link: 'https://chat.quasar.dev'
-        }
+          title: "My Collections",
+          icon: "star",
+          link: "https://chat.quasar.dev",
+        },
       ],
-      leftDrawerOpen: false
-    }
-  }
-}
+      leftDrawerOpen: false,
+    };
+  },
+};
 </script>

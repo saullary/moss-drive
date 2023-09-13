@@ -4,8 +4,10 @@
     <div class="e-upload">
       <q-btn-dropdown
         :loading="loading"
+        :class="{
+          'ev-n op-6': disabled,
+        }"
         rounded
-        no-caps
         color="primary"
         split
         label="Upload File"
@@ -23,13 +25,7 @@
 
     <div class="d-n">
       <input ref="input" multiple type="file" @input="onInput" />
-      <input
-        ref="input2"
-        multiple
-        webkitdirectory
-        type="file"
-        @input="onInput"
-      />
+      <input ref="input2" multiple webkitdirectory type="file" @input="onInput" />
     </div>
   </div>
 </template>
@@ -39,6 +35,7 @@ export default {
   emits: ["files"],
   props: {
     allowDrop: Boolean,
+    disabled: Boolean,
   },
   data() {
     return {
@@ -119,10 +116,11 @@ export default {
       // console.log(files);
       [].slice.call(files).forEach((it) => {
         const name = it.webkitRelativePath || it.name;
-        // if (arr[i] == ".DS_Store") continue;
+        if (/\.DS_Store$/.test(name)) return;
         list.push({
           name,
           file: it,
+          size: this.$bucket.getFileSize(it.size),
         });
       });
       this.loading = false;
