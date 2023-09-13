@@ -68,6 +68,7 @@ import UploadBtn from "./qs-upload-btn.vue";
 
 <script>
 export default {
+  emits: ["refresh"],
   props: {
     bucket: String,
     prefix: String,
@@ -92,8 +93,9 @@ export default {
   },
   watch: {
     finishNum(val) {
-      if (val == this.files.length) {
+      if (val && val == this.files.length) {
         this.isDone = true;
+        this.$emit("refresh");
       }
     },
   },
@@ -108,9 +110,13 @@ export default {
     onCancel() {
       this.files = [];
       this.uploading = false;
+      if (this.finishNum) {
+        this.$emit("refresh");
+      }
     },
     onDone() {
       this.onFiles([]);
+      this.showPop = false;
     },
     onOk() {
       if (!this.uploading) {

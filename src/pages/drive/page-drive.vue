@@ -7,7 +7,7 @@ import FilePreview from "./qs-preview.vue";
 <template>
   <div class="q-pa-md">
     <div>
-      <upload-act :bucket="bucketName" :prefix="bucketPrefix" />
+      <upload-act :bucket="bucketName" :prefix="bucketPrefix" @refresh="getList" />
     </div>
     <div class="q-mt-lg">
       <q-breadcrumbs gutter="sm">
