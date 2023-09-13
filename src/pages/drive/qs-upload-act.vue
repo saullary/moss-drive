@@ -40,7 +40,7 @@ import UploadBtn from "./qs-upload-btn.vue";
                   <q-circular-progress
                     :value="it.progress"
                     size="24px"
-                    color="orange"
+                    :color="it.finished ? 'green' : 'orange'"
                     track-color="grey-3"
                   />
                 </td>
