@@ -4,36 +4,57 @@
 </template>
 
 <script>
-import { useQuasar } from 'quasar'
+import { useQuasar } from "quasar";
 
 export default {
-  name: 'App',
+  name: "App",
   setup() {
-    const $q = useQuasar()
-    window.$notify = (message, position = 'top') => {
+    const $q = useQuasar();
+    window.$loading = (opts) => {
+      if (typeof opts == "string") {
+        opts = {
+          message: opts,
+        };
+      }
+      $q.loading.show(opts);
+    };
+    window.$loading.close = (group) => {
+      $q.loading.hide(group);
+    };
+    window.$toast = (message, opts) => {
+      if (typeof opts == "string") {
+        opts = {
+          type: opts, // 'positive', 'negative', 'warning', 'info', 'ongoing'
+        };
+      }
       $q.notify({
         message,
-        position
-      })
-    }
-    window.$alert = (message, title = 'Tip', opts = {}) => {
+        timeout: 1200,
+        position: "top",
+        ...opts,
+      });
+    };
+    window.$alert = (message, title = "Tip", opts = {}) => {
+      if (typeof title == "object") {
+        opts = title;
+      }
       return $q.dialog({
         title,
         message,
-        ...opts
-      })
-    }
+        ...opts,
+      });
+    };
     window.$prompt = (opts) => {
       return $q.dialog({
         cancel: true,
         persistent: true,
         prompt: {
-          model: '',
-          type: 'text' // optional
+          model: "",
+          type: "text", // optional
         },
-        ...opts
-      })
-    }
-  }
-}
+        ...opts,
+      });
+    };
+  },
+};
 </script>

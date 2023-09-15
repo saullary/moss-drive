@@ -15,7 +15,7 @@
 
         <!-- <div>Quasar v{{ $q.version }}</div> -->
         <div>
-          <q-btn outline color="primary" rounded>
+          <q-btn outline color="primary" rounded @click="onWallet">
             <div class="al-c">
               <q-avatar size="22px">
                 <img src="/img/metamask.png" />
@@ -94,6 +94,13 @@ export default {
       ],
       leftDrawerOpen: false,
     };
+  },
+  methods: {
+    onWallet() {
+      window.$alert("test").onOk(() => {
+        window.$toast("ok");
+      });
+    },
   },
 };
 </script>
