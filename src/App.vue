@@ -34,20 +34,35 @@ export default {
         ...opts,
       });
     };
-    window.$alert = (message, title = "Tip", opts = {}) => {
-      if (typeof title == "object") {
-        opts = title;
-      }
-      return $q.dialog({
-        title,
-        message,
-        ...opts,
+    window.$alert = (message, opts = {}) => {
+      return new Promise((resolve) => {
+        $q.dialog({
+          title: "Tip",
+          message,
+          transitionShow: "jump-up",
+          transitionHide: "jump-up",
+          ...opts,
+        })
+          .onOk(resolve)
+          .onDismiss(resolve);
       });
     };
-    window.$prompt = (opts) => {
-      return $q.dialog({
-        cancel: true,
-        persistent: true,
+    window.$confirm = (message, opts) => {
+      return new Promise((resolve, reject) => {
+        $q.dialog({
+          title: "Confirm",
+          message,
+          cancel: true,
+          persistent: true,
+          ...opts,
+        })
+          .onOk(resolve)
+          .onCancel(reject);
+      });
+    };
+    window.$prompt = (msg, opts) => {
+      return window.$confirm(msg, {
+        title: "",
         prompt: {
           model: "",
           type: "text", // optional

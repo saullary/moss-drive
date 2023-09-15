@@ -97,9 +97,14 @@ export default {
   },
   methods: {
     onWallet() {
-      window.$alert("test").onOk(() => {
-        window.$toast("ok");
-      });
+      window
+        .$alert("test")
+        .then(() => {
+          window.$toast("ok");
+        })
+        .catch(() => {
+          console.log(11);
+        });
     },
   },
 };
