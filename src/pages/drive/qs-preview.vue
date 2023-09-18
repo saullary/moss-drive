@@ -15,7 +15,7 @@
     animated
     transition-prev="slide-right"
     transition-next="slide-left"
-    arrows
+    :arrows="list.length > 1"
     v-model="curIdx"
     v-model:fullscreen="fullscreen"
     infinite
@@ -39,7 +39,7 @@
     <template v-slot:control>
       <q-carousel-control position="top-left" :offset="[20, 20]">
         <div class="pa-1 bg-black-3 white">
-          <span>{{ curIdx + 1 }}/{{ list.length }}</span>
+          <span v-if="list.length > 1">{{ curIdx + 1 }}/{{ list.length }}</span>
           <span v-if="curItem" class="ml-1">{{ curItem.name }}</span>
         </div>
       </q-carousel-control>
@@ -69,38 +69,35 @@ export default {
       curIdx: this.current,
       fullscreen: false,
       loading: true,
-    }
+    };
   },
   computed: {
     curItem() {
-      return this.list[this.curIdx]
+      return this.list[this.curIdx];
     },
   },
   watch: {
     current(val) {
-      this.curIdx = val
+      this.curIdx = val;
     },
     curItem() {
-      console.log('loading')
-      this.loading = true
+      console.log("loading");
+      this.loading = true;
     },
   },
   methods: {
-    onLoad() {
-      console.log('iframe loaded')
-    },
     getUrl(it) {
-      let pre = 'http://127.0.0.1:5174/'
-      pre = 'https://preview.4everland.org/'
-      let url = pre + '?src=' + it.url
+      let pre = "http://127.0.0.1:5174/";
+      pre = "https://preview.4everland.org/";
+      let url = pre + "?src=" + it.url;
       if (it.size > 1024 * 100) {
         if (/\.(js|json|txt|html)$/.test(it.name)) {
-          url += '&type=download'
+          url += "&type=download";
           // url = 'http://127.0.0.1:5173/test.html?src=' + it.url
         }
       }
-      return url
+      return url;
     },
   },
-}
+};
 </script>

@@ -17,8 +17,8 @@
     row-key="name"
     selection="multiple"
     v-model:selected="selected"
-    v-model:pagination="pagination"
     :filter="filter"
+    hide-pagination
   >
     <template #body="scope">
       <q-tr
@@ -71,9 +71,6 @@ export default {
     return {
       filter: "",
       selected: [],
-      pagination: {
-        rowsPerPage: 30,
-      },
       columns: [
         {
           name: "Key",
