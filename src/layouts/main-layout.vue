@@ -89,7 +89,7 @@ export default {
         {
           title: "My Collections",
           icon: "star",
-          link: "https://chat.quasar.dev",
+          link: "https://quasar.dev/vue-components/table",
         },
       ],
       leftDrawerOpen: false,

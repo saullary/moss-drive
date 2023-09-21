@@ -19,6 +19,7 @@
     v-model:selected="selected"
     :filter="filter"
     hide-pagination
+    :rows-per-page-options="[0]"
   >
     <template #body="scope">
       <q-tr
