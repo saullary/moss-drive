@@ -13,22 +13,19 @@
   }
 }
 .main-toolbar {
+  min-height: 72px;
   background: #1e293b;
   color: #fff;
 }
 @media (min-width: $breakpoint-md-min) {
   .main-toolbar {
-    border-top-left-radius: 20px;
+    border-top-left-radius: 24px;
   }
   .m-toggle-btn {
     display: none;
   }
 }
 </style>
-
-<script setup>
-import QsDrawerIcon from "./icon/qs-drawer-icon.vue";
-</script>
 
 <template>
   <q-layout view="lHh Lpr lFf">
@@ -44,25 +41,26 @@ import QsDrawerIcon from "./icon/qs-drawer-icon.vue";
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
 
-        <q-toolbar-title> {{ title }} </q-toolbar-title>
+        <q-toolbar-title>
+          <b>{{ title }}</b>
+        </q-toolbar-title>
 
         <!-- <div>Quasar v{{ $q.version }}</div> -->
-        <div>
-          <q-btn outline color="primary" rounded @click="onWallet">
-            <div class="al-c">
-              <q-avatar size="22px">
-                <img src="/img/metamask.png" />
-              </q-avatar>
-              <span class="q-ml-sm">Connect Wallet</span>
-            </div>
-          </q-btn>
-        </div>
+        <driver-search />
+        <q-btn class="ml-3" color="info" rounded @click="onWallet">
+          <div class="al-c">
+            <q-avatar size="22px">
+              <img src="/img/metamask.png" />
+            </q-avatar>
+            <span class="q-ml-sm">Connect Wallet</span>
+          </div>
+        </q-btn>
       </q-toolbar>
     </q-header>
 
     <q-drawer class="main-drawer" v-model="leftDrawerOpen" show-if-above>
       <q-list>
-        <div class="q-pa-">
+        <div class="">
           <img src="/img/logo.svg" height="80" />
         </div>
 
@@ -78,7 +76,7 @@ import QsDrawerIcon from "./icon/qs-drawer-icon.vue";
         >
           <q-item-section v-if="it.icon" avatar>
             <!-- <q-icon :name="it.icon" /> -->
-            <qs-drawer-icon :name="it.icon" :active="isActive(it)" />
+            <icon-drawer :name="it.icon" :active="isActive(it)" />
           </q-item-section>
 
           <q-item-section>
