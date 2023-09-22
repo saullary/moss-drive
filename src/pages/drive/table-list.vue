@@ -9,6 +9,8 @@
 
 <template>
   <q-table
+    dark
+    color="amber"
     :loading="loading"
     flat
     tabindex="0"

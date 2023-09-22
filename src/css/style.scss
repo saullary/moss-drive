@@ -12,6 +12,14 @@ body, h1, h2, h3, p {
 h1, h2, h3 {
   font-family: "Aldrich", sans-serif;
 }
+body {
+  background: #111729;
+  color: #fff;
+}
+.q-table__card {
+  background: transparent;
+  // color: #fff;
+}
 
 .bdrs-2 { border-radius: 2px; }
 .bdrs-3 { border-radius: 3px; }
