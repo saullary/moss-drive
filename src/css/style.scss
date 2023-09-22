@@ -23,6 +23,10 @@ body {
   color: #0F172A!important;
 }
 
+.q-btn-group > .q-btn-item {
+  min-height: 44px;
+}
+
 .bdrs-2 { border-radius: 2px; }
 .bdrs-3 { border-radius: 3px; }
 .bdrs-5 { border-radius: 5px; }

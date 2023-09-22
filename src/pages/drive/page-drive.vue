@@ -1,5 +1,5 @@
 <script setup>
-import UploadAct from "./qs-upload-act.vue";
+// import UploadAct from "./qs-upload-act.vue";
 import TableList from "./table-list.vue";
 import FilePreview from "./qs-preview.vue";
 </script>
@@ -7,7 +7,24 @@ import FilePreview from "./qs-preview.vue";
 <template>
   <div class="q-pa-md">
     <div>
-      <upload-act :bucket="bucketName" :prefix="bucketPrefix" @refresh="getList" />
+      <q-btn-group rounded>
+        <q-btn color="primary">
+          <img src="/img/driver/stone.svg" width="24" />
+        </q-btn>
+        <q-btn color="primary">
+          <img src="/img/driver/link.svg" width="24" />
+        </q-btn>
+        <q-btn color="primary">
+          <img src="/img/driver/move.svg" width="24" />
+        </q-btn>
+        <q-btn color="primary">
+          <img src="/img/driver/download.svg" width="24" />
+        </q-btn>
+        <q-btn color="primary">
+          <img src="/img/driver/trash.svg" width="24" />
+        </q-btn>
+      </q-btn-group>
+      <!-- <upload-act :bucket="bucketName" :prefix="bucketPrefix" @refresh="getList" /> -->
     </div>
     <div class="q-mt-lg">
       <q-breadcrumbs gutter="sm">
