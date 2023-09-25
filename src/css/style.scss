@@ -51,6 +51,9 @@ $color1: #429efc;
 
 .q-btn {
   text-transform: none;
+  img {
+    pointer-events: none;
+  }
 }
 .q-carousel__arrow .q-btn {
   background: rgb(0 0 0 / 12%);

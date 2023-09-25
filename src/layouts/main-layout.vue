@@ -1,6 +1,5 @@
 <style lang="scss">
 .main-drawer {
-  background: #71ebaa;
   .q-item {
     color: #333;
     font-size: 15px;
@@ -62,7 +61,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer class="main-drawer" v-model="leftDrawerOpen" show-if-above>
+    <q-drawer class="main-drawer bg-primary" v-model="leftDrawerOpen" show-if-above>
       <q-list>
         <div class="">
           <img src="/img/logo.svg" height="80" />
