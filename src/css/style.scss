@@ -58,3 +58,14 @@ $color1: #429efc;
 .q-notification {
   transition: all ease 0.3s;
 }
+
+.q-btn-group .q-btn:not(:last-child):after {
+  content: '';
+  position: absolute;
+  right: 0;
+  width: 1px;
+  height: 10px;
+  background: #000;
+  top: 50%;
+  transform: translateY(-50%);
+}

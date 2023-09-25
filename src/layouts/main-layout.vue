@@ -12,6 +12,10 @@
     font-weight: bold;
   }
 }
+.btn-mossy {
+  padding: 6px 22px;
+  background: linear-gradient(0deg, rgb(0 0 0 / 50%), rgb(0 0 0 / 80%));
+}
 .main-toolbar {
   min-height: 72px;
   background: #1e293b;
@@ -62,6 +66,12 @@
       <q-list>
         <div class="">
           <img src="/img/logo.svg" height="80" />
+        </div>
+        <div class="q-pa-md q-mb-lg ta-c">
+          <q-btn rounded class="btn-mossy">
+            <img src="/img/mossy.png" width="40" />
+            <span class="fz-18 ml-2">Mossyland</span>
+          </q-btn>
         </div>
 
         <q-item
