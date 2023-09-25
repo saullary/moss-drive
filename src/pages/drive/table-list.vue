@@ -10,7 +10,7 @@
 <template>
   <q-table
     dark
-    color="amber"
+    color="primary"
     :loading="loading"
     flat
     tabindex="0"
@@ -32,7 +32,7 @@
         @click="onRow(scope.row, scope.rowIndex)"
       >
         <q-td>
-          <q-checkbox color="grey-8" v-model="scope.selected" />
+          <q-checkbox size="32px" color="primary" v-model="scope.selected" />
         </q-td>
         <q-td key="name">
           <div class="al-c">

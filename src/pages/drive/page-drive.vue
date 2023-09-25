@@ -1,3 +1,16 @@
+<style lang="scss">
+.mode-toggle {
+  background: #64748b;
+  .q-btn {
+    color: #000;
+    width: 44px;
+  }
+  .bg-primary {
+    border-radius: 100px !important;
+  }
+}
+</style>
+
 <script setup>
 // import UploadAct from "./qs-upload-act.vue";
 import TableList from "./table-list.vue";
@@ -8,7 +21,7 @@ import FilePreview from "./qs-preview.vue";
   <div class="q-pa-md">
     <div class="al-c">
       <q-checkbox class="mr-4" size="30px" :label="`0 selected`" v-model="selectAll" />
-      <q-btn-group rounded>
+      <q-btn-group class="split-line" rounded>
         <q-btn color="primary">
           <img src="/img/driver/stone.svg" width="24" />
         </q-btn>
@@ -26,6 +39,26 @@ import FilePreview from "./qs-preview.vue";
         </q-btn>
       </q-btn-group>
       <!-- <upload-act :bucket="bucketName" :prefix="bucketPrefix" @refresh="getList" /> -->
+
+      <div class="ml-auto">
+        <q-btn-toggle
+          class="mode-toggle"
+          v-model="showMode"
+          rounded
+          toggle-color="primary"
+          :options="[
+            { value: 'grid', slot: 'grid' },
+            { value: 'list', slot: 'list' },
+          ]"
+        >
+          <template #grid>
+            <img src="/img/driver/mode-grid.svg" width="20" />
+          </template>
+          <template #list>
+            <img src="/img/driver/mode-list.svg" width="20" />
+          </template>
+        </q-btn-toggle>
+      </div>
     </div>
     <div class="q-mt-lg">
       <q-breadcrumbs gutter="sm">
@@ -57,6 +90,7 @@ export default {
       showPreview: false,
       fileIdx: -1,
       selectAll: false,
+      showMode: "grid",
     };
   },
   computed: {

@@ -59,7 +59,7 @@ $color1: #429efc;
   transition: all ease 0.3s;
 }
 
-.q-btn-group .q-btn:not(:last-child):after {
+.split-line .q-btn:not(:last-child):after {
   content: '';
   position: absolute;
   right: 0;
