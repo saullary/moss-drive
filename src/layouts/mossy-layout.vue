@@ -7,7 +7,6 @@ body.body--dark {
 }
 .main-wrap {
   max-width: 1100px;
-  min-width: 750px;
   margin: 0 auto;
   padding: 0 20px;
 }

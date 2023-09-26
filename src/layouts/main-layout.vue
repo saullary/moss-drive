@@ -67,7 +67,7 @@
           <img src="/img/logo.svg" height="80" />
         </div>
         <div class="q-pa-md q-mb-lg ta-c">
-          <q-btn rounded class="btn-mossy">
+          <q-btn href="/mossyland/explore" target="_blank" rounded class="btn-mossy">
             <img src="/img/mossy.png" width="40" />
             <span class="fz-18 ml-2">Mossyland</span>
           </q-btn>

@@ -23,6 +23,7 @@
     hide-pagination
     :rows-per-page-options="[0]"
   >
+    <template #header> </template>
     <template #body="scope">
       <q-tr
         :class="{

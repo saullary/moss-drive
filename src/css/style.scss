@@ -16,6 +16,9 @@ input {
   outline: none;
   border: none;
 }
+#app, .q-header {
+  min-width: 550px;
+}
 body.body--dark {
   background: #0F172A;
 }
