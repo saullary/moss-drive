@@ -1,4 +1,12 @@
 <style lang="scss">
+.table-list {
+  thead {
+    color: #94a3b8;
+    .q-checkbox {
+      display: none;
+    }
+  }
+}
 .q-tr {
   cursor: pointer;
   .active {
@@ -9,6 +17,7 @@
 
 <template>
   <q-table
+    class="table-list"
     dark
     color="primary"
     :loading="loading"
@@ -23,7 +32,7 @@
     hide-pagination
     :rows-per-page-options="[0]"
   >
-    <template #header> </template>
+    <!-- <template #header> </template> -->
     <template #body="scope">
       <q-tr
         :class="{
@@ -32,7 +41,7 @@
         :props="scope"
         @click="onRow(scope.row, scope.rowIndex)"
       >
-        <q-td>
+        <q-td style="width: 50px">
           <q-checkbox size="32px" color="primary" v-model="scope.selected" />
         </q-td>
         <q-td key="name">
