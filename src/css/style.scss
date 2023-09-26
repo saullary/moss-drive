@@ -12,9 +12,12 @@ body, h1, h2, h3, p {
 h1, h2, h3 {
   font-family: "Aldrich", sans-serif;
 }
-body {
-  background: #111729;
-  color: #fff;
+input {
+  outline: none;
+  border: none;
+}
+body.body--dark {
+  background: #0F172A;
 }
 .q-table__card {
   background: transparent;
@@ -34,9 +37,8 @@ body {
 .bdrs-10 { border-radius: 10px; }
 .bdrs-100 { border-radius: 100px; }
 
-$color1: #429efc;
 .color-1, .link {
-  color: $color1;
+  color: $primary;
 }
 
 .hover-1:active {
