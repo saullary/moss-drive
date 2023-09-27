@@ -18,7 +18,6 @@
 <template>
   <q-table
     class="table-list"
-    dark
     color="primary"
     :loading="loading"
     flat

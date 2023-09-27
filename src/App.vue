@@ -10,7 +10,8 @@ export default {
   name: "App",
   setup() {
     const $q = useQuasar();
-    console.log($q.dark.set(true));
+    $q.dark.set(true);
+
     window.$loading = (opts) => {
       if (typeof opts == "string") {
         opts = {

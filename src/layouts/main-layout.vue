@@ -32,7 +32,7 @@
 
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header style="background: #71ebaa">
+    <q-header class="bg-primary">
       <q-toolbar class="main-toolbar">
         <q-btn
           class="m-toggle-btn"
