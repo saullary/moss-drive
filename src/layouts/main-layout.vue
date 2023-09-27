@@ -49,15 +49,7 @@
         </q-toolbar-title>
 
         <!-- <div>Quasar v{{ $q.version }}</div> -->
-        <driver-search />
-        <q-btn class="ml-3" color="info" rounded @click="onWallet">
-          <div class="al-c">
-            <q-avatar size="22px">
-              <img src="/img/metamask.png" />
-            </q-avatar>
-            <span class="q-ml-sm">Connect Wallet</span>
-          </div>
-        </q-btn>
+        <driver-search class="flex-2" />
       </q-toolbar>
     </q-header>
 

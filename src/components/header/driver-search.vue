@@ -1,15 +1,57 @@
+<style lang="scss">
+.top-search {
+  height: 36px;
+  // width: 400px;
+  padding-left: 36px;
+  letter-spacing: 1px;
+  &::-webkit-input-placeholder {
+    color: #222;
+  }
+}
+</style>
+
 <template>
   <div class="al-c">
-    <q-btn color="info" round size="12px">
+    <!-- <q-btn color="info" round size="12px">
       <icon-search :size="16" />
     </q-btn>
-    <!-- <div class="pos-r bg-info">
-      <icon-search />
-      <input type="text" />
-    </div> -->
-    <q-btn class="ml-3" color="primary" rounded style="min-width: 110px">
+     -->
+    <div class="pos-r flex-1">
+      <icon-search class="y-center ev-n" style="left: 10px" />
+      <input type="text" placeholder="Search" class="bg-info bdrs-100 w100p top-search" />
+    </div>
+
+    <q-btn v-if="asMobile" class="ml-3" color="primary" round size="12px">
       <icon-add />
-      <span class="ml-3">New</span>
+    </q-btn>
+    <q-btn v-else class="ml-3" color="primary" rounded style="min-width: 110px">
+      <icon-add />
+      <span class="ml-2">NEW</span>
+    </q-btn>
+
+    <q-btn class="ml-3" color="info" rounded :round="asMobile" @click="onWallet">
+      <q-avatar size="22px">
+        <img src="/img/metamask.png" />
+      </q-avatar>
+      <span v-if="!asMobile" class="q-ml-sm">Connect Wallet</span>
     </q-btn>
   </div>
 </template>
+
+<script>
+import { useQuasar } from "quasar";
+
+export default {
+  data() {
+    const { screen } = useQuasar();
+    return {
+      screen,
+    };
+  },
+  computed: {
+    asMobile() {
+      return this.screen.xs;
+    },
+  },
+};
+</script>
