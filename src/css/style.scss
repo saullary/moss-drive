@@ -45,8 +45,13 @@ body.body--dark {
   border-color: #1E293B;
 }
 
-.q-btn-group > .q-btn-item {
-  min-height: 44px;
+.q-btn-group  {
+  .q-btn-item {
+    min-height: 40px;
+  }
+  .q-btn {
+    width: 46px;
+  }
 }
 
 .bdrs-2 { border-radius: 2px; }

@@ -24,25 +24,26 @@ import FilePreview from "./qs-preview.vue";
       <q-checkbox class="mr-4" size="40px" :label="`0 selected`" v-model="selectAll" />
       <q-btn-group class="split-line" rounded>
         <q-btn color="primary">
-          <img src="/img/driver/stone.svg" width="24" />
+          <img src="/img/driver/stone.svg" width="22" />
         </q-btn>
         <q-btn color="primary">
-          <img src="/img/driver/link.svg" width="24" />
+          <img src="/img/driver/link.svg" width="22" />
         </q-btn>
         <q-btn color="primary">
-          <img src="/img/driver/move.svg" width="24" />
+          <img src="/img/driver/move.svg" width="22" />
         </q-btn>
         <q-btn color="primary">
-          <img src="/img/driver/download.svg" width="24" />
+          <img src="/img/driver/download.svg" width="22" />
         </q-btn>
         <q-btn color="primary">
-          <img src="/img/driver/trash.svg" width="24" />
+          <img src="/img/driver/trash.svg" width="22" />
         </q-btn>
       </q-btn-group>
       <!-- <upload-act :bucket="bucketName" :prefix="bucketPrefix" @refresh="getList" /> -->
 
       <div class="ml-auto">
         <q-btn-toggle
+          size="10px"
           class="mode-toggle"
           v-model="showMode"
           rounded
