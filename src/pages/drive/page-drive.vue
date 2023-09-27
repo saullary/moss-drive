@@ -20,7 +20,7 @@ import FilePreview from "./qs-preview.vue";
 <template>
   <div class="q-pa-md">
     <div class="al-c">
-      <q-checkbox class="mr-4" size="30px" :label="`0 selected`" v-model="selectAll" />
+      <q-checkbox class="mr-4" size="40px" :label="`0 selected`" v-model="selectAll" />
       <q-btn-group class="split-line" rounded>
         <q-btn color="primary">
           <img src="/img/driver/stone.svg" width="24" />

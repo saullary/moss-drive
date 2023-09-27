@@ -67,16 +67,34 @@ const bucket = {
             ...(res.CommonPrefixes || []).map((it) => ({
               name: it.Prefix.replace(params.Prefix, "").replace("/", ""),
               prefix: true,
+              type: "folder",
             })),
-            ...(res.Contents || []).map((it) => ({
-              url: `https://${params.Bucket}.4everland.store/${it.Key}`,
-              key: it.Key,
-              name: it.Key.replace(params.Prefix, ""),
-              size: it.Size,
-              sizeUnit: getFileSize(it.Size),
-              lastModified: it.LastModified,
-              updatedAt: it.LastModified.format("date"),
-            })),
+            ...(res.Contents || []).map((it) => {
+              const name = it.Key.replace(params.Prefix, "");
+              const ext = /\.(\w+)$/.exec(name)[1];
+              let type = "other";
+              if (["png", "jpg", "jpeg", "gif", "svg", "ico", "webp"].includes(ext)) {
+                type = "image";
+              } else if (["mp3", "wav", "ogg"].includes(ext)) {
+                type = "audio";
+              } else if (["mp4", "mov", "webm", "mpg", "mpeg"].includes(ext)) {
+                type = "video";
+              }
+              // else if (/txt|js|htm|css|java|kotlin|vue|json|sh|swift|md|go/.test(ext)) {
+              //   type = "text";
+              // }
+              return {
+                url: `https://${params.Bucket}.4everland.store/${it.Key}`,
+                key: it.Key,
+                name,
+                type,
+                size: it.Size,
+                sizeUnit: getFileSize(it.Size),
+                lastModified: it.LastModified,
+                updatedAt: it.LastModified.format("date"),
+                etag: it.ETag,
+              };
+            }),
           ],
         };
         //

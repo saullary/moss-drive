@@ -42,18 +42,12 @@
         @click="onRow(scope.row, scope.rowIndex)"
       >
         <q-td style="width: 50px">
-          <q-checkbox size="32px" color="primary" v-model="scope.selected" />
+          <q-checkbox size="40px" color="primary" keep-color v-model="scope.selected" />
         </q-td>
         <q-td key="name">
           <div class="al-c">
-            <q-icon
-              :color="getIcon(scope.row).color"
-              :name="getIcon(scope.row).name"
-              size="20px"
-              class="mr-2"
-              v-if="getIcon(scope.row)"
-            ></q-icon>
-            <span class="fz-15">{{ scope.row.name }}</span>
+            <q-img :src="getIcon(scope.row)" width="32px"></q-img>
+            <span class="fz-15 ml-3">{{ scope.row.name }}</span>
           </div>
         </q-td>
         <q-td key="lastModified">
@@ -110,27 +104,11 @@ export default {
   },
   methods: {
     getIcon(row) {
-      if (row.prefix)
-        return {
-          name: "folder",
-          color: "orange",
-        };
-      const type = /\.(\w+)$/.exec(row.name)[1];
-      let name = "description";
-      let color = "blue";
-      if (/js|htm|css|java|vue|json/.test(type)) {
-        name = "code";
-      } else if (/png|jpg|jpeg|svg|gif|bmp|ico/.test(type)) {
-        name = "image";
-      } else if (/mp3/.test(type)) {
-        name = "headphones";
-      } else if (/mp4|avi|webm|m3u8/.test(type)) {
-        name = "videocam";
+      if (row.type == "img") {
+        return row.url;
+      } else {
+        return `/img/driver/icon_${row.type}.svg`;
       }
-      return {
-        name,
-        color,
-      };
     },
     onRow(row, index) {
       if (row.prefix) {

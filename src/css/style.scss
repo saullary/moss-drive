@@ -19,14 +19,32 @@ input {
 #app, .q-header {
   min-width: 550px;
 }
+
+$dark-color: #0F172A;
+:root {
+  --q-dark: #0F172A;
+  // --q-dark-page
+}
 body.body--dark {
-  background: #0F172A;
+  background: $dark-color;
 }
 .q-table__card {
   background: transparent;
 }
 .bg-primary, .bg-info {
-  color: #0F172A!important;
+  color: $dark-color!important;
+}
+.q-checkbox__inner {
+  transform: scale(0.7)
+}
+.q-checkbox__svg {
+  color: $dark-color;
+}
+.q-table thead tr, .q-table tbody td {
+  height: 56px;
+}
+.q-table--dark .q-table__bottom, .q-table--dark thead, .q-table--dark tr, .q-table--dark th, .q-table--dark td {
+  border-color: #1E293B;
 }
 
 .q-btn-group > .q-btn-item {
