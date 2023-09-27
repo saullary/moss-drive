@@ -19,7 +19,7 @@
   <q-table
     class="table-list"
     color="primary"
-    :loading="loading"
+    :loading="loading === true"
     flat
     tabindex="0"
     :rows="rows"
@@ -45,7 +45,18 @@
         </q-td>
         <q-td key="name">
           <div class="al-c">
-            <q-img :src="getIcon(scope.row)" width="32px"></q-img>
+            <div class="pos-r">
+              <q-img
+                :src="getIcon(scope.row)"
+                width="32px"
+                :class="{
+                  'op-1': scope.rowIndex === loading,
+                }"
+              ></q-img>
+              <div class="pos-center" v-if="scope.rowIndex === loading">
+                <q-spinner-ios color="warning" size="20px" />
+              </div>
+            </div>
             <span class="fz-15 ml-3">{{ scope.row.name }}</span>
           </div>
         </q-td>
@@ -71,7 +82,7 @@ export default {
   emits: ["row-click"],
   props: {
     rows: Array,
-    loading: Boolean,
+    loading: null,
   },
   data() {
     return {
@@ -97,7 +108,6 @@ export default {
         },
         { name: "size", align: "left", label: "Size", field: "size", sortable: true },
       ],
-      showPop: false,
       activeIdx: -1,
     };
   },
@@ -110,11 +120,6 @@ export default {
       }
     },
     onRow(row, index) {
-      if (row.prefix) {
-        this.$router.push(this.$route.path + "/" + row.name);
-        return;
-      }
-      this.showPop = true;
       // this.activeIdx = this.activeIdx == idx ? -1 : idx
       this.$emit("row-click", {
         row,

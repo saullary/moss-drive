@@ -14,6 +14,7 @@
 <script setup>
 // import UploadAct from "./qs-upload-act.vue";
 import TableList from "./table-list.vue";
+import GridList from "./grid-list.vue";
 import FilePreview from "./qs-preview.vue";
 </script>
 
@@ -67,7 +68,13 @@ import FilePreview from "./qs-preview.vue";
       </q-breadcrumbs>
     </div>
     <div class="q-mt-md">
-      <table-list :rows="objList" :loading="objLoading" @row-click="onRow" />
+      <grid-list
+        v-if="showMode == 'grid'"
+        :rows="objList"
+        :loading="objLoading"
+        @row-click="onRow"
+      />
+      <table-list v-else :rows="objList" :loading="objLoading" @row-click="onRow" />
     </div>
   </div>
   <q-dialog v-model="showPreview" transition-show="slide-up" transition-hide="jump-up">
@@ -132,7 +139,12 @@ export default {
     },
   },
   methods: {
-    onRow({ row }) {
+    onRow({ row, index }) {
+      if (row.prefix) {
+        this.objLoading = index;
+        this.$router.push(this.$route.path + "/" + row.name);
+        return;
+      }
       this.fileIdx = this.fileList.findIndex((it) => it.url == row.url);
       this.showPreview = true;
       console.log(this.fileIdx);
@@ -161,7 +173,9 @@ export default {
     },
     async getList() {
       try {
-        this.objLoading = true;
+        if (this.objLoading == -1 || this.objLoading === false) {
+          this.objLoading = true;
+        }
         const data = await this.$bucket.listObjects({
           Bucket: this.bucketName,
           Prefix: this.bucketPrefix,
