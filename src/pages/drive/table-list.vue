@@ -8,6 +8,9 @@
   }
 }
 .q-tr {
+  &:active .cover {
+    opacity: 0.8;
+  }
   &.active {
     background: #1e293b;
   }
@@ -59,8 +62,9 @@
                 :src="getIcon(scope.row)"
                 spinner-size="20px"
                 width="32px"
+                class="cover trans-100"
                 :class="{
-                  'op-1': scope.rowIndex === loading,
+                  'op-2': scope.rowIndex === loading,
                 }"
               ></q-img>
               <div class="pos-center" v-if="scope.rowIndex === loading">

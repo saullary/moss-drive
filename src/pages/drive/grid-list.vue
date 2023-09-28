@@ -3,6 +3,9 @@
   .grid-item {
     border-radius: 8px;
     cursor: pointer;
+    &:active .cover {
+      opacity: 0.8;
+    }
     &.active {
       background: #1e293b;
       .hide {
@@ -42,6 +45,7 @@
             spinner-size="30px"
             :ratio="1"
             width="50%"
+            class="cover trans-100"
             :class="{
               'op-6': i === loading,
             }"
