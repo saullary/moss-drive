@@ -8,10 +8,13 @@
   }
 }
 .q-tr {
-  cursor: pointer;
-  .active {
-    background: rgb(174 216 231 / 8%);
+  &.active {
+    background: #1e293b;
   }
+  &:hover {
+    background: #334155;
+  }
+  cursor: pointer;
 }
 </style>
 
@@ -35,7 +38,7 @@
     <template #body="scope">
       <q-tr
         :class="{
-          active: activeIdx == scope.rowIndex,
+          active: checked.includes(scope.row.key),
         }"
         :props="scope"
         @click="onRow(scope.row, scope.rowIndex)"

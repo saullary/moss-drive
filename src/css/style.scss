@@ -44,6 +44,9 @@ body.body--dark {
 .q-table--dark .q-table__bottom, .q-table--dark thead, .q-table--dark tr, .q-table--dark th, .q-table--dark td {
   border-color: #1E293B;
 }
+.q-table--dark tbody td:before {
+  background: none;
+}
 
 .q-btn-group  {
   .q-btn-item {
