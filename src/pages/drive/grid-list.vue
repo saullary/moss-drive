@@ -41,7 +41,7 @@ export default {
       if (row.type == "image") {
         return row.url;
       } else {
-        return `/img/driver/icon_${row.type}.svg`;
+        return `/img/driver/icon_${row.type}.png`;
       }
     },
     onRow(row, index) {
