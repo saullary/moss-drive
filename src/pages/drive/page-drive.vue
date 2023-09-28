@@ -161,12 +161,13 @@ export default {
       }
     },
     checkAll(val) {
+      if (val == "not-empty") return;
       if (val) this.checked = this.objList.map((it) => it.key);
       else this.checked = [];
     },
-    checked(val) {
-      let isAll = val.length == this.objList.length;
-      if (!isAll && val.length > 0) isAll = "not-empty";
+    "checked.length"(len) {
+      let isAll = len == this.objList.length;
+      if (!isAll && len > 0) isAll = "not-empty";
       this.checkAll = isAll;
     },
   },
@@ -188,9 +189,6 @@ export default {
       this.fileIdx = this.fileList.findIndex((it) => it.url == row.url);
       this.showPreview = true;
       console.log(this.fileIdx);
-    },
-    onUpload(e) {
-      console.log(e);
     },
     async initBucket() {
       try {
