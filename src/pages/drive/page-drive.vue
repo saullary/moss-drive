@@ -36,6 +36,9 @@ import FilePreview from "./qs-preview.vue";
         <q-btn-group class="split-line" rounded>
           <q-btn color="primary" v-for="it in objMenus" :key="it.name">
             <img :src="`/img/driver/${it.icon || it.name}.svg`" width="22" />
+            <q-tooltip class="bg-black">
+              {{ it.name.capitalize() }}
+            </q-tooltip>
           </q-btn>
         </q-btn-group>
       </div>
@@ -123,7 +126,8 @@ export default {
       }
       let arr = [
         {
-          name: "stone",
+          name: "publish",
+          icon: "stone",
         },
       ];
       if (isFile) {
@@ -139,7 +143,8 @@ export default {
           name: "download",
         });
       arr.push({
-        name: "trash",
+        name: "delete",
+        icon: "trash",
       });
       return arr;
     },
