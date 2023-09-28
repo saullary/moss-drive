@@ -24,7 +24,7 @@
 
 <template>
   <div class="row pos-r driver-grid" style="min-height: 300px">
-    <div class="col-3 col-md-2 pa-2" v-for="(row, i) in rows" :key="row.key">
+    <div class="col-4 col-md-2 pa-2" v-for="(row, i) in rows" :key="row.key">
       <div
         @click="onRow(row, i)"
         class="ta-c grid-item pb-4"
