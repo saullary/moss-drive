@@ -5,7 +5,7 @@
         <div class="pos-r">
           <q-img
             :src="getIcon(row)"
-            spinner-size="40px"
+            spinner-size="30px"
             :ratio="1"
             width="50%"
             :class="{
