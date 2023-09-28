@@ -5,6 +5,7 @@
         <div class="pos-r">
           <q-img
             :src="getIcon(row)"
+            spinner-size="40px"
             :ratio="1"
             width="50%"
             :class="{
@@ -20,7 +21,7 @@
       </div>
     </div>
 
-    <div class="x-center" style="top: 200px" v-if="true === loading">
+    <div class="x-center" style="top: 180px" v-if="true === loading">
       <q-spinner-ios color="warning" size="40px" />
     </div>
   </div>

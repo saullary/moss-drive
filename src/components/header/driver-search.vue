@@ -50,7 +50,7 @@ export default {
   },
   computed: {
     asMobile() {
-      return this.screen.width < 680;
+      return this.screen.width < 690;
     },
   },
 };

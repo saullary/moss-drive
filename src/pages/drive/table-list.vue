@@ -48,6 +48,7 @@
             <div class="pos-r">
               <q-img
                 :src="getIcon(scope.row)"
+                spinner-size="20px"
                 width="32px"
                 :class="{
                   'op-1': scope.rowIndex === loading,
