@@ -2,6 +2,7 @@
 .driver-grid {
   .grid-item {
     border-radius: 8px;
+    cursor: pointer;
     &.active {
       background: #1e293b;
       .hide {
