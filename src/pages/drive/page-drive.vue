@@ -34,9 +34,16 @@ import FilePreview from "./qs-preview.vue";
         style="bottom: 30px"
       >
         <q-btn-group class="split-line" rounded>
-          <q-btn color="primary" v-for="it in objMenus" :key="it.name">
+          <q-btn
+            color="primary"
+            :class="{
+              disable: it.disabled,
+            }"
+            v-for="it in objMenus"
+            :key="it.name"
+          >
             <img :src="`/img/driver/${it.icon || it.name}.svg`" width="22" />
-            <q-tooltip class="bg-black">
+            <q-tooltip class="bg-black" v-if="!it.disabled">
               {{ it.name.capitalize() }}
             </q-tooltip>
           </q-btn>
@@ -124,29 +131,27 @@ export default {
         const row = this.objList.find((it) => it.key == this.checked[0]);
         isFile = !!row.url;
       }
-      let arr = [
+      return [
         {
           name: "publish",
           icon: "stone",
         },
-      ];
-      if (isFile) {
-        arr.push({
+        {
           name: "link",
-        });
-      }
-      arr.push({
-        name: "move",
-      });
-      if (isFile)
-        arr.push({
+          disabled: !isFile,
+        },
+        {
+          name: "move",
+        },
+        {
           name: "download",
-        });
-      arr.push({
-        name: "delete",
-        icon: "trash",
-      });
-      return arr;
+          disabled: !isFile,
+        },
+        {
+          name: "delete",
+          icon: "trash",
+        },
+      ];
     },
     path() {
       return this.$route.path;

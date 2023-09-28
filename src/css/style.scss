@@ -83,6 +83,12 @@ body.body--dark {
   img {
     pointer-events: none;
   }
+  &.disable {
+    pointer-events: none;
+    .q-btn__content {
+      opacity: .2;
+    }
+  }
 }
 .q-carousel__arrow .q-btn {
   background: rgb(0 0 0 / 12%);
