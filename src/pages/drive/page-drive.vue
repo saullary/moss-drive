@@ -20,6 +20,7 @@ import FilePreview from "./qs-preview.vue";
   <div class="q-pa-md">
     <div class="al-c">
       <q-checkbox
+        :disable="objLoading !== false"
         class="mr-4"
         size="40px"
         :label="checked.length + ` selected`"
@@ -43,7 +44,7 @@ import FilePreview from "./qs-preview.vue";
             :key="it.name"
           >
             <img :src="`/img/driver/${it.icon || it.name}.svg`" width="22" />
-            <q-tooltip class="bg-black" v-if="!it.disabled">
+            <q-tooltip anchor="top middle" :offset="[0, 24]" class="bg-black" v-if="!it.disabled">
               {{ it.name.capitalize() }}
             </q-tooltip>
           </q-btn>
