@@ -27,26 +27,15 @@ import FilePreview from "./qs-preview.vue";
         indeterminate-value="not-empty"
       />
       <div
+        v-show="checked.length > 0"
         :class="{
           'x-center pos-f z-100': screen.xs,
         }"
         style="bottom: 30px"
       >
         <q-btn-group class="split-line" rounded>
-          <q-btn color="primary">
-            <img src="/img/driver/stone.svg" width="22" />
-          </q-btn>
-          <q-btn color="primary">
-            <img src="/img/driver/link.svg" width="22" />
-          </q-btn>
-          <q-btn color="primary">
-            <img src="/img/driver/move.svg" width="22" />
-          </q-btn>
-          <q-btn color="primary">
-            <img src="/img/driver/download.svg" width="22" />
-          </q-btn>
-          <q-btn color="primary">
-            <img src="/img/driver/trash.svg" width="22" />
+          <q-btn color="primary" v-for="it in objMenus" :key="it.name">
+            <img :src="`/img/driver/${it.icon || it.name}.svg`" width="22" />
           </q-btn>
         </q-btn-group>
       </div>
@@ -125,6 +114,35 @@ export default {
     };
   },
   computed: {
+    objMenus() {
+      const len = this.checked.length;
+      let isFile = false;
+      if (len == 1) {
+        const row = this.objList.find((it) => it.key == this.checked[0]);
+        isFile = !!row.url;
+      }
+      let arr = [
+        {
+          name: "stone",
+        },
+      ];
+      if (isFile) {
+        arr.push({
+          name: "link",
+        });
+      }
+      arr.push({
+        name: "move",
+      });
+      if (isFile)
+        arr.push({
+          name: "download",
+        });
+      arr.push({
+        name: "trash",
+      });
+      return arr;
+    },
     path() {
       return this.$route.path;
     },
