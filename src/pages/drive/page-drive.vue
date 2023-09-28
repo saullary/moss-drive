@@ -13,15 +13,19 @@
 
 <script setup>
 // import UploadAct from "./qs-upload-act.vue";
-import TableList from "./table-list.vue";
-import GridList from "./grid-list.vue";
 import FilePreview from "./qs-preview.vue";
 </script>
 
 <template>
   <div class="q-pa-md">
     <div class="al-c">
-      <q-checkbox class="mr-4" size="40px" :label="`0 selected`" v-model="selectAll" />
+      <q-checkbox
+        class="mr-4"
+        size="40px"
+        :label="checked.length + ` selected`"
+        v-model="checkAll"
+        indeterminate-value="not-empty"
+      />
       <div
         :class="{
           'x-center pos-f z-100': screen.xs,
@@ -57,13 +61,13 @@ import FilePreview from "./qs-preview.vue";
           toggle-color="primary"
           :options="[
             { value: 'grid', slot: 'grid' },
-            { value: 'list', slot: 'list' },
+            { value: 'table', slot: 'table' },
           ]"
         >
           <template #grid>
             <img src="/img/driver/mode-grid.svg" width="20" />
           </template>
-          <template #list>
+          <template #table>
             <img src="/img/driver/mode-list.svg" width="20" />
           </template>
         </q-btn-toggle>
@@ -76,13 +80,14 @@ import FilePreview from "./qs-preview.vue";
       </q-breadcrumbs>
     </div>
     <div class="q-mt-md">
-      <grid-list
-        v-if="showMode == 'grid'"
+      <component
+        :is="showMode + '-list'"
         :rows="objList"
         :loading="objLoading"
-        @row-click="onRow"
+        :checked="checked"
+        @row-click="onRowClick"
+        @row-check="onRowCheck"
       />
-      <table-list v-else :rows="objList" :loading="objLoading" @row-click="onRow" />
     </div>
   </div>
   <q-dialog v-model="showPreview" transition-show="slide-up" transition-hide="jump-up">
@@ -97,8 +102,14 @@ import FilePreview from "./qs-preview.vue";
 
 <script>
 import { useQuasar } from "quasar";
+import TableList from "./table-list.vue";
+import GridList from "./grid-list.vue";
 
 export default {
+  components: {
+    GridList,
+    TableList,
+  },
   data() {
     const { screen } = useQuasar();
     return {
@@ -108,8 +119,9 @@ export default {
       objLoading: false,
       showPreview: false,
       fileIdx: -1,
-      selectAll: false,
       showMode: "grid",
+      checkAll: false,
+      checked: [],
     };
   },
   computed: {
@@ -143,11 +155,31 @@ export default {
   },
   watch: {
     path() {
-      if (this.$bucket.client) this.getList();
+      if (this.$bucket.client) {
+        this.checked = [];
+        this.getList();
+      }
+    },
+    checkAll(val) {
+      if (val) this.checked = this.objList.map((it) => it.key);
+      else this.checked = [];
+    },
+    checked(val) {
+      let isAll = val.length == this.objList.length;
+      if (!isAll && val.length > 0) isAll = "not-empty";
+      this.checkAll = isAll;
     },
   },
   methods: {
-    onRow({ row, index }) {
+    onRowCheck({ key }) {
+      const idx = this.checked.indexOf(key);
+      if (idx == -1) {
+        this.checked.push(key);
+      } else {
+        this.checked.splice(idx, 1);
+      }
+    },
+    onRowClick({ row, index }) {
       if (row.prefix) {
         this.objLoading = index;
         this.$router.push(this.$route.path + "/" + row.name);

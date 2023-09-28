@@ -65,6 +65,7 @@ const bucket = {
         return {
           rows: [
             ...(res.CommonPrefixes || []).map((it) => ({
+              key: it.Prefix,
               name: it.Prefix.replace(params.Prefix, "").replace("/", ""),
               prefix: true,
               type: "folder",

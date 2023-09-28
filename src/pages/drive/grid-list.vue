@@ -1,7 +1,40 @@
+<style lang="scss">
+.driver-grid {
+  .grid-item {
+    border-radius: 8px;
+    &.active {
+      background: #1e293b;
+      .hide {
+        visibility: visible;
+      }
+    }
+    &:hover {
+      background: #334155;
+      .hide {
+        visibility: visible;
+      }
+    }
+  }
+}
+</style>
+
 <template>
-  <div class="row pos-r" style="min-height: 300px">
-    <div class="col-3 col-md-2 pa-2" @click="onRow(row, i)" v-for="(row, i) in rows" :key="row.key">
-      <div class="ta-c mb-5">
+  <div class="row pos-r driver-grid" style="min-height: 300px">
+    <div class="col-3 col-md-2 pa-2" v-for="(row, i) in rows" :key="row.key">
+      <div
+        @click="onRow(row, i)"
+        class="ta-c grid-item pb-4"
+        :class="{
+          active: checked.includes(row.key),
+        }"
+      >
+        <p class="ta-l hide">
+          <q-checkbox
+            size="40px"
+            :model-value="checked.includes(row.key)"
+            @click="onCheck(row)"
+          ></q-checkbox>
+        </p>
         <div class="pos-r">
           <q-img
             :src="getIcon(row)"
@@ -11,7 +44,7 @@
             :class="{
               'op-6': i === loading,
             }"
-          ></q-img>
+          />
           <div class="pos-center" v-if="i === loading">
             <q-spinner-ios color="yellow" size="30px" />
           </div>
@@ -29,15 +62,19 @@
 
 <script>
 export default {
-  emits: ["row-click"],
+  emits: ["row-click", "row-check"],
   props: {
     rows: Array,
     loading: null,
+    checked: Array,
   },
   data() {
     return {};
   },
   methods: {
+    onCheck(row) {
+      this.$emit("row-check", row);
+    },
     getIcon(row) {
       if (row.type == "image") {
         return row.url;

@@ -41,7 +41,13 @@
         @click="onRow(scope.row, scope.rowIndex)"
       >
         <q-td style="width: 50px">
-          <q-checkbox size="40px" color="primary" keep-color v-model="scope.selected" />
+          <q-checkbox
+            size="40px"
+            color="primary"
+            keep-color
+            :model-value="checked.includes(scope.row.key)"
+            @click="$emit('row-check', scope.row)"
+          />
         </q-td>
         <q-td key="name">
           <div class="al-c">
@@ -80,10 +86,11 @@
 
 <script>
 export default {
-  emits: ["row-click"],
+  emits: ["row-click", "row-check"],
   props: {
     rows: Array,
     loading: null,
+    checked: Array,
   },
   data() {
     return {
