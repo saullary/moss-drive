@@ -12,24 +12,24 @@
 
 <template>
   <div class="al-c">
-    <!-- <q-btn color="info" round size="12px">
-      <icon-search :size="16" />
-    </q-btn>
-     -->
     <div class="pos-r flex-1">
       <icon-search class="y-center ev-n" style="left: 10px" />
       <input type="text" placeholder="Search" class="bg-info bdrs-100 w100p top-search" />
     </div>
 
-    <q-btn v-if="asMobile" class="ml-3" color="primary" round size="12px">
+    <q-btn
+      class="ml-3"
+      color="primary"
+      rounded
+      :round="asMobile"
+      :size="btnSize"
+      :style="asMobile ? '' : 'width: 110px'"
+    >
       <icon-add />
-    </q-btn>
-    <q-btn v-else class="ml-3" color="primary" rounded style="min-width: 110px">
-      <icon-add />
-      <span class="ml-2">NEW</span>
+      <span class="ml-2" v-if="!asMobile">NEW</span>
     </q-btn>
 
-    <q-btn class="ml-3" color="info" rounded :round="asMobile" @click="onWallet">
+    <q-btn class="ml-3" color="info" rounded :round="asMobile" :size="btnSize" @click="onWallet">
       <q-avatar size="22px">
         <img src="/img/metamask.png" />
       </q-avatar>
@@ -51,6 +51,9 @@ export default {
   computed: {
     asMobile() {
       return this.screen.width < 690;
+    },
+    btnSize() {
+      return this.asMobile ? "12px" : null;
     },
   },
 };
