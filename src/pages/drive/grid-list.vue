@@ -1,11 +1,6 @@
 <template>
   <div class="row pos-r" style="min-height: 300px">
-    <div
-      class="col-4 col-md-3 col-lg-2 pa-2"
-      @click="onRow(row, i)"
-      v-for="(row, i) in rows"
-      :key="row.key"
-    >
+    <div class="col-3 col-md-2 pa-2" @click="onRow(row, i)" v-for="(row, i) in rows" :key="row.key">
       <div class="ta-c mb-5">
         <div class="pos-r">
           <q-img

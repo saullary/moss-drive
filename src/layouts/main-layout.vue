@@ -53,7 +53,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer class="main-drawer bg-primary" v-model="leftDrawerOpen" show-if-above>
+    <q-drawer width="280" class="main-drawer bg-primary" v-model="leftDrawerOpen" show-if-above>
       <q-list>
         <div class="">
           <img src="/img/logo.svg" height="80" />

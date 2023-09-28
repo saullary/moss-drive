@@ -22,23 +22,30 @@ import FilePreview from "./qs-preview.vue";
   <div class="q-pa-md">
     <div class="al-c">
       <q-checkbox class="mr-4" size="40px" :label="`0 selected`" v-model="selectAll" />
-      <q-btn-group class="split-line" rounded>
-        <q-btn color="primary">
-          <img src="/img/driver/stone.svg" width="22" />
-        </q-btn>
-        <q-btn color="primary">
-          <img src="/img/driver/link.svg" width="22" />
-        </q-btn>
-        <q-btn color="primary">
-          <img src="/img/driver/move.svg" width="22" />
-        </q-btn>
-        <q-btn color="primary">
-          <img src="/img/driver/download.svg" width="22" />
-        </q-btn>
-        <q-btn color="primary">
-          <img src="/img/driver/trash.svg" width="22" />
-        </q-btn>
-      </q-btn-group>
+      <div
+        :class="{
+          'x-center pos-f z-100': screen.xs,
+        }"
+        style="bottom: 30px"
+      >
+        <q-btn-group class="split-line" rounded>
+          <q-btn color="primary">
+            <img src="/img/driver/stone.svg" width="22" />
+          </q-btn>
+          <q-btn color="primary">
+            <img src="/img/driver/link.svg" width="22" />
+          </q-btn>
+          <q-btn color="primary">
+            <img src="/img/driver/move.svg" width="22" />
+          </q-btn>
+          <q-btn color="primary">
+            <img src="/img/driver/download.svg" width="22" />
+          </q-btn>
+          <q-btn color="primary">
+            <img src="/img/driver/trash.svg" width="22" />
+          </q-btn>
+        </q-btn-group>
+      </div>
       <!-- <upload-act :bucket="bucketName" :prefix="bucketPrefix" @refresh="getList" /> -->
 
       <div class="ml-auto">
@@ -89,9 +96,13 @@ import FilePreview from "./qs-preview.vue";
 </template>
 
 <script>
+import { useQuasar } from "quasar";
+
 export default {
   data() {
+    const { screen } = useQuasar();
     return {
+      screen,
       bucketName: null,
       objList: [],
       objLoading: false,
@@ -126,10 +137,6 @@ export default {
     fileList() {
       return this.objList.filter((it) => !it.prefix);
     },
-  },
-  // activated() {},
-  updated() {
-    // console.log('updated', this.path)
   },
   created() {
     this.initBucket();
