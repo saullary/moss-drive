@@ -3,18 +3,12 @@
   .grid-item {
     border-radius: 8px;
     cursor: pointer;
-    &:active .cover {
-      opacity: 0.8;
-      transform: scale(1.1);
-    }
     &.active {
-      background: #1e293b;
       .check-wrap {
         visibility: visible;
       }
     }
     &:hover {
-      background: #334155;
       .check-wrap {
         visibility: visible;
       }
@@ -28,7 +22,7 @@
     <div class="col-4 col-sm-3 col-md-2 pa-2" v-for="(row, i) in rows" :key="row.key">
       <div
         @click="onRow(row, i)"
-        class="ta-c grid-item pb-4"
+        class="ta-c driver-list-item grid-item pb-4"
         :class="{
           active: checked.includes(row.key),
         }"

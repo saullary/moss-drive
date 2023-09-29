@@ -7,19 +7,6 @@
     }
   }
 }
-.q-tr {
-  &:active .cover {
-    opacity: 0.8;
-    transform: scale(1.1);
-  }
-  &.active {
-    background: #1e293b;
-  }
-  &:hover {
-    background: #334155;
-  }
-  cursor: pointer;
-}
 </style>
 
 <template>
@@ -41,6 +28,7 @@
     <!-- <template #header> </template> -->
     <template #body="scope">
       <q-tr
+        class="driver-list-item"
         :class="{
           active: checked.includes(scope.row.key),
         }"
@@ -75,11 +63,11 @@
             <span class="fz-15 ml-3">{{ scope.row.name }}</span>
           </div>
         </q-td>
-        <q-td key="lastModified">
-          {{ scope.row.updatedAt }}
-        </q-td>
         <q-td key="size">
           {{ scope.row.sizeUnit }}
+        </q-td>
+        <q-td key="lastModified">
+          {{ scope.row.updatedAt }}
         </q-td>
       </q-tr>
     </template>
@@ -115,6 +103,7 @@ export default {
           // format: (val) => `${val}`,
           sortable: true,
         },
+        { name: "size", align: "left", label: "Size", field: "size", sortable: true },
         {
           name: "updatedAt",
           align: "left",
@@ -122,7 +111,6 @@ export default {
           field: "lastModified",
           sortable: true,
         },
-        { name: "size", align: "left", label: "Size", field: "size", sortable: true },
       ],
       activeIdx: -1,
     };
