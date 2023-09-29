@@ -46,7 +46,7 @@
             spinner-size="30px"
             :ratio="1"
             width="50%"
-            class="cover trans-100"
+            class="cover ev-n trans-100"
             :class="{
               'op-6': i === loading,
             }"

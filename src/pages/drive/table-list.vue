@@ -63,7 +63,7 @@
                 :src="getIcon(scope.row)"
                 spinner-size="20px"
                 width="32px"
-                class="cover trans-100"
+                class="cover ev-n trans-100"
                 :class="{
                   'op-2': scope.rowIndex === loading,
                 }"
