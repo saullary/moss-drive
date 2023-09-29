@@ -10,6 +10,7 @@
 .q-tr {
   &:active .cover {
     opacity: 0.8;
+    transform: scale(1.1);
   }
   &.active {
     background: #1e293b;
