@@ -5,16 +5,17 @@
     cursor: pointer;
     &:active .cover {
       opacity: 0.8;
+      transform: scale(1.1);
     }
     &.active {
       background: #1e293b;
-      .hide {
+      .check-wrap {
         visibility: visible;
       }
     }
     &:hover {
       background: #334155;
-      .hide {
+      .check-wrap {
         visibility: visible;
       }
     }
@@ -24,7 +25,7 @@
 
 <template>
   <div class="row pos-r driver-grid" style="min-height: 300px">
-    <div class="col-4 col-md-2 pa-2" v-for="(row, i) in rows" :key="row.key">
+    <div class="col-4 col-sm-3 col-md-2 pa-2" v-for="(row, i) in rows" :key="row.key">
       <div
         @click="onRow(row, i)"
         class="ta-c grid-item pb-4"
@@ -32,7 +33,7 @@
           active: checked.includes(row.key),
         }"
       >
-        <p class="ta-l hide">
+        <p class="ta-l hide check-wrap">
           <q-checkbox
             size="40px"
             :model-value="checked.includes(row.key)"
@@ -55,7 +56,14 @@
           </div>
         </div>
         <p class="line-1">{{ row.name }}</p>
-        <p class="fz-12 op-5">{{ row.sizeUnit }}</p>
+        <p
+          class="fz-12 op-5"
+          :class="{
+            hide: row.prefix,
+          }"
+        >
+          {{ row.sizeUnit || "-" }}
+        </p>
       </div>
     </div>
 
