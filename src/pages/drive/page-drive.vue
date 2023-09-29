@@ -34,7 +34,7 @@ import FilePreview from "./qs-preview.vue";
 </script>
 
 <template>
-  <div class="q-pa-md">
+  <div class="pa-3 pb-0 pos-s z-100" style="top: 72px">
     <div class="al-c">
       <q-checkbox
         :disable="objLoading !== false"
@@ -61,7 +61,7 @@ import FilePreview from "./qs-preview.vue";
             :key="it.name"
           >
             <img :src="`/img/driver/${it.icon || it.name}.svg`" width="22" />
-            <q-tooltip anchor="top middle" :offset="[0, 24]" class="bg-black" v-if="!it.disabled">
+            <q-tooltip anchor="top middle" :offset="[0, 28]" class="bg-black" v-if="!it.disabled">
               {{ it.name.capitalize() }}
             </q-tooltip>
           </q-btn>
@@ -90,7 +90,9 @@ import FilePreview from "./qs-preview.vue";
         </q-btn-toggle>
       </div>
     </div>
-    <div class="q-mt-lg">
+  </div>
+  <div class="q-pa-md">
+    <div class="q-mt-md q-ml-sm">
       <q-breadcrumbs gutter="sm">
         <q-breadcrumbs-el label="All files" to="/drive" />
         <q-breadcrumbs-el v-for="it in breadLinks" :key="it.to" :label="it.label" :to="it.to" />

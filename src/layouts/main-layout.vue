@@ -53,7 +53,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer width="280" class="main-drawer bg-primary" v-model="leftDrawerOpen" show-if-above>
+    <q-drawer :width="280" class="main-drawer bg-primary" v-model="leftDrawerOpen" show-if-above>
       <q-list>
         <div class="">
           <img src="/img/logo.svg" height="80" />
@@ -133,16 +133,6 @@ export default {
   methods: {
     isActive(it) {
       return this.$route.path.indexOf(it.to) == 0;
-    },
-    onWallet() {
-      window
-        .$alert("test")
-        .then(() => {
-          window.$toast("ok");
-        })
-        .catch(() => {
-          console.log(11);
-        });
     },
   },
 };

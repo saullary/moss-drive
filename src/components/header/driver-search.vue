@@ -56,5 +56,17 @@ export default {
       return this.asMobile ? "12px" : null;
     },
   },
+  methods: {
+    onWallet() {
+      window
+        .$alert("test")
+        .then(() => {
+          window.$toast("ok");
+        })
+        .catch(() => {
+          console.log(11);
+        });
+    },
+  },
 };
 </script>

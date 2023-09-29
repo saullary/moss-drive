@@ -24,15 +24,11 @@
         @click="onRow(row, i)"
         class="ta-c driver-list-item grid-item pb-4"
         :class="{
-          active: checked.includes(row.key),
+          active: isCheck(row),
         }"
       >
         <p class="ta-l hide check-wrap">
-          <q-checkbox
-            size="40px"
-            :model-value="checked.includes(row.key)"
-            @click="onCheck(row)"
-          ></q-checkbox>
+          <q-checkbox size="40px" :model-value="isCheck(row)" @click="onCheck(row)"></q-checkbox>
         </p>
         <div class="pos-r">
           <q-img
@@ -76,9 +72,19 @@ export default {
     checked: Array,
   },
   data() {
-    return {};
+    return {
+      hoverIdx: -1,
+    };
+  },
+  watch: {
+    rows() {
+      this.hoverIdx = -1;
+    },
   },
   methods: {
+    isCheck(row) {
+      return this.checked.includes(row.key);
+    },
     onCheck(row) {
       this.$emit("row-check", row);
     },
@@ -90,6 +96,11 @@ export default {
       }
     },
     onRow(row, index) {
+      const hasTouch = window.$q.platform.has.touch;
+      if (hasTouch && !this.isCheck(row) && this.hoverIdx != index) {
+        this.hoverIdx = index;
+        return;
+      }
       this.$emit("row-click", {
         row,
         index,
