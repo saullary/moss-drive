@@ -2,17 +2,24 @@
 .driver-grid {
   .grid-item {
     border-radius: 8px;
+    user-select: none;
     cursor: pointer;
+    &:active .cover {
+      opacity: 0.8;
+    }
     &.active {
+      background: #1e293b;
       .check-wrap {
         visibility: visible;
       }
     }
-    &:hover {
-      .check-wrap {
-        visibility: visible;
-      }
-    }
+  }
+}
+body.no-touch .grid-item:hover,
+body.touch .grid-item.hover {
+  background: #334155;
+  .check-wrap {
+    visibility: visible;
   }
 }
 </style>
@@ -25,6 +32,7 @@
         class="ta-c driver-list-item grid-item pb-4"
         :class="{
           active: isCheck(row),
+          hover: hoverIdx == i,
         }"
       >
         <p class="ta-l hide check-wrap">
@@ -64,6 +72,8 @@
 </template>
 
 <script>
+import { useQuasar } from "quasar";
+
 export default {
   emits: ["row-click", "row-check"],
   props: {
@@ -73,8 +83,17 @@ export default {
   },
   data() {
     return {
+      platform: useQuasar().platform,
       hoverIdx: -1,
     };
+  },
+  computed: {
+    hasTouch() {
+      return this.platform.has.touch;
+    },
+    isIos() {
+      return this.platform.is.ios;
+    },
   },
   watch: {
     rows() {
@@ -96,8 +115,7 @@ export default {
       }
     },
     onRow(row, index) {
-      const hasTouch = window.$q.platform.has.touch;
-      if (hasTouch && !this.isCheck(row) && this.hoverIdx != index) {
+      if (this.hasTouch && !this.isCheck(row) && this.hoverIdx != index) {
         this.hoverIdx = index;
         return;
       }

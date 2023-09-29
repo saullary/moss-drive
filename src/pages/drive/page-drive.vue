@@ -9,23 +9,6 @@
     border-radius: 100px !important;
   }
 }
-.driver-list-item {
-  user-select: none;
-  cursor: pointer;
-  .cover {
-    pointer-events: none;
-  }
-  &:active .cover {
-    opacity: 0.8;
-    transform: scale(1.1);
-  }
-  &.active {
-    background: #1e293b;
-  }
-  &:hover {
-    background: #334155;
-  }
-}
 </style>
 
 <script setup>

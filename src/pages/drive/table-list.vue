@@ -6,6 +6,19 @@
       display: none;
     }
   }
+  .q-tr {
+    user-select: none;
+    cursor: pointer;
+    &:active .cover {
+      opacity: 0.8;
+    }
+    &.active {
+      background: #1e293b;
+    }
+    &:hover {
+      background: #334155;
+    }
+  }
 }
 </style>
 

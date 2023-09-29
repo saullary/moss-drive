@@ -35,6 +35,9 @@ body.body--dark {
 .q-checkbox__inner {
   transform: scale(0.7)
 }
+.q-checkbox__label {
+  text-shadow: 0 0 2px #000;
+}
 .q-checkbox__svg {
   color: $dark-color;
 }
