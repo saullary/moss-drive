@@ -82,7 +82,7 @@ export default {
   methods: {
     onClick(e) {
       if (this.duration) {
-        audio.currentTime = (e.offsetX / this.$el.clientWidth) * this.duration; // trigger oncanplay
+        audio.currentTime = (e.offsetX / this.$el.clientWidth) * this.duration; // trigger oncanplay on pc
         this.canPlay = false;
         audio.play();
       }
@@ -105,6 +105,7 @@ export default {
         this.canPlay = true;
       };
       audio.ontimeupdate = () => {
+        this.canPlay = true;
         const { duration, currentTime: curTime } = audio;
         this.duration = duration;
         if (!duration) {
