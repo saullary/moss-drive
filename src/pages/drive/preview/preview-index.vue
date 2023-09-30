@@ -1,6 +1,15 @@
+<style lang="scss">
+@media (max-width: 599.98px) {
+  // .q-slider__track,
+  .q-dialog__inner--bottom > div {
+    border-radius: 0;
+  }
+}
+</style>
+
 <template>
   <q-dialog v-model="showPop" v-bind="dialogOpt">
-    <component :is="compName" :list="list" :current="current" />
+    <component :is="compName" :list="compList" :current="compCurrent" />
   </q-dialog>
 </template>
 
@@ -25,17 +34,36 @@ export default {
     };
   },
   computed: {
+    curItem() {
+      return this.list[this.current] || {};
+    },
+    isAudio() {
+      return this.curItem.type == "audio";
+    },
     compName() {
       let name = "common-preview";
-      if (this.list.every((it) => it.type == "audio")) {
+      if (this.isAudio) {
         name = MusicPlayer.name;
       }
       return name;
     },
+    compList() {
+      if (this.isAudio) {
+        return this.list.filter((it) => it.type == "audio");
+      }
+      return this.list;
+    },
+    compCurrent() {
+      if (this.isAudio) {
+        return this.compList.findIndex((it) => it == this.curItem);
+      }
+      return this.current;
+    },
     dialogOpt() {
-      if (this.compName == MusicPlayer.name) {
+      if (this.isAudio) {
         return {
           position: "bottom",
+          // seamless: true,
         };
       }
       return {};

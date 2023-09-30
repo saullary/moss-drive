@@ -95,6 +95,7 @@ import FilePreview from "./preview/preview-index.vue";
         @row-click="onRowClick"
         @row-check="onRowCheck"
       />
+      <div class="pa-8"></div>
     </div>
   </div>
   <file-preview v-model="showPreview" :list="fileList" :current="fileIdx"></file-preview>

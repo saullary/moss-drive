@@ -1,5 +1,14 @@
 <template>
-  <q-card style="width: 350px">
+  <q-card style="width: 350px; overflow: visible">
+    <!-- <q-slider
+      v-if="canPlay"
+      thumb-size="0"
+      dense
+      v-model="progress"
+      :min="0"
+      :max="1"
+      color="pink"
+    /> -->
     <q-linear-progress
       :indeterminate="!canPlay"
       animation-speed="0"
@@ -13,7 +22,7 @@
           <span class="mr-1 op-8 fz-13">{{ curIdx + 1 }}/{{ count }}</span>
           <span>{{ curItem.name }}</span>
         </div>
-        <div class="text-grey">{{ desc }}</div>
+        <div class="text-grey fz-13 mt-1">{{ desc }}</div>
       </div>
 
       <q-space />
@@ -56,6 +65,9 @@ export default {
     },
   },
   watch: {
+    current(val) {
+      this.curIdx = val;
+    },
     curItem() {
       this.setAudio();
     },
@@ -67,6 +79,9 @@ export default {
     audio.pause();
   },
   methods: {
+    onClick(e) {
+      console.log(e);
+    },
     onNext(dx) {
       let idx = this.curIdx + dx;
       if (idx >= this.count) idx = 0;
