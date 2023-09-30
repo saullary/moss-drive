@@ -1,19 +1,10 @@
 <template>
   <q-card style="width: 350px; overflow: visible" @click="onClick">
-    <!-- <q-slider
-      v-if="canPlay"
-      thumb-size="0"
-      dense
-      v-model="progress"
-      :min="0"
-      :max="1"
-      color="pink"
-    /> -->
     <q-linear-progress
       :indeterminate="!canPlay"
       animation-speed="0"
       :value="progress"
-      color="pink"
+      color="purple"
     />
 
     <q-card-section class="row items-center no-wrap">
