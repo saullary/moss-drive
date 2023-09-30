@@ -16,11 +16,13 @@
 <script>
 import CommonPreview from "./common-preview.vue";
 import MusicPlayer from "./music-player.vue";
+import ImgViewer from "./img-viewer.vue";
 
 export default {
   components: {
     CommonPreview,
     MusicPlayer,
+    ImgViewer,
   },
   emits: ["update:modelValue"],
   props: {
@@ -40,10 +42,15 @@ export default {
     isAudio() {
       return this.curItem.type == "audio";
     },
+    isImage() {
+      return this.curItem.type == "image";
+    },
     compName() {
       let name = "common-preview";
       if (this.isAudio) {
         name = MusicPlayer.name;
+      } else if (this.isImage) {
+        name = ImgViewer.name;
       }
       return name;
     },
@@ -51,10 +58,13 @@ export default {
       if (this.isAudio) {
         return this.list.filter((it) => it.type == "audio");
       }
+      if (this.isImage) {
+        return this.list.filter((it) => it.type == "image");
+      }
       return this.list;
     },
     compCurrent() {
-      if (this.isAudio) {
+      if (this.isAudio || this.isImage) {
         return this.compList.findIndex((it) => it == this.curItem);
       }
       return this.current;
