@@ -98,7 +98,7 @@ export default {
         audio.pause();
       }
       audio.src = this.curItem.url;
-      this.desc = "";
+      this.desc = "-";
       this.progress = 0;
       this.canPlay = false;
       audio.oncanplay = () => {
@@ -109,7 +109,6 @@ export default {
         this.duration = duration;
         if (!duration) {
           this.progress = 0;
-          this.desc = "-";
         } else {
           this.progress = curTime / duration;
           if (duration < 1) {
