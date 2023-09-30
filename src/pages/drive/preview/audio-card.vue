@@ -19,7 +19,7 @@
       <q-space />
 
       <q-btn flat round icon="fast_rewind" v-show="count > 0" @click.stop="onNext(-1)" />
-      <q-btn flat round :icon="isPlay ? 'pause' : 'play_arrow'" @click.stop="onPlay" />
+      <q-btn flat round :icon="isPlay ? 'pause' : 'play_arrow'" @click.stop="onToggle" />
       <q-btn flat round icon="fast_forward" v-show="count > 0" @click.stop="onNext(1)" />
     </q-card-section>
   </q-card>
@@ -33,7 +33,7 @@ function getShowTime(time) {
 }
 
 export default {
-  name: "music-player",
+  name: "audio-card",
   props: {
     list: Array,
     current: Number,
@@ -72,10 +72,13 @@ export default {
   },
   methods: {
     onClick(e) {
-      if (this.duration) {
-        audio.currentTime = (e.offsetX / this.$el.clientWidth) * this.duration; // trigger oncanplay on pc
+      if (!this.duration) return;
+      if (e.layerY < 20) {
+        audio.currentTime = (e.layerX / this.$el.clientWidth) * this.duration; // trigger oncanplay on pc
         this.canPlay = false;
         audio.play();
+      } else {
+        this.onToggle();
       }
     },
     onNext(dx) {
@@ -122,7 +125,7 @@ export default {
       audio.play();
       this.isPlay = true;
     },
-    onPlay() {
+    onToggle() {
       if (!this.isPlay) audio.play();
       else audio.pause();
     },

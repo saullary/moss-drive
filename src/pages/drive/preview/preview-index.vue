@@ -15,14 +15,12 @@
 
 <script>
 import CommonPreview from "./common-preview.vue";
-import MusicPlayer from "./music-player.vue";
-import ImgViewer from "./img-viewer.vue";
+import AudioCard from "./audio-card.vue";
 
 export default {
   components: {
     CommonPreview,
-    MusicPlayer,
-    ImgViewer,
+    AudioCard,
   },
   emits: ["update:modelValue"],
   props: {
@@ -42,15 +40,10 @@ export default {
     isAudio() {
       return this.curItem.type == "audio";
     },
-    isImage() {
-      return this.curItem.type == "image1";
-    },
     compName() {
       let name = "common-preview";
       if (this.isAudio) {
-        name = MusicPlayer.name;
-      } else if (this.isImage) {
-        name = ImgViewer.name;
+        name = AudioCard.name;
       }
       return name;
     },
@@ -58,16 +51,10 @@ export default {
       if (this.isAudio) {
         return this.list.filter((it) => it.type == "audio");
       }
-      if (this.isImage) {
-        return this.list.filter((it) => it.type == "image");
-      }
-      return this.list;
+      return this.list.filter((it) => it.type != "audio");
     },
     compCurrent() {
-      if (this.isAudio || this.isImage) {
-        return this.compList.findIndex((it) => it == this.curItem);
-      }
-      return this.current;
+      return this.compList.findIndex((it) => it == this.curItem);
     },
     dialogOpt() {
       if (this.isAudio) {
