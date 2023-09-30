@@ -1,5 +1,5 @@
 <template>
-  <q-card style="width: 350px; overflow: visible">
+  <q-card style="width: 350px; overflow: visible" @click="onClick">
     <!-- <q-slider
       v-if="canPlay"
       thumb-size="0"
@@ -27,9 +27,9 @@
 
       <q-space />
 
-      <q-btn flat round icon="fast_rewind" v-show="count > 0" @click="onNext(-1)" />
-      <q-btn flat round :icon="isPlay ? 'pause' : 'play_arrow'" @click="onPlay" />
-      <q-btn flat round icon="fast_forward" v-show="count > 0" @click="onNext(1)" />
+      <q-btn flat round icon="fast_rewind" v-show="count > 0" @click.stop="onNext(-1)" />
+      <q-btn flat round :icon="isPlay ? 'pause' : 'play_arrow'" @click.stop="onPlay" />
+      <q-btn flat round icon="fast_forward" v-show="count > 0" @click.stop="onNext(1)" />
     </q-card-section>
   </q-card>
 </template>
@@ -54,6 +54,7 @@ export default {
       canPlay: false,
       isPlay: false,
       desc: "",
+      duration: null,
     };
   },
   computed: {
@@ -80,7 +81,11 @@ export default {
   },
   methods: {
     onClick(e) {
-      console.log(e);
+      if (this.duration) {
+        audio.currentTime = (e.offsetX / this.$el.clientWidth) * this.duration; // trigger oncanplay
+        this.canPlay = false;
+        audio.play();
+      }
     },
     onNext(dx) {
       let idx = this.curIdx + dx;
@@ -101,6 +106,7 @@ export default {
       };
       audio.ontimeupdate = () => {
         const { duration, currentTime: curTime } = audio;
+        this.duration = duration;
         if (!duration) {
           this.progress = 0;
           this.desc = "-";
