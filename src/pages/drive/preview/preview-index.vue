@@ -43,7 +43,7 @@ export default {
       return this.curItem.type == "audio";
     },
     isImage() {
-      return this.curItem.type == "image";
+      return this.curItem.type == "image1";
     },
     compName() {
       let name = "common-preview";

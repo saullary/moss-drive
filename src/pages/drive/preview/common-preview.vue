@@ -7,6 +7,10 @@
 }
 </style>
 
+<script setup>
+import ImgItem from "./img-item.vue";
+</script>
+
 <template>
   <q-card class="full-width" style="max-width: 900px">
     <q-card-section class="pos-a right-0 top-0 z-100">
@@ -23,21 +27,16 @@
       v-model="curIdx"
       v-model:fullscreen="fullscreen"
       infinite
-      height="80vh"
+      height="85vh"
     >
-      <!-- <q-carousel-slide name="0" class="column no-wrap flex-center bg-80">
-          <q-scroll-area class="fit">
-            <div class="q-pa-lg">
-              <p v-for="i in 30" :key="i">{{ i }}</p>
-            </div>
-          </q-scroll-area>
-        </q-carousel-slide> -->
-      <!-- <q-carousel-slide :name="1" img-src="https://cdn.quasar.dev/img/mountains.jpg" /> -->
       <q-carousel-slide v-for="(it, i) in list" :key="it.Key" :name="i">
-        <iframe class="wh100p" :src="getUrl(it)" frameborder="0" @load="loading = false"></iframe>
-        <div class="pos-center" v-show="loading">
-          <icon-loading />
-        </div>
+        <img-item v-if="it.type == 'image'" :src="it.url" />
+        <template v-else>
+          <iframe class="wh100p" :src="getUrl(it)" frameborder="0" @load="loading = false"></iframe>
+          <div class="pos-center" v-show="loading">
+            <q-spinner-ios color="yellow" size="30px" />
+          </div>
+        </template>
       </q-carousel-slide>
 
       <template v-slot:control>

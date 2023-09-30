@@ -2,7 +2,7 @@
 .img-item img {
   min-width: 150px;
   max-width: 90%;
-  max-height: 95vh;
+  max-height: 70vh;
   background: #fff url(/img/common/bg-trans.svg);
   background-size: 30px;
   transition: all ease 200ms;
