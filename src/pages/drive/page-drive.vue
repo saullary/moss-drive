@@ -82,7 +82,12 @@ import FilePreview from "./qs-preview.vue";
       </q-breadcrumbs>
     </div>
     <div class="q-mt-md">
+      <div class="mt-9 ta-c" v-if="loadErr">
+        <p class="op-8 mb-3">{{ loadErr }}</p>
+        <q-btn color="info" @click="getList" :loading="objLoading">Retry</q-btn>
+      </div>
       <component
+        v-else
         :is="showMode + '-list'"
         :rows="objList"
         :loading="objLoading"
@@ -119,6 +124,7 @@ export default {
       bucketName: null,
       objList: [],
       objLoading: false,
+      loadErr: "",
       showPreview: false,
       fileIdx: -1,
       showMode: "grid",
@@ -213,6 +219,7 @@ export default {
     },
     onRowClick({ row, index }) {
       if (row.prefix) {
+        if (this.objLoading !== false) return;
         this.objLoading = index;
         this.$router.push(this.$route.path + "/" + row.name);
         return;
@@ -236,13 +243,13 @@ export default {
         }
       } catch (error) {
         console.log(error);
-        // window.$alert(error.message)
+        this.loadErr = error.message;
       }
       this.objLoading = false;
     },
     async getList() {
       try {
-        if (this.objLoading == -1 || this.objLoading === false) {
+        if (this.objLoading === false) {
           this.objLoading = true;
         }
         const data = await this.$bucket.listObjects({
@@ -250,8 +257,10 @@ export default {
           Prefix: this.bucketPrefix,
         });
         this.objList = data.rows;
+        this.loadErr = "";
       } catch (error) {
         console.log(error);
+        this.loadErr = error.message;
       }
       this.objLoading = false;
     },
