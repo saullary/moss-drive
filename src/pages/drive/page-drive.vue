@@ -13,7 +13,7 @@
 
 <script setup>
 // import UploadAct from "./qs-upload-act.vue";
-import FilePreview from "./qs-preview.vue";
+import FilePreview from "./preview/preview-index.vue";
 </script>
 
 <template>
@@ -97,14 +97,7 @@ import FilePreview from "./qs-preview.vue";
       />
     </div>
   </div>
-  <q-dialog v-model="showPreview" transition-show="slide-up" transition-hide="jump-up">
-    <q-card class="full-width" style="max-width: 900px">
-      <q-card-section class="pos-a right-0 top-0 z-100">
-        <q-btn icon="close" flat round dense v-close-popup />
-      </q-card-section>
-      <file-preview :list="fileList" :current="fileIdx"></file-preview>
-    </q-card>
-  </q-dialog>
+  <file-preview v-model="showPreview" :list="fileList" :current="fileIdx"></file-preview>
 </template>
 
 <script>
@@ -171,7 +164,6 @@ export default {
       arr.splice(0, 1);
       return arr.map((seg) => {
         to += "/" + seg;
-        console.log(to);
         return {
           label: seg,
           to,
@@ -226,7 +218,6 @@ export default {
       }
       this.fileIdx = this.fileList.findIndex((it) => it.url == row.url);
       this.showPreview = true;
-      console.log(this.fileIdx);
     },
     async initBucket() {
       try {
