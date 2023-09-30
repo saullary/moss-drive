@@ -57,13 +57,13 @@ export default {
       return this.compList.findIndex((it) => it == this.curItem);
     },
     dialogOpt() {
-      if (this.isAudio) {
-        return {
-          position: "bottom",
-          // seamless: true,
-        };
+      let position = undefined;
+      if (this.isAudio || window.$q.platform.is.mobile) {
+        position = "bottom";
       }
-      return {};
+      return {
+        position,
+      };
     },
   },
   watch: {

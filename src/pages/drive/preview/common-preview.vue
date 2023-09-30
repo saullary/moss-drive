@@ -27,7 +27,7 @@ import ImgItem from "./img-item.vue";
       v-model="curIdx"
       v-model:fullscreen="fullscreen"
       infinite
-      height="85vh"
+      height="82vh"
     >
       <q-carousel-slide v-for="(it, i) in list" :key="it.Key" :name="i">
         <img-item v-if="it.type == 'image'" :src="it.url" />
@@ -46,7 +46,7 @@ import ImgItem from "./img-item.vue";
             <span v-if="curItem" class="ml-1">{{ curItem.name }}</span>
           </div>
         </q-carousel-control>
-        <q-carousel-control position="bottom-right" :offset="[18, 18]">
+        <!-- <q-carousel-control position="bottom-right" :offset="[18, 18]">
           <q-btn
             push
             round
@@ -56,7 +56,7 @@ import ImgItem from "./img-item.vue";
             :icon="fullscreen ? 'fullscreen_exit' : 'fullscreen'"
             @click="fullscreen = !fullscreen"
           />
-        </q-carousel-control>
+        </q-carousel-control> -->
       </template>
     </q-carousel>
   </q-card>
