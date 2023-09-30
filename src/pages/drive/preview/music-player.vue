@@ -1,6 +1,11 @@
 <template>
   <q-card style="width: 350px">
-    <q-linear-progress animation-speed="30" :value="progress" color="pink" />
+    <q-linear-progress
+      :indeterminate="!canPlay"
+      animation-speed="0"
+      :value="progress"
+      color="pink"
+    />
 
     <q-card-section class="row items-center no-wrap">
       <div>
@@ -37,6 +42,7 @@ export default {
     return {
       curIdx: this.current,
       progress: 0,
+      canPlay: false,
       isPlay: false,
       desc: "",
     };
@@ -74,6 +80,10 @@ export default {
       audio.src = this.curItem.url;
       this.desc = "";
       this.progress = 0;
+      this.canPlay = false;
+      audio.oncanplay = () => {
+        this.canPlay = true;
+      };
       audio.ontimeupdate = () => {
         const { duration, currentTime: curTime } = audio;
         if (!duration) {
