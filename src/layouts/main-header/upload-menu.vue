@@ -6,7 +6,7 @@
       <q-item clickable @click="$refs.input.click()">
         <q-item-section>Upload File</q-item-section>
       </q-item>
-      <q-item clickable @click="$refs.input2.click()">
+      <q-item class="hide-in-touch" clickable @click="$refs.input2.click()">
         <q-item-section>Upload Folder</q-item-section>
       </q-item>
       <q-item clickable>
