@@ -36,6 +36,7 @@ import FilePreview from "./preview/preview-index.vue";
       >
         <q-btn-group class="split-line" rounded>
           <q-btn
+            @click="onAct(it.name)"
             color="primary"
             :class="{
               disable: it.disabled,
@@ -105,7 +106,7 @@ import FilePreview from "./preview/preview-index.vue";
 </template>
 
 <script>
-import { useQuasar } from "quasar";
+import { useQuasar, copyToClipboard } from "quasar";
 import TableList from "./table-list.vue";
 import GridList from "./grid-list.vue";
 
@@ -185,6 +186,9 @@ export default {
   },
   created() {
     this.initBucket();
+    this.$bus.on("refresh", () => {
+      this.getList();
+    });
   },
   watch: {
     path() {
@@ -205,6 +209,14 @@ export default {
     },
   },
   methods: {
+    async onAct(name) {
+      const rows = this.objList.filter((it) => this.checked.includes(it.key));
+      const item = rows[0];
+      if (name == "link") {
+        await copyToClipboard(item.url);
+        window.$toast("Copied");
+      }
+    },
     onRowCheck({ key }) {
       const idx = this.checked.indexOf(key);
       if (idx == -1) {
@@ -232,6 +244,7 @@ export default {
         if (localStorage.testKey) {
           this.$bucket.setClient(localStorage.testKey, "ZraPQHA7T6y0Ut3+Dd3eV5yDxE3hC2bvRFgcLYIE");
           this.bucketName = "qs3";
+          this.$bucket.defBucket = this.bucketName;
           this.objLoading = true;
           await this.checkBucket();
           await this.getList();

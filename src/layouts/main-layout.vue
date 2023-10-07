@@ -30,27 +30,14 @@
 }
 </style>
 
+<script setup>
+import MainHeader from "./main-header/index.vue";
+</script>
+
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header class="bg-primary">
-      <q-toolbar class="main-toolbar">
-        <q-btn
-          class="m-toggle-btn"
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="leftDrawerOpen = !leftDrawerOpen"
-        />
-
-        <q-toolbar-title>
-          <b>{{ title }}</b>
-        </q-toolbar-title>
-
-        <!-- <div>Quasar v{{ $q.version }}</div> -->
-        <driver-search class="flex-2" />
-      </q-toolbar>
+      <main-header />
     </q-header>
 
     <q-drawer :width="280" class="main-drawer bg-primary" v-model="leftDrawerOpen" show-if-above>

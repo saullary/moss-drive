@@ -1,0 +1,92 @@
+<style lang="scss">
+.top-search {
+  height: 36px;
+  // width: 400px;
+  padding-left: 36px;
+  letter-spacing: 1px;
+  &::-webkit-input-placeholder {
+    color: #222;
+  }
+}
+</style>
+
+<script setup>
+import UploadIndex from "./upload-index.vue";
+</script>
+
+<template>
+  <q-toolbar class="main-toolbar">
+    <q-btn
+      class="m-toggle-btn"
+      flat
+      dense
+      round
+      icon="menu"
+      aria-label="Menu"
+      @click="leftDrawerOpen = !leftDrawerOpen"
+    />
+
+    <q-toolbar-title>
+      <b>{{ title }}</b>
+    </q-toolbar-title>
+    <div class="al-c">
+      <div class="pos-r flex-1">
+        <icon-search class="y-center ev-n" style="left: 10px" />
+        <input type="text" placeholder="Search" class="bg-info bdrs-100 w100p top-search" />
+      </div>
+
+      <q-btn
+        class="ml-3"
+        color="primary"
+        rounded
+        :round="asMobile"
+        :size="btnSize"
+        :style="asMobile ? '' : 'width: 110px'"
+      >
+        <icon-add />
+        <span class="ml-2" v-if="!asMobile">NEW</span>
+        <upload-index />
+      </q-btn>
+
+      <q-btn class="ml-3" color="info" rounded :round="asMobile" :size="btnSize" @click="onWallet">
+        <q-avatar size="22px">
+          <img src="/img/metamask.png" />
+        </q-avatar>
+        <span v-if="!asMobile" class="q-ml-sm">Connect Wallet</span>
+      </q-btn>
+    </div>
+  </q-toolbar>
+</template>
+
+<script>
+import { useQuasar } from "quasar";
+
+export default {
+  data() {
+    const { screen } = useQuasar();
+    return {
+      screen,
+    };
+  },
+  computed: {
+    asMobile() {
+      return this.screen.width < 690;
+    },
+    btnSize() {
+      return this.asMobile ? "12px" : null;
+    },
+  },
+  methods: {
+    onWallet() {
+      window
+        .$alert("test")
+        .then(() => {
+          window.$toast("ok");
+        })
+        .catch(() => {
+          console.log(11);
+        });
+    },
+  },
+};
+</script>

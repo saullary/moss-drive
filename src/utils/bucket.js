@@ -5,6 +5,7 @@ import { getFileSize, limitTask } from "./helper";
 
 const bucket = {
   client: null,
+  listParams: null,
   getFileSize,
   limitTask,
   setClient(apiKey, apiSecret) {
@@ -21,6 +22,13 @@ const bucket = {
     if (!this.client) throw new Error("Please login first");
   },
   uploadFile(params, opts = {}) {
+    if (!params.Bucket) {
+      const { Bucket, Prefix } = this.listParams;
+      Object.assign(params, {
+        Bucket,
+        Key: Prefix + params.Key,
+      });
+    }
     const task = new Upload({
       client: this.client,
       queueSize: 3,
@@ -34,16 +42,6 @@ const bucket = {
     });
     return task.done();
   },
-  getPathInfo(name) {
-    const mat = /^([^\/]+)(\/.+)?/.exec(name);
-    if (!mat) throw new Error("illegal Bucket path");
-    const Bucket = mat[1];
-    const Prefix = (mat[2] || "").replace("/", "");
-    return {
-      Bucket,
-      Prefix,
-    };
-  },
   async listBuckets() {
     const res = await this.client.listBuckets({});
     // console.log(res.Buckets); // [{Name, CreationDate}]
@@ -55,6 +53,7 @@ const bucket = {
     });
   },
   listObjects(params) {
+    this.listParams = params;
     return this.client
       .listObjectsV2({
         Delimiter: "/",

@@ -1,28 +1,20 @@
 
 <template>
+  <q-badge color="orange" floating v-if="badgeNum > 0">{{ badgeNum }}</q-badge>
+  <q-menu auto-close transition-show="scale">
+    <q-list>
+      <q-item clickable @click="$refs.input.click()">
+        <q-item-section>Upload File</q-item-section>
+      </q-item>
+      <q-item clickable @click="$refs.input2.click()">
+        <q-item-section>Upload Folder</q-item-section>
+      </q-item>
+      <q-item clickable>
+        <q-item-section>Create Folder</q-item-section>
+      </q-item>
+    </q-list>
+  </q-menu>
   <div>
-    <div class="e-upload">
-      <q-btn-dropdown
-        :loading="loading"
-        :class="{
-          'ev-n op-6': disabled,
-        }"
-        rounded
-        color="primary"
-        split
-        label="Upload File"
-        @click="$refs.input.click()"
-      >
-        <q-list>
-          <q-item clickable v-close-popup @click="$refs.input2.click()">
-            <q-item-section>
-              <q-item-label>Upload Folder</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-btn-dropdown>
-    </div>
-
     <div class="d-n">
       <input ref="input" multiple type="file" @input="onInput" />
       <input ref="input2" multiple webkitdirectory type="file" @input="onInput" />
@@ -36,6 +28,7 @@ export default {
   props: {
     allowDrop: Boolean,
     disabled: Boolean,
+    badgeNum: Number,
   },
   data() {
     return {

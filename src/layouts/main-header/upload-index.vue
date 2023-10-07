@@ -1,25 +1,18 @@
 <script setup>
-import UploadBtn from "./qs-upload-btn.vue";
+import UploadMenu from "./upload-menu.vue";
 </script>
 
 <template>
+  <upload-menu
+    @files="onFiles"
+    :disabled="uploading && badgeNum > 0"
+    :allow-drop="showPop && !uploading"
+    :badge-num="badgeNum"
+  />
   <div>
-    <div class="al-c">
-      <upload-btn
-        @files="onFiles"
-        :disabled="uploading && badgeNum > 0"
-        :allow-drop="showPop && !uploading"
-      />
-      <q-btn class="ml-1" icon="upload" size="12px" round flat @click="showPop = true">
-        <div>
-          <!-- <q-spinner-hourglass color="primary" size="1em" /> -->
-        </div>
-        <q-badge color="red" rounded floating :label="badgeNum" v-show="badgeNum > 0" />
-      </q-btn>
-    </div>
     <q-dialog v-model="showPop" position="top">
       <q-card class="full-width" style="max-width: 600px">
-        <q-card-section class="pos-s top-0 bg-white z-10">
+        <q-card-section class="pos-s top-0 bg-dark z-10">
           <div class="al-c">
             <div class="text-h6">Upload</div>
             <q-space />
@@ -51,7 +44,7 @@ import UploadBtn from "./qs-upload-btn.vue";
           </q-markup-table>
         </q-card-section>
 
-        <q-card-actions v-show="!isEmpty" align="right" class="text-primary pos-s btm-0 bg-white">
+        <q-card-actions v-show="!isEmpty" align="right" class="text-primary pos-s btm-0 bg-dark">
           <template v-if="!isDone">
             <q-btn v-if="uploading && !paused" flat @click="paused = true">Pause</q-btn>
             <q-btn v-else flat label="Cancel" @click="onCancel" />
@@ -68,11 +61,6 @@ import UploadBtn from "./qs-upload-btn.vue";
 
 <script>
 export default {
-  emits: ["refresh"],
-  props: {
-    bucket: String,
-    prefix: String,
-  },
   data() {
     return {
       files: [],
@@ -95,11 +83,14 @@ export default {
     finishNum(val) {
       if (val && val == this.files.length) {
         this.isDone = true;
-        this.$emit("refresh");
+        this.onRefresh();
       }
     },
   },
   methods: {
+    onRefresh() {
+      this.$bus.emit("refresh");
+    },
     onFiles(e) {
       this.files = e;
       this.showPop = true;
@@ -111,7 +102,7 @@ export default {
       this.files = [];
       this.uploading = false;
       if (this.finishNum) {
-        this.$emit("refresh");
+        this.onRefresh();
       }
     },
     onDone() {
@@ -140,8 +131,7 @@ export default {
       try {
         await this.$bucket.uploadFile(
           {
-            Bucket: this.bucket,
-            Key: this.prefix + row.name,
+            Key: row.name,
             Body: row.file,
             ContentType: row.file.type,
           },
