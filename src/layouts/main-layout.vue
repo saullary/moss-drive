@@ -37,7 +37,22 @@ import MainHeader from "./main-header/index.vue";
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header class="bg-primary">
-      <main-header />
+      <q-toolbar class="main-toolbar">
+        <q-btn
+          class="m-toggle-btn"
+          flat
+          dense
+          round
+          icon="menu"
+          aria-label="Menu"
+          @click="leftDrawerOpen = !leftDrawerOpen"
+        />
+
+        <q-toolbar-title>
+          <b>{{ title }}</b>
+        </q-toolbar-title>
+        <main-header />
+      </q-toolbar>
     </q-header>
 
     <q-drawer :width="280" class="main-drawer bg-primary" v-model="leftDrawerOpen" show-if-above>

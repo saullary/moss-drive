@@ -15,47 +15,30 @@ import UploadIndex from "./upload-index.vue";
 </script>
 
 <template>
-  <q-toolbar class="main-toolbar">
-    <q-btn
-      class="m-toggle-btn"
-      flat
-      dense
-      round
-      icon="menu"
-      aria-label="Menu"
-      @click="leftDrawerOpen = !leftDrawerOpen"
-    />
+  <div class="pos-r flex-1">
+    <icon-search class="y-center ev-n" style="left: 10px" />
+    <input type="text" placeholder="Search" class="bg-info bdrs-100 w100p top-search" />
+  </div>
 
-    <q-toolbar-title>
-      <b>{{ title }}</b>
-    </q-toolbar-title>
-    <div class="al-c">
-      <div class="pos-r flex-1">
-        <icon-search class="y-center ev-n" style="left: 10px" />
-        <input type="text" placeholder="Search" class="bg-info bdrs-100 w100p top-search" />
-      </div>
+  <q-btn
+    class="ml-3"
+    color="primary"
+    rounded
+    :round="asMobile"
+    :size="btnSize"
+    :style="asMobile ? '' : 'width: 110px'"
+  >
+    <icon-add />
+    <span class="ml-2" v-if="!asMobile">NEW</span>
+    <upload-index />
+  </q-btn>
 
-      <q-btn
-        class="ml-3"
-        color="primary"
-        rounded
-        :round="asMobile"
-        :size="btnSize"
-        :style="asMobile ? '' : 'width: 110px'"
-      >
-        <icon-add />
-        <span class="ml-2" v-if="!asMobile">NEW</span>
-        <upload-index />
-      </q-btn>
-
-      <q-btn class="ml-3" color="info" rounded :round="asMobile" :size="btnSize" @click="onWallet">
-        <q-avatar size="22px">
-          <img src="/img/metamask.png" />
-        </q-avatar>
-        <span v-if="!asMobile" class="q-ml-sm">Connect Wallet</span>
-      </q-btn>
-    </div>
-  </q-toolbar>
+  <q-btn class="ml-3" color="info" rounded :round="asMobile" :size="btnSize" @click="onWallet">
+    <q-avatar size="22px">
+      <img src="/img/metamask.png" />
+    </q-avatar>
+    <span v-if="!asMobile" class="q-ml-sm">Connect Wallet</span>
+  </q-btn>
 </template>
 
 <script>

@@ -1,7 +1,7 @@
 
 <template>
   <q-badge color="orange" floating v-if="badgeNum > 0">{{ badgeNum }}</q-badge>
-  <q-menu auto-close transition-show="scale">
+  <q-menu style="width: 130px" auto-close>
     <q-list>
       <q-item clickable @click="$refs.input.click()">
         <q-item-section>Upload File</q-item-section>

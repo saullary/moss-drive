@@ -72,8 +72,8 @@ import FilePreview from "./preview/preview-index.vue";
             <img src="/img/driver/mode-list.svg" width="20" />
           </template>
         </q-btn-toggle> -->
-        <q-btn round @click="showMode = showMode == 'grid' ? 'table' : 'grid'">
-          <img :src="`/img/driver/mode-${showMode}.svg`" width="20" />
+        <q-btn round @click="showMode = modeIcon">
+          <img :src="`/img/driver/mode-${modeIcon}.svg`" width="20" />
         </q-btn>
       </div>
     </div>
@@ -131,6 +131,9 @@ export default {
     };
   },
   computed: {
+    modeIcon() {
+      return this.showMode == "grid" ? "table" : "grid";
+    },
     objMenus() {
       const len = this.checked.length;
       let isFile = false;
