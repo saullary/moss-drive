@@ -53,7 +53,7 @@ import FilePreview from "./preview/preview-index.vue";
       <!-- <upload-act :bucket="bucketName" :prefix="bucketPrefix" @refresh="getList" /> -->
 
       <div class="ml-auto">
-        <q-btn-toggle
+        <!-- <q-btn-toggle
           size="10px"
           class="mode-toggle"
           v-model="showMode"
@@ -70,7 +70,10 @@ import FilePreview from "./preview/preview-index.vue";
           <template #table>
             <img src="/img/driver/mode-list.svg" width="20" />
           </template>
-        </q-btn-toggle>
+        </q-btn-toggle> -->
+        <q-btn round @click="showMode = showMode == 'grid' ? 'table' : 'grid'">
+          <img :src="`/img/driver/mode-${showMode}.svg`" width="20" />
+        </q-btn>
       </div>
     </div>
   </div>
