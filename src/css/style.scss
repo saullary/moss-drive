@@ -114,8 +114,14 @@ body.body--dark {
 body {
   .q-menu--dark {
     background: #1E293B;
+    box-shadow: none;
+    border: 1px solid rgb(255 255 255 / 6%);
   }
   &.touch .hide-in-touch {
     display: none;
+  }
+  .q-notification {
+    background:var(--q-primary);
+    color: #000!important;
   }
 }

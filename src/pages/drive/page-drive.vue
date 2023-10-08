@@ -72,7 +72,7 @@ import FilePreview from "./preview/preview-index.vue";
             <img src="/img/driver/mode-list.svg" width="20" />
           </template>
         </q-btn-toggle> -->
-        <q-btn round @click="showMode = modeIcon">
+        <q-btn round flat @click="showMode = modeIcon">
           <img :src="`/img/driver/mode-${modeIcon}.svg`" width="20" />
         </q-btn>
       </div>
@@ -214,6 +214,7 @@ export default {
   methods: {
     async onAct(name) {
       const rows = this.objList.filter((it) => this.checked.includes(it.key));
+      // console.log(name, rows);
       const item = rows[0];
       if (name == "link") {
         await copyToClipboard(item.url);
@@ -266,14 +267,19 @@ export default {
         const data = await this.$bucket.listObjects({
           Bucket: this.bucketName,
           Prefix: this.bucketPrefix,
+          Delimiter: "/",
+          MaxKeys: 30,
         });
-        this.objList = data.rows;
-        this.loadErr = "";
+        if (data.params.Prefix == this.bucketPrefix) {
+          this.objList = data.rows;
+          this.loadErr = "";
+          this.objLoading = false;
+        }
       } catch (error) {
         console.log(error);
         this.loadErr = error.message;
+        this.objLoading = false;
       }
-      this.objLoading = false;
     },
     async checkBucket() {
       const list = await this.$bucket.listBuckets();

@@ -27,6 +27,7 @@ import UploadIndex from "./upload-index.vue";
     :round="asMobile"
     :size="btnSize"
     :style="asMobile ? '' : 'width: 110px'"
+    @click="onNew"
   >
     <icon-add />
     <span class="ml-2" v-if="!asMobile">NEW</span>
@@ -60,6 +61,9 @@ export default {
     },
   },
   methods: {
+    onNew() {
+      this.$bus.emit("click-new");
+    },
     onWallet() {
       window
         .$alert("test")

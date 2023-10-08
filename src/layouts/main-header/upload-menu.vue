@@ -1,6 +1,5 @@
 
 <template>
-  <q-badge color="orange" floating v-if="badgeNum > 0">{{ badgeNum }}</q-badge>
   <q-menu style="width: 130px" auto-close>
     <q-list>
       <q-item clickable @click="$refs.input.click()">
@@ -28,7 +27,6 @@ export default {
   props: {
     allowDrop: Boolean,
     disabled: Boolean,
-    badgeNum: Number,
   },
   data() {
     return {

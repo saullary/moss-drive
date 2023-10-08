@@ -3,11 +3,12 @@ import UploadMenu from "./upload-menu.vue";
 </script>
 
 <template>
+  <q-badge color="orange" floating v-if="badgeNum > 0">{{ badgeNum }}</q-badge>
   <upload-menu
+    v-if="!badgeNum"
     @files="onFiles"
     :disabled="uploading && badgeNum > 0"
     :allow-drop="showPop && !uploading"
-    :badge-num="badgeNum"
   />
   <div>
     <q-dialog v-model="showPop" position="top">
@@ -87,7 +88,13 @@ export default {
       }
     },
   },
+  mounted() {
+    this.$bus.on("click-new", () => {
+      if (this.badgeNum) this.showPop = true;
+    });
+  },
   methods: {
+    checkPop() {},
     onRefresh() {
       this.$bus.emit("refresh");
     },

@@ -52,12 +52,11 @@ const bucket = {
       Bucket,
     });
   },
+  getSelectObjects(keys) {},
   listObjects(params) {
     this.listParams = params;
     return this.client
       .listObjectsV2({
-        Delimiter: "/",
-        MaxKeys: 30,
         ...params,
       })
       .then((res) => {
@@ -96,6 +95,7 @@ const bucket = {
               };
             }),
           ],
+          params,
         };
         //
       });

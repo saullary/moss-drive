@@ -14,7 +14,7 @@ import ImgItem from "./img-item.vue";
 <template>
   <q-card class="full-width" style="max-width: 900px">
     <q-card-section class="pos-a right-0 top-0 z-100">
-      <q-btn icon="close" flat round dense v-close-popup />
+      <q-btn icon="close" class="bg-black-5" flat round dense v-close-popup />
     </q-card-section>
 
     <q-carousel
@@ -42,8 +42,8 @@ import ImgItem from "./img-item.vue";
       <template v-slot:control>
         <q-carousel-control position="top-left" :offset="[20, 20]">
           <div class="pa-1 bg-black-3 white">
-            <span v-if="list.length > 1">{{ curIdx + 1 }}/{{ list.length }}</span>
-            <span v-if="curItem" class="ml-1">{{ curItem.name }}</span>
+            <span class="op-6" v-if="list.length > 1">{{ curIdx + 1 }}/{{ list.length }}</span>
+            <span v-if="curItem" class="ml-2">{{ curItem.name }}</span>
           </div>
         </q-carousel-control>
         <!-- <q-carousel-control position="bottom-right" :offset="[18, 18]">
