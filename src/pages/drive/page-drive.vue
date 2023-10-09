@@ -109,7 +109,6 @@ export default {
   watch: {
     path() {
       if (this.$bucket.client) {
-        this.checked = [];
         this.getList();
       }
     },
@@ -165,6 +164,7 @@ export default {
     },
     async getList() {
       try {
+        this.checked = [];
         if (this.objLoading === false) {
           this.objLoading = true;
         }
