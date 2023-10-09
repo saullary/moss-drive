@@ -118,7 +118,7 @@ export default {
       this.onFiles(list);
     },
     onFiles(list) {
-      console.log(list);
+      // console.log(list);
       this.$emit("files", list);
     },
   },

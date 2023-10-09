@@ -124,7 +124,8 @@ export default {
     },
     onCancel() {
       this.files = [];
-      this.uploading = false;
+      // this.uploading = false;
+      this.showPop = false;
     },
     onDone() {
       this.showPop = false;
