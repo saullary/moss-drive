@@ -124,4 +124,8 @@ body {
     background:var(--q-primary);
     color: #000!important;
   }
+  .q-card--dark {
+    box-shadow: none;
+    border: 1px solid #1E293B;
+  }
 }

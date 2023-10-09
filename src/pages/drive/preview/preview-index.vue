@@ -51,7 +51,7 @@ export default {
       if (this.isAudio) {
         return this.list.filter((it) => it.type == "audio");
       }
-      return this.list.filter((it) => it.type != "audio");
+      return this.list; //.filter((it) => it.type != "audio");
     },
     compCurrent() {
       return this.compList.findIndex((it) => it == this.curItem);

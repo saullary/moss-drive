@@ -1,18 +1,5 @@
-<style lang="scss">
-.mode-toggle {
-  background: #64748b;
-  .q-btn {
-    color: #000;
-    width: 44px;
-  }
-  .bg-primary {
-    border-radius: 100px !important;
-  }
-}
-</style>
-
 <script setup>
-// import UploadAct from "./qs-upload-act.vue";
+import CheckAct from "./check-act.vue";
 import FilePreview from "./preview/preview-index.vue";
 </script>
 
@@ -27,51 +14,9 @@ import FilePreview from "./preview/preview-index.vue";
         v-model="checkAll"
         indeterminate-value="not-empty"
       />
-      <div
-        v-show="checked.length > 0"
-        :class="{
-          'x-center pos-f z-100': screen.xs,
-        }"
-        style="bottom: 30px"
-      >
-        <q-btn-group class="split-line" rounded>
-          <q-btn
-            @click="onAct(it.name)"
-            color="primary"
-            :class="{
-              disable: it.disabled,
-            }"
-            v-for="it in objMenus"
-            :key="it.name"
-          >
-            <img :src="`/img/driver/${it.icon || it.name}.svg`" width="22" />
-            <q-tooltip anchor="top middle" :offset="[0, 28]" class="bg-black" v-if="!it.disabled">
-              {{ it.name.capitalize() }}
-            </q-tooltip>
-          </q-btn>
-        </q-btn-group>
-      </div>
-      <!-- <upload-act :bucket="bucketName" :prefix="bucketPrefix" @refresh="getList" /> -->
+      <check-act :checked="checked" :obj-list="objList" />
 
       <div class="ml-auto">
-        <!-- <q-btn-toggle
-          size="10px"
-          class="mode-toggle"
-          v-model="showMode"
-          rounded
-          toggle-color="primary"
-          :options="[
-            { value: 'grid', slot: 'grid' },
-            { value: 'table', slot: 'table' },
-          ]"
-        >
-          <template #grid>
-            <img src="/img/driver/mode-grid.svg" width="20" />
-          </template>
-          <template #table>
-            <img src="/img/driver/mode-list.svg" width="20" />
-          </template>
-        </q-btn-toggle> -->
         <q-btn round flat @click="showMode = modeIcon">
           <img :src="`/img/driver/mode-${modeIcon}.svg`" width="20" />
         </q-btn>
@@ -102,11 +47,10 @@ import FilePreview from "./preview/preview-index.vue";
       <div class="pa-8"></div>
     </div>
   </div>
-  <file-preview v-model="showPreview" :list="fileList" :current="fileIdx"></file-preview>
+  <file-preview v-model="showPreview" :list="fileList" :current="fileIdx" />
 </template>
 
 <script>
-import { useQuasar, copyToClipboard } from "quasar";
 import TableList from "./table-list.vue";
 import GridList from "./grid-list.vue";
 
@@ -116,9 +60,7 @@ export default {
     TableList,
   },
   data() {
-    const { screen } = useQuasar();
     return {
-      screen,
       bucketName: null,
       objList: [],
       objLoading: false,
@@ -133,35 +75,6 @@ export default {
   computed: {
     modeIcon() {
       return this.showMode == "grid" ? "table" : "grid";
-    },
-    objMenus() {
-      const len = this.checked.length;
-      let isFile = false;
-      if (len == 1) {
-        const row = this.objList.find((it) => it.key == this.checked[0]);
-        isFile = !!row.url;
-      }
-      return [
-        {
-          name: "publish",
-          icon: "stone",
-        },
-        {
-          name: "link",
-          disabled: !isFile,
-        },
-        {
-          name: "move",
-        },
-        {
-          name: "download",
-          disabled: !isFile,
-        },
-        {
-          name: "delete",
-          icon: "trash",
-        },
-      ];
     },
     path() {
       return this.$route.path;
@@ -212,15 +125,6 @@ export default {
     },
   },
   methods: {
-    async onAct(name) {
-      const rows = this.objList.filter((it) => this.checked.includes(it.key));
-      // console.log(name, rows);
-      const item = rows[0];
-      if (name == "link") {
-        await copyToClipboard(item.url);
-        window.$toast("Copied");
-      }
-    },
     onRowCheck({ key }) {
       const idx = this.checked.indexOf(key);
       if (idx == -1) {
