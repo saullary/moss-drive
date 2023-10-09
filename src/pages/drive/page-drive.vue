@@ -14,7 +14,7 @@ import FilePreview from "./preview/preview-index.vue";
         v-model="checkAll"
         indeterminate-value="not-empty"
       />
-      <check-act :checked="checked" :obj-list="objList" />
+      <check-act :checked="checked" :obj-list="objList" @refresh="getList" />
 
       <div class="ml-auto">
         <q-btn round flat @click="showMode = modeIcon">
@@ -102,7 +102,7 @@ export default {
   },
   created() {
     this.initBucket();
-    this.$bus.on("refresh", () => {
+    this.$bus.on("drive-refresh", () => {
       this.getList();
     });
   },

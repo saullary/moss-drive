@@ -94,9 +94,8 @@ export default {
     });
   },
   methods: {
-    checkPop() {},
     onRefresh() {
-      this.$bus.emit("refresh");
+      this.$bus.emit("drive-refresh");
     },
     onFiles(e) {
       this.files = e;

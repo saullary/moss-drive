@@ -23,6 +23,46 @@
       </q-btn>
     </q-btn-group>
   </div>
+
+  <q-dialog v-model="showDel" position="top" persistent>
+    <q-card class="full-width" style="max-width: 600px">
+      <q-card-section class="pos-s top-0 bg-dark z-10">
+        <div class="al-c">
+          <div class="text-h6">Delete</div>
+          <!-- <q-space /> -->
+          <!-- <q-btn icon="close" flat round dense v-close-popup /> -->
+        </div>
+      </q-card-section>
+
+      <q-card-section>
+        <q-markup-table flat>
+          <tbody>
+            <tr v-for="it in checkList" :key="it.name">
+              <td>
+                <span class="fz-15">{{ it.name }}<span v-if="it.prefix">/</span></span>
+              </td>
+              <td>
+                <span v-if="it.prefix" class="op-8">n files</span>
+                <span v-else class="op-5">{{ it.sizeUnit }}</span>
+              </td>
+              <td>
+                <span v-if="it.prefix">Deleting</span>
+                <span v-if="!it.prefix && isDelDone">Deleted</span>
+              </td>
+            </tr>
+          </tbody>
+        </q-markup-table>
+      </q-card-section>
+
+      <q-card-actions align="right" class="text-primary pos-s btm-0 bg-dark">
+        <template v-if="!isDelDone">
+          <q-btn flat label="Cancel" @click="onDelCancel" />
+        </template>
+        <q-btn v-if="isDelDone" @click="onDelDone" color="primary"> Done </q-btn>
+        <q-btn v-else color="primary" :loading="deleting" @click="onDel">OK</q-btn>
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script>
@@ -37,6 +77,9 @@ export default {
     const { screen } = useQuasar();
     return {
       screen,
+      showDel: false,
+      isDelDone: false,
+      deleting: false,
     };
   },
   computed: {
@@ -69,17 +112,30 @@ export default {
         },
       ];
     },
+    checkList() {
+      return this.objList.filter((it) => this.checked.includes(it.key));
+    },
   },
   methods: {
+    onDel() {},
+    onDelCancel() {
+      this.showDel = false;
+      this.$emit("refresh");
+    },
+    onDelDone() {
+      this.showDel = false;
+      this.$emit("refresh");
+    },
     async onAct(name) {
-      const rows = this.objList.filter((it) => this.checked.includes(it.key));
       // console.log(name, rows);
-      const item = rows[0];
+      const item = this.checkList[0];
       if (name == "link") {
         await copyToClipboard(item.url);
         window.$toast("Copied");
       } else if (name == "download") {
         window.open(item.url);
+      } else if (name == "delete") {
+        this.showDel = true;
       }
     },
   },
