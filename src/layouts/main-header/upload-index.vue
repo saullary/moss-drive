@@ -157,8 +157,7 @@ export default {
           },
           {
             onProgress: (p) => {
-              //, point, res
-              console.log(p);
+              // console.log(p);
               row.progress = Math.floor(p * 100);
             },
           }
