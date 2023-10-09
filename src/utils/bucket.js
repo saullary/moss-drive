@@ -100,6 +100,15 @@ const bucket = {
         //
       });
   },
+  deleteObjects(params) {
+    return new Promise((resolve, reject) => {
+      this.client.deleteObjects(params, (err, data) => {
+        // console.log(err, data);
+        if (err) reject(err);
+        else resolve(data);
+      });
+    });
+  },
 };
 
 export default bucket;

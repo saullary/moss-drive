@@ -37,17 +37,16 @@
       <q-card-section>
         <q-markup-table flat>
           <tbody>
-            <tr v-for="it in checkList" :key="it.name">
+            <tr v-for="(it, i) in checkList" :key="it.name">
               <td>
                 <span class="fz-15">{{ it.name }}<span v-if="it.prefix">/</span></span>
               </td>
               <td>
-                <span v-if="it.prefix" class="op-8">n files</span>
+                <span v-if="it.prefix" class="op-8">{{ getDirNum(i) }}</span>
                 <span v-else class="op-5">{{ it.sizeUnit }}</span>
               </td>
               <td>
-                <span v-if="it.prefix">Deleting</span>
-                <span v-if="!it.prefix && isDelDone">Deleted</span>
+                <span>{{ getDelStatus(i, it) }}</span>
               </td>
             </tr>
           </tbody>
@@ -80,6 +79,8 @@ export default {
       showDel: false,
       isDelDone: false,
       deleting: false,
+      dirFileNumArr: [],
+      dirDeleteIdx: -1,
     };
   },
   computed: {
@@ -116,11 +117,60 @@ export default {
       return this.objList.filter((it) => this.checked.includes(it.key));
     },
   },
+  watch: {
+    showDel(val) {
+      if (!val) {
+        this.deleting = false;
+        this.isDelDone = false;
+        this.dirFileNumArr = [];
+        this.dirDeleteIdx = -1;
+      }
+    },
+  },
   methods: {
-    onDel() {},
+    getDirNum(i) {
+      const num = this.dirFileNumArr[i];
+      if (num) return `${num} file${num > 1 ? "s" : ""}`;
+      return "-";
+    },
+    getDelStatus(i, it) {
+      if (it.prefix) {
+        if (this.dirFileNumArr[i] && (this.dirDeleteIdx > i || this.dirDeleteIdx == -1)) {
+          return "Deleted";
+        }
+        if (this.dirFileNumArr[i]) return "Deleting";
+        if (this.dirDeleteIdx == i) return "Seeking";
+      } else {
+        if (this.dirFileNumArr.length && this.dirDeleteIdx == -1) return "Deleting";
+      }
+      return "";
+    },
+    async onDel() {
+      this.deleting = true;
+      const dirList = this.checkList.filter((it) => it.prefix);
+      for (const i in dirList) {
+        this.dirDeleteIdx = i;
+        // get files
+        if (!this.deleting) break;
+      }
+      const fileList = this.checkList.filter((it) => !it.prefix);
+      this.dirFileNumArr.push(fileList.length);
+    },
+    onDelObjs() {
+      const params = {
+        Bucket,
+        Delete: {
+          Objects: [{ Key: "" }],
+          Quiet: false,
+        },
+      };
+      return this.$bucket.deleteObjects(params);
+    },
     onDelCancel() {
       this.showDel = false;
-      this.$emit("refresh");
+      if (this.dirFileNumArr.length) {
+        this.$emit("refresh");
+      }
     },
     onDelDone() {
       this.showDel = false;
