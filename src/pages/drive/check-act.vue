@@ -24,7 +24,7 @@
     </q-btn-group>
   </div>
 
-  <q-dialog v-model="showDel" position="top" persistent>
+  <q-dialog v-model="showDel" position="top" :persistent="deleting">
     <q-card class="full-width" style="max-width: 600px">
       <q-card-section class="pos-s top-0 bg-dark z-10">
         <div class="al-c">
@@ -54,10 +54,10 @@
       </q-card-section>
 
       <q-card-actions align="right" class="text-primary pos-s btm-0 bg-dark">
-        <template v-if="!isDelDone">
-          <q-btn flat label="Cancel" @click="onDelCancel" />
+        <template v-if="!isDelDone && !isDelRootFiles">
+          <q-btn flat label="Cancel" @click="showDel = false" />
         </template>
-        <q-btn v-if="isDelDone" @click="onDelDone" color="primary"> Done </q-btn>
+        <q-btn v-if="isDelDone" @click="showDel = false" color="primary"> Done </q-btn>
         <q-btn v-else color="primary" :loading="deleting" @click="onDel">OK</q-btn>
       </q-card-actions>
     </q-card>
@@ -68,6 +68,7 @@
 import { useQuasar, copyToClipboard } from "quasar";
 
 export default {
+  emits: ["refresh"],
   props: {
     checked: Array,
     objList: Array,
@@ -116,10 +117,16 @@ export default {
     checkList() {
       return this.objList.filter((it) => this.checked.includes(it.key));
     },
+    isDelRootFiles() {
+      return this.dirFileNumArr.length > 0 && this.dirDeleteIdx == -1;
+    },
   },
   watch: {
     showDel(val) {
       if (!val) {
+        if (this.dirFileNumArr.length) {
+          this.$emit("refresh");
+        }
         this.deleting = false;
         this.isDelDone = false;
         this.dirFileNumArr = [];
@@ -134,6 +141,9 @@ export default {
       return "-";
     },
     getDelStatus(i, it) {
+      if (this.isDelDone) {
+        return "Deleted";
+      }
       if (it.prefix) {
         if (this.dirFileNumArr[i] && (this.dirDeleteIdx > i || this.dirDeleteIdx == -1)) {
           return "Deleted";
@@ -141,40 +151,55 @@ export default {
         if (this.dirFileNumArr[i]) return "Deleting";
         if (this.dirDeleteIdx == i) return "Seeking";
       } else {
-        if (this.dirFileNumArr.length && this.dirDeleteIdx == -1) return "Deleting";
+        if (this.isDelRootFiles) {
+          return "Deleting";
+        }
       }
       return "";
     },
     async onDel() {
-      this.deleting = true;
-      const dirList = this.checkList.filter((it) => it.prefix);
-      for (const i in dirList) {
-        this.dirDeleteIdx = i;
-        // get files
-        if (!this.deleting) break;
+      try {
+        this.deleting = true;
+        const dirList = this.checkList.filter((it) => it.prefix);
+        for (const i in dirList) {
+          this.dirDeleteIdx = i;
+          const dirKey = dirList[i].key;
+          const { rows: dirFiles } = await this.$bucket.listObjects({
+            Prefix: dirKey,
+          });
+          await this.delMulti([
+            {
+              key: dirKey,
+            },
+            ...dirFiles,
+          ]);
+          if (!this.deleting) break;
+        }
+        this.dirDeleteIdx = -1;
+        const rootFiles = this.checkList.filter((it) => !it.prefix);
+        await this.delMulti(rootFiles);
+        this.deleting = false;
+        this.isDelDone = true;
+      } catch (error) {
+        window.$alert(error.message).then(() => {
+          this.showDel = false;
+        });
       }
-      const fileList = this.checkList.filter((it) => !it.prefix);
-      this.dirFileNumArr.push(fileList.length);
     },
-    onDelObjs() {
+    delMulti(files) {
+      if (!files.length) return;
+      this.dirFileNumArr.push(files.length);
       const params = {
-        Bucket,
         Delete: {
-          Objects: [{ Key: "" }],
+          Objects: files.map((it) => {
+            return {
+              Key: it.key,
+            };
+          }),
           Quiet: false,
         },
       };
       return this.$bucket.deleteObjects(params);
-    },
-    onDelCancel() {
-      this.showDel = false;
-      if (this.dirFileNumArr.length) {
-        this.$emit("refresh");
-      }
-    },
-    onDelDone() {
-      this.showDel = false;
-      this.$emit("refresh");
     },
     async onAct(name) {
       // console.log(name, rows);

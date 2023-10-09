@@ -52,9 +52,12 @@ const bucket = {
       Bucket,
     });
   },
-  getSelectObjects(keys) {},
   listObjects(params) {
-    this.listParams = params;
+    if (params.Bucket) {
+      this.listParams = params;
+    } else {
+      params.Bucket = this.listParams.Bucket;
+    }
     return this.client
       .listObjectsV2({
         ...params,
@@ -101,6 +104,9 @@ const bucket = {
       });
   },
   deleteObjects(params) {
+    if (!params.Bucket) {
+      params.Bucket = this.listParams.Bucket;
+    }
     return new Promise((resolve, reject) => {
       this.client.deleteObjects(params, (err, data) => {
         // console.log(err, data);
