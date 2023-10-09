@@ -74,7 +74,8 @@ const bucket = {
             })),
             ...(res.Contents || []).map((it) => {
               const name = it.Key.replace(params.Prefix, "");
-              const ext = /\.(\w+)$/.exec(name)[1];
+              const extMat = /\.(\w+)$/.exec(name) || [];
+              const ext = extMat[1];
               let type = "other";
               if (["png", "jpg", "jpeg", "gif", "svg", "ico", "webp"].includes(ext)) {
                 type = "image";

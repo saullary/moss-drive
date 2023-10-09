@@ -98,6 +98,10 @@ export default {
     finishNum(val) {
       if (val && val == this.files.length) {
         this.isDone = true;
+      }
+    },
+    showPop(val) {
+      if (!val && this.finishNum) {
         this.onRefresh();
       }
     },
@@ -113,20 +117,16 @@ export default {
     },
     onFiles(e) {
       this.files = e;
-      this.showPop = true;
       this.finishNum = 0;
       this.uploading = false;
       this.isDone = false;
+      this.showPop = true;
     },
     onCancel() {
       this.files = [];
       this.uploading = false;
-      if (this.finishNum) {
-        this.onRefresh();
-      }
     },
     onDone() {
-      this.onFiles([]);
       this.showPop = false;
     },
     onOk() {
