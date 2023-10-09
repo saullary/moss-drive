@@ -29,6 +29,7 @@ const bucket = {
         Key: Prefix + params.Key,
       });
     }
+    // console.log(params);
     const task = new Upload({
       client: this.client,
       queueSize: 3,

@@ -30,16 +30,30 @@ import UploadMenu from "./upload-menu.vue";
           <q-markup-table flat>
             <tbody>
               <tr v-for="it in files" :key="it.name">
-                <td>
+                <!-- <td>
                   <q-circular-progress
                     :value="it.progress"
                     size="24px"
                     :color="it.finished ? 'green' : 'orange'"
                     track-color="grey-3"
                   />
-                </td>
+                </td> -->
                 <td>{{ it.name }}</td>
-                <td>{{ it.size }}</td>
+                <td>
+                  <span class="op-6">{{ it.size }}</span>
+                </td>
+                <td>
+                  <span v-if="it.error">
+                    <span>Failed</span>
+                    <q-tooltip anchor="top middle" :offset="[0, 32]" class="bg-black">
+                      {{ it.error }}
+                    </q-tooltip>
+                  </span>
+                  <span v-else-if="it.finished">Uploaded</span>
+                  <span v-else-if="it.progress"
+                    >Uploading {{ Math.floor(it.progress * 100) }}%</span
+                  >
+                </td>
               </tr>
             </tbody>
           </q-markup-table>
