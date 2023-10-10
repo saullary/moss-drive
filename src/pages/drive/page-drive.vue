@@ -14,7 +14,7 @@ import FilePreview from "./preview/preview-index.vue";
         v-model="checkAll"
         indeterminate-value="not-empty"
       />
-      <check-act :checked="checked" :obj-list="objList" @refresh="getList" />
+      <check-act :checked="checked" :obj-list="objList" @refresh="getList()" />
 
       <div class="ml-auto">
         <q-btn round flat @click="showMode = modeIcon">
@@ -33,17 +33,24 @@ import FilePreview from "./preview/preview-index.vue";
     <div class="q-mt-md">
       <div class="mt-9 ta-c" v-if="loadErr">
         <p class="op-8 mb-3">{{ loadErr }}</p>
-        <q-btn color="info" @click="getList" :loading="objLoading">Retry</q-btn>
+        <q-btn color="info" @click="getList()" :loading="objLoading">Retry</q-btn>
       </div>
-      <component
-        v-else
-        :is="showMode + '-list'"
-        :rows="objList"
-        :loading="objLoading"
-        :checked="checked"
-        @row-click="onRowClick"
-        @row-check="onRowCheck"
-      />
+      <q-infinite-scroll v-else @load="onLoad" :disable="objLoading !== false || !objNextToken">
+        <component
+          :is="showMode + '-list'"
+          :rows="objList"
+          :loading="objLoading"
+          :checked="checked"
+          @row-click="onRowClick"
+          @row-check="onRowCheck"
+        />
+        <template v-slot:loading>
+          <div class="row justify-center q-my-md">
+            <q-spinner-ios color="yellow" size="30px" />
+          </div>
+        </template>
+      </q-infinite-scroll>
+
       <div class="pa-8"></div>
     </div>
   </div>
@@ -64,6 +71,7 @@ export default {
       bucketName: null,
       objList: [],
       objLoading: false,
+      objNextToken: null,
       loadErr: "",
       showPreview: false,
       fileIdx: -1,
@@ -162,26 +170,44 @@ export default {
       }
       this.objLoading = false;
     },
-    async getList() {
+    async onLoad(index, done) {
+      console.log(index);
+      await this.getList(true);
+      done();
+    },
+    async getList(isMore) {
       try {
-        this.checked = [];
-        if (this.objLoading === false) {
-          this.objLoading = true;
-        }
-        const data = await this.$bucket.listObjects({
+        const params = {
           Bucket: this.bucketName,
           Prefix: this.bucketPrefix,
           Delimiter: "/",
           MaxKeys: 30,
-        });
+        };
+        if (isMore) {
+          params.ContinuationToken = this.objNextToken;
+        } else {
+          this.checked = [];
+          if (this.objLoading === false) {
+            this.objLoading = true;
+          }
+        }
+        const data = await this.$bucket.listObjects(params);
         if (data.params.Prefix == this.bucketPrefix) {
-          this.objList = data.rows;
+          if (isMore) {
+            this.objList = this.objList.concat(data.rows);
+          } else {
+            this.objList = data.rows;
+            this.objLoading = false;
+          }
           this.loadErr = "";
-          this.objLoading = false;
+          this.objNextToken = data.nextToken;
         }
       } catch (error) {
         console.log(error);
         this.loadErr = error.message;
+        if (isMore) {
+          window.$toast(this.loadErr);
+        }
         this.objLoading = false;
       }
     },

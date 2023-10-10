@@ -15,7 +15,10 @@ import UploadMenu from "./upload-menu.vue";
       <q-card class="full-width" style="max-width: 600px">
         <q-card-section class="pos-s top-0 bg-dark z-10">
           <div class="al-c">
-            <div class="text-h6">Upload</div>
+            <div class="text-h6">
+              <span v-if="sucNum">{{ sucNum }} file{{ sucNum > 1 ? "s" : "" }} uploaded</span>
+              <span v-else>Upload</span>
+            </div>
             <q-space />
             <q-btn icon="close" flat round dense v-close-popup />
           </div>
@@ -30,19 +33,11 @@ import UploadMenu from "./upload-menu.vue";
           <q-markup-table flat>
             <tbody>
               <tr v-for="it in files" :key="it.name">
-                <!-- <td>
-                  <q-circular-progress
-                    :value="it.progress"
-                    size="24px"
-                    :color="it.finished ? 'green' : 'orange'"
-                    track-color="grey-3"
-                  />
-                </td> -->
                 <td>{{ it.name }}</td>
                 <td>
                   <span class="op-6">{{ it.size }}</span>
                 </td>
-                <td>
+                <td style="width: 28%">
                   <span v-if="it.error">
                     <span>Failed</span>
                     <q-tooltip anchor="top middle" :offset="[0, 32]" class="bg-black">
@@ -50,9 +45,7 @@ import UploadMenu from "./upload-menu.vue";
                     </q-tooltip>
                   </span>
                   <span v-else-if="it.finished">Uploaded</span>
-                  <span v-else-if="it.progress"
-                    >Uploading {{ Math.floor(it.progress * 100) }}%</span
-                  >
+                  <span v-else-if="it.progress">Uploading {{ it.progress }}%</span>
                 </td>
               </tr>
             </tbody>
@@ -84,6 +77,7 @@ export default {
       paused: false,
       isDone: false,
       finishNum: 0,
+      sucNum: 0,
     };
   },
   computed: {
@@ -118,6 +112,7 @@ export default {
     onFiles(e) {
       this.files = e;
       this.finishNum = 0;
+      this.sucNum = 0;
       this.uploading = false;
       this.isDone = false;
       this.showPop = true;
@@ -158,12 +153,14 @@ export default {
           },
           {
             onProgress: (p) => {
-              // console.log(p);
-              row.progress = Math.floor(p * 100);
+              Object.assign(row, {
+                progress: Math.floor(p.perc),
+              });
             },
           }
         );
         row.progress = 100;
+        this.sucNum += 1;
       } catch (error) {
         console.log(error);
         row.error = error.message;

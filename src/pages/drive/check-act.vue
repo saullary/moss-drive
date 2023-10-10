@@ -28,7 +28,10 @@
     <q-card class="full-width" style="max-width: 600px">
       <q-card-section class="pos-s top-0 bg-dark z-10">
         <div class="al-c">
-          <div class="text-h6">Delete</div>
+          <div class="text-h6">
+            <span v-if="delTotal">{{ delTotal }} file{{ delTotal > 1 ? "s" : "" }} deleted</span>
+            <span v-else>Delete</span>
+          </div>
           <!-- <q-space /> -->
           <!-- <q-btn icon="close" flat round dense v-close-popup /> -->
         </div>
@@ -120,6 +123,19 @@ export default {
     isDelRootFiles() {
       return this.dirFileNumArr.length > 0 && this.dirDeleteIdx == -1;
     },
+    delTotal() {
+      let total = 0;
+      for (const i in this.dirFileNumArr) {
+        if (
+          this.isDelDone ||
+          this.dirDeleteIdx > i ||
+          (this.dirDeleteIdx == -1 && i < this.dirFileNumArr.length - 1)
+        ) {
+          total += this.dirFileNumArr[i];
+        }
+      }
+      return total;
+    },
   },
   watch: {
     showDel(val) {
@@ -167,12 +183,15 @@ export default {
           const { rows: dirFiles } = await this.$bucket.listObjects({
             Prefix: dirKey,
           });
-          await this.delMulti([
-            {
-              key: dirKey,
-            },
-            ...dirFiles,
-          ]);
+          await this.delMulti(
+            [
+              {
+                key: dirKey,
+              },
+              ...dirFiles,
+            ],
+            dirFiles.length
+          );
           if (!this.deleting) break;
         }
         this.dirDeleteIdx = -1;
@@ -186,9 +205,9 @@ export default {
         });
       }
     },
-    delMulti(files) {
+    delMulti(files, len) {
       if (!files.length) return;
-      this.dirFileNumArr.push(files.length);
+      this.dirFileNumArr.push(len || files.length);
       const params = {
         Delete: {
           Objects: files.map((it) => {

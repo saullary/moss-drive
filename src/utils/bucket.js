@@ -64,7 +64,9 @@ const bucket = {
         ...params,
       })
       .then((res) => {
+        // console.log(res);
         return {
+          nextToken: res.NextContinuationToken,
           rows: [
             ...(res.CommonPrefixes || []).map((it) => ({
               key: it.Prefix,
