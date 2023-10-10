@@ -11,16 +11,16 @@ import UploadMenu from "./upload-menu.vue";
     :allow-drop="showPop && !uploading"
   />
   <div>
-    <q-dialog v-model="showPop" position="top">
+    <q-dialog v-model="showPop" position="top" :persistent="uploading">
       <q-card class="full-width" style="max-width: 600px">
         <q-card-section class="pos-s top-0 bg-dark z-10">
           <div class="al-c">
             <div class="text-h6">
-              <span v-if="sucNum">{{ sucNum }} file{{ sucNum > 1 ? "s" : "" }} uploaded</span>
-              <span v-else>Upload</span>
+              <span v-if="sucNum || isDone">{{ sucNum }}/{{ files.length }} uploaded</span>
+              <span v-else>Upload {{ files.length }} file{{ files.length > 1 ? "s" : "" }}</span>
             </div>
             <q-space />
-            <q-btn icon="close" flat round dense v-close-popup />
+            <!-- <q-btn icon="close" flat round dense v-close-popup /> -->
           </div>
         </q-card-section>
 
@@ -91,11 +91,12 @@ export default {
   watch: {
     finishNum(val) {
       if (val && val == this.files.length) {
+        this.uploading = false;
         this.isDone = true;
       }
     },
     showPop(val) {
-      if (!val && this.finishNum) {
+      if (!val && this.sucNum) {
         this.onRefresh();
       }
     },
