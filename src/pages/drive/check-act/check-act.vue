@@ -37,7 +37,6 @@ import ActMove from "./act-move.vue";
 import { useQuasar, copyToClipboard } from "quasar";
 
 export default {
-  emits: ["refresh"],
   props: {
     checked: Array,
     objList: Array,

@@ -10,15 +10,24 @@
       </q-card-section>
 
       <q-card-section>
-        <drive-list />
+        <drive-list v-model:prefix="moveToPrefix" />
       </q-card-section>
 
-      <q-card-actions align="right" class="text-primary pos-s btm-0 bg-dark">
+      <q-card-actions class="text-primary pos-s btm-0 bg-dark">
+        <q-btn flat label="Create Folder" class="mr-auto" />
         <template v-if="!isDone">
           <q-btn flat color="white" label="Cancel" @click="showPop = false" />
         </template>
         <q-btn v-if="isDone" color="primary" @click="showPop = false"> Done </q-btn>
-        <q-btn v-else color="primary" :loading="moving" @click="onMove">OK</q-btn>
+        <q-btn
+          v-else
+          color="primary"
+          :loading="moving"
+          @click="onMove"
+          :disable="curPrefix == moveToPrefix"
+          >Move here</q-btn
+        >
+        <!-- to do: parent dir can not be moved to children dir -->
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -39,7 +48,13 @@ export default {
       showPop: false,
       moving: false,
       isDone: false,
+      moveToPrefix: "",
     };
+  },
+  computed: {
+    curPrefix() {
+      return this.$route.path.replace("/drive", "");
+    },
   },
   methods: {
     onMove() {},

@@ -32,7 +32,7 @@
     :rows="rows"
     :columns="columns"
     row-key="name"
-    selection="multiple"
+    :selection="selection"
     v-model:selected="selected"
     :filter="filter"
     hide-pagination
@@ -44,11 +44,12 @@
         class="driver-list-item"
         :class="{
           active: checked.includes(scope.row.key),
+          'file-item': !scope.row.prefix,
         }"
         :props="scope"
         @click="onRow(scope.row, scope.rowIndex)"
       >
-        <q-td style="width: 50px">
+        <q-td style="width: 50px" v-if="selection == 'multiple'">
           <q-checkbox
             size="40px"
             color="primary"
@@ -100,6 +101,7 @@ export default {
     rows: Array,
     loading: null,
     checked: Array,
+    selection: String,
   },
   data() {
     return {

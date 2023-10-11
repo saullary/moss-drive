@@ -1,10 +1,21 @@
+<style lang="scss">
+.in-move-act {
+  .q-breadcrumbs .text-primary {
+    color: rgba(255, 255, 255, 0.4) !important;
+  }
+  .file-item {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+}
+</style>
+
 <script setup>
-import CheckAct from "./check-act/check-act.vue";
 import FilePreview from "./preview/preview-index.vue";
 </script>
 
 <template>
-  <div class="pa-3 pb-0 pos-s z-100" style="top: 72px">
+  <div class="pa-3 pb-0 pos-s z-100" style="top: 72px" v-if="isPage">
     <div class="al-c">
       <q-checkbox
         :disable="objLoading !== false"
@@ -14,7 +25,8 @@ import FilePreview from "./preview/preview-index.vue";
         v-model="checkAll"
         indeterminate-value="not-empty"
       />
-      <check-act :checked="checked" :obj-list="objList" @refresh="getList()" />
+
+      <slot name="act" :checked="checked" :obj-list="objList"></slot>
 
       <div class="ml-auto">
         <q-btn round flat @click="showMode = modeIcon">
@@ -23,11 +35,21 @@ import FilePreview from "./preview/preview-index.vue";
       </div>
     </div>
   </div>
-  <div class="q-pa-md">
-    <div class="q-mt-md q-ml-sm">
+  <div :class="isPage ? 'q-pa-md' : 'in-move-act'">
+    <div :class="isPage ? 'q-mt-md q-ml-sm' : 'pos-s z-100 bg-dark '" style="top: 50px">
       <q-breadcrumbs gutter="sm">
-        <q-breadcrumbs-el label="All files" to="/drive" />
-        <q-breadcrumbs-el v-for="it in breadLinks" :key="it.to" :label="it.label" :to="it.to" />
+        <q-breadcrumbs-el
+          :label="isPage ? 'All files' : 'My Drive'"
+          to="/drive"
+          @click.prevent="goPath('/drive')"
+        />
+        <q-breadcrumbs-el
+          v-for="it in breadLinks"
+          :key="it.to"
+          :label="it.label"
+          :to="it.to"
+          @click.prevent="goPath(it.to)"
+        />
       </q-breadcrumbs>
     </div>
     <div class="q-mt-md">
@@ -38,6 +60,7 @@ import FilePreview from "./preview/preview-index.vue";
       <q-infinite-scroll v-else @load="onLoad" :disable="objLoading !== false || !objNextToken">
         <component
           :is="showMode + '-list'"
+          :selection="isPage ? 'multiple' : null"
           :rows="objList"
           :loading="objLoading"
           :checked="checked"
@@ -58,10 +81,13 @@ import FilePreview from "./preview/preview-index.vue";
 </template>
 
 <script>
-import TableList from "./table-list.vue";
-import GridList from "./grid-list.vue";
+import TableList from "./list-table.vue";
+import GridList from "./list-grid.vue";
 
 export default {
+  props: {
+    isPage: Boolean,
+  },
   components: {
     GridList,
     TableList,
@@ -75,9 +101,10 @@ export default {
       loadErr: "",
       showPreview: false,
       fileIdx: -1,
-      showMode: "grid",
+      showMode: this.isPage ? "grid" : "table",
       checkAll: false,
       checked: [],
+      curPath: "/drive",
     };
   },
   computed: {
@@ -85,7 +112,8 @@ export default {
       return this.showMode == "grid" ? "table" : "grid";
     },
     path() {
-      return this.$route.path;
+      if (this.isPage) return this.$route.path;
+      return this.curPath;
     },
     breadLinks() {
       let arr = this.path.split("/").slice(1);
@@ -132,6 +160,10 @@ export default {
     },
   },
   methods: {
+    goPath(to) {
+      if (this.isPage) this.$router.push(to);
+      else this.curPath = to;
+    },
     onRowCheck({ key }) {
       const idx = this.checked.indexOf(key);
       if (idx == -1) {
@@ -144,7 +176,9 @@ export default {
       if (row.prefix) {
         if (this.objLoading !== false) return;
         this.objLoading = index;
-        this.$router.push(this.$route.path + "/" + row.name);
+        const newPath = this.path + "/" + row.name;
+        if (this.isPage) this.$router.push(newPath);
+        else this.curPath = newPath;
         return;
       }
       this.fileIdx = this.fileList.findIndex((it) => it.url == row.url);

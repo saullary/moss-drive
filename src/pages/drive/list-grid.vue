@@ -35,7 +35,12 @@ body.touch .grid-item.hover {
           hover: hoverIdx == i,
         }"
       >
-        <p class="ta-l hide check-wrap">
+        <p
+          class="ta-l hide"
+          :class="{
+            'check-wrap': selection == 'multiple',
+          }"
+        >
           <q-checkbox size="40px" :model-value="isCheck(row)" @click="onCheck(row)"></q-checkbox>
         </p>
         <div class="pos-r">
@@ -80,6 +85,7 @@ export default {
     rows: Array,
     loading: null,
     checked: Array,
+    selection: String,
   },
   data() {
     return {
