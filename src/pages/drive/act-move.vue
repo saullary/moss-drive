@@ -9,6 +9,10 @@
         </div>
       </q-card-section>
 
+      <q-card-section>
+        <drive-list />
+      </q-card-section>
+
       <q-card-actions align="right" class="text-primary pos-s btm-0 bg-dark">
         <template v-if="!isDone">
           <q-btn flat color="white" label="Cancel" @click="showPop = false" />
@@ -21,7 +25,12 @@
 </template>
 
 <script>
+import DriveList from "./drive-list.vue";
+
 export default {
+  components: {
+    DriveList,
+  },
   props: {
     checkList: Array,
   },
