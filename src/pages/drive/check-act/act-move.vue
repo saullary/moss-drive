@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import DriveList from "./drive-list.vue";
+import DriveList from "../drive-list.vue";
 
 export default {
   components: {

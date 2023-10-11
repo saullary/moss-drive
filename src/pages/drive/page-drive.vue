@@ -1,5 +1,5 @@
 <script setup>
-import CheckAct from "./check-act.vue";
+import CheckAct from "./check-act/check-act.vue";
 import FilePreview from "./preview/preview-index.vue";
 </script>
 
