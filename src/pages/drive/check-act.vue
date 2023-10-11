@@ -1,5 +1,6 @@
 <script setup>
-import ActDel from "./act-del.vue";
+import ActDelete from "./act-delete.vue";
+import ActMove from "./act-move.vue";
 </script>
 
 <template>
@@ -28,7 +29,8 @@ import ActDel from "./act-del.vue";
     </q-btn-group>
   </div>
 
-  <act-del ref="actDel" :check-list="checkList" />
+  <act-delete ref="delete" :check-list="checkList" />
+  <act-move ref="move" :check-list="checkList" />
 </template>
 
 <script>
@@ -90,7 +92,9 @@ export default {
       } else if (name == "download") {
         window.open(item.url);
       } else if (name == "delete") {
-        this.$refs.actDel.showDel = true;
+        this.$refs.delete.showPop = true;
+      } else if (name == "move") {
+        this.$refs.move.showPop = true;
       }
     },
   },

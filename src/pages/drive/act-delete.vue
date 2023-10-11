@@ -1,5 +1,5 @@
 <template>
-  <q-dialog v-model="showDel" position="top" :persistent="deleting">
+  <q-dialog v-model="showPop" position="top" :persistent="deleting">
     <q-card class="full-width" style="max-width: 600px">
       <q-card-section class="pos-s top-0 bg-dark z-10">
         <div class="al-c">
@@ -33,9 +33,9 @@
 
       <q-card-actions align="right" class="text-primary pos-s btm-0 bg-dark">
         <template v-if="!isDelDone && !isDelRootFiles">
-          <q-btn flat color="white" label="Cancel" @click="showDel = false" />
+          <q-btn flat color="white" label="Cancel" @click="showPop = false" />
         </template>
-        <q-btn v-if="isDelDone" @click="showDel = false" color="primary"> Done </q-btn>
+        <q-btn v-if="isDelDone" @click="showPop = false" color="primary"> Done </q-btn>
         <q-btn v-else color="primary" :loading="deleting" @click="onDel">OK</q-btn>
       </q-card-actions>
     </q-card>
@@ -49,7 +49,7 @@ export default {
   },
   data() {
     return {
-      showDel: false,
+      showPop: false,
       isDelDone: false,
       deleting: false,
       dirFileNumArr: [],
@@ -75,7 +75,7 @@ export default {
     },
   },
   watch: {
-    showDel(val) {
+    showPop(val) {
       if (!val) {
         if (this.dirFileNumArr.length) {
           this.$bus.emit("drive-refresh");
@@ -138,7 +138,7 @@ export default {
         this.isDelDone = true;
       } catch (error) {
         window.$alert(error.message).then(() => {
-          this.showDel = false;
+          this.showPop = false;
         });
       }
     },
