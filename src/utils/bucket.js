@@ -57,7 +57,11 @@ const bucket = {
     if (!params.Bucket) {
       params.Bucket = this.listParams.Bucket;
     }
-    const prefix = params.folder || params.Prefix;
+    let prefix = params.Prefix;
+    if ("folder" in params) {
+      prefix = params.folder;
+      delete params.folder;
+    }
     return this.client
       .listObjectsV2({
         ...params,
