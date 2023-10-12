@@ -56,3 +56,20 @@ export async function limitTask(list, handler, limit = 5) {
     race = Promise.race(tasks);
   }
 }
+
+let dbcTimeout = null;
+
+export function debounce(func, wait = 500, immediate = false) {
+  if (dbcTimeout !== null) clearTimeout(dbcTimeout);
+  if (immediate) {
+    var callNow = !dbcTimeout;
+    dbcTimeout = setTimeout(function () {
+      dbcTimeout = null;
+    }, wait);
+    if (callNow) typeof func === "function" && func();
+  } else {
+    dbcTimeout = setTimeout(function () {
+      typeof func === "function" && func();
+    }, wait);
+  }
+}

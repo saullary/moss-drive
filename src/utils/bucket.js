@@ -54,11 +54,10 @@ const bucket = {
     });
   },
   listObjects(params) {
-    if (params.Bucket) {
-      this.listParams = params;
-    } else {
+    if (!params.Bucket) {
       params.Bucket = this.listParams.Bucket;
     }
+    const prefix = params.folder || params.Prefix;
     return this.client
       .listObjectsV2({
         ...params,
@@ -70,12 +69,12 @@ const bucket = {
           rows: [
             ...(res.CommonPrefixes || []).map((it) => ({
               key: it.Prefix,
-              name: it.Prefix.replace(params.Prefix, "").replace("/", ""),
+              name: it.Prefix.replace(prefix, "").replace("/", ""),
               prefix: true,
               type: "folder",
             })),
             ...(res.Contents || []).map((it) => {
-              const name = it.Key.replace(params.Prefix, "");
+              const name = it.Key.replace(prefix, "");
               const extMat = /\.(\w+)$/.exec(name) || [];
               const ext = extMat[1];
               let type = "other";

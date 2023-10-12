@@ -57,6 +57,10 @@ import FilePreview from "./preview/preview-index.vue";
         <p class="op-8 mb-3">{{ loadErr }}</p>
         <q-btn color="info" @click="getList()" :loading="objLoading">Retry</q-btn>
       </div>
+      <div class="ta-c q-py-lg" v-else-if="objLoading === false && objList.length == 0">
+        <img src="/img/common/empty.svg" width="200" />
+        <div class="op-8">No Data</div>
+      </div>
       <q-infinite-scroll v-else @load="onLoad" :disable="objLoading !== false || !objNextToken">
         <component
           :is="showMode + '-list'"
@@ -105,6 +109,7 @@ export default {
       checkAll: false,
       checked: [],
       curPath: "/drive",
+      searchKey: "",
     };
   },
   computed: {
@@ -141,9 +146,15 @@ export default {
     this.$bus.on("drive-refresh", () => {
       this.getList();
     });
+    this.$bus.on("search-key", (val) => {
+      if (this.searchKey == val) return;
+      this.searchKey = val;
+      this.getList();
+    });
   },
   watch: {
     path() {
+      this.searchKey = "";
       if (this.$bucket.client) {
         this.getList();
       }
@@ -213,6 +224,7 @@ export default {
       try {
         const params = {
           Bucket: this.bucketName,
+          folder: this.bucketPrefix,
           Prefix: this.bucketPrefix,
           Delimiter: "/",
           MaxKeys: 30,
@@ -225,8 +237,15 @@ export default {
             this.objLoading = true;
           }
         }
+        if (this.isPage) {
+          if (this.searchKey) {
+            params.Prefix += this.searchKey;
+          } else {
+            this.$bucket.listParams = params;
+          }
+        }
         const data = await this.$bucket.listObjects(params);
-        if (data.params.Prefix == this.bucketPrefix) {
+        if (data.params.Prefix == params.Prefix) {
           if (isMore) {
             this.objList = this.objList.concat(data.rows);
           } else {

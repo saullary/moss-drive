@@ -17,7 +17,12 @@ import UploadIndex from "./upload-index.vue";
 <template>
   <div class="pos-r flex-1">
     <icon-search class="y-center ev-n" style="left: 10px" />
-    <input type="text" placeholder="Search" class="bg-info bdrs-100 w100p top-search" />
+    <input
+      v-model="searchKey"
+      type="text"
+      placeholder="Search"
+      class="bg-info bdrs-100 w100p top-search"
+    />
   </div>
 
   <q-btn
@@ -43,6 +48,7 @@ import UploadIndex from "./upload-index.vue";
 </template>
 
 <script>
+import { debounce } from "../../utils/helper";
 import { useQuasar } from "quasar";
 
 export default {
@@ -50,14 +56,28 @@ export default {
     const { screen } = useQuasar();
     return {
       screen,
+      searchKey: "",
     };
   },
   computed: {
+    path() {
+      return this.$route.path;
+    },
     asMobile() {
       return this.screen.width < 690;
     },
     btnSize() {
       return this.asMobile ? "12px" : null;
+    },
+  },
+  watch: {
+    searchKey() {
+      debounce(() => {
+        this.$bus.emit("search-key", this.searchKey);
+      }, 500);
+    },
+    path() {
+      this.searchKey = "";
     },
   },
   methods: {
