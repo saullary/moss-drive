@@ -9,7 +9,10 @@
         <q-item-section>Upload Folder</q-item-section>
       </q-item>
       <q-item clickable>
-        <q-item-section>Create Folder</q-item-section>
+        <q-item-section>New Folder</q-item-section>
+      </q-item>
+      <q-item clickable>
+        <q-item-section>Pin by CID</q-item-section>
       </q-item>
     </q-list>
   </q-menu>

@@ -64,6 +64,7 @@ import FilePreview from "./preview/preview-index.vue";
       <q-infinite-scroll v-else @load="onLoad" :disable="objLoading !== false || !objNextToken">
         <component
           :is="showMode + '-list'"
+          :isPage="isPage"
           :selection="isPage ? 'multiple' : null"
           :rows="objList"
           :loading="objLoading"

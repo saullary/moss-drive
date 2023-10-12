@@ -77,10 +77,10 @@
             <span class="fz-15 ml-3">{{ scope.row.name }}</span>
           </div>
         </q-td>
-        <q-td key="size">
+        <q-td key="size" v-if="isPage">
           {{ scope.row.sizeUnit }}
         </q-td>
-        <q-td key="lastModified">
+        <q-td key="lastModified" v-if="isPage">
           {{ scope.row.updatedAt }}
         </q-td>
       </q-tr>
@@ -98,6 +98,7 @@
 export default {
   emits: ["row-click", "row-check"],
   props: {
+    isPage: Boolean,
     rows: Array,
     loading: null,
     checked: Array,
@@ -107,7 +108,12 @@ export default {
     return {
       filter: "",
       selected: [],
-      columns: [
+      activeIdx: -1,
+    };
+  },
+  computed: {
+    columns() {
+      let cols = [
         {
           name: "Key",
           required: true,
@@ -118,17 +124,21 @@ export default {
           // format: (val) => `${val}`,
           sortable: true,
         },
-        { name: "size", align: "left", label: "Size", field: "size", sortable: true },
-        {
-          name: "updatedAt",
-          align: "left",
-          label: "Update Time",
-          field: "lastModified",
-          sortable: true,
-        },
-      ],
-      activeIdx: -1,
-    };
+      ];
+      if (this.isPage) {
+        cols = cols.concat([
+          { name: "size", align: "left", label: "Size", field: "size", sortable: true },
+          {
+            name: "updatedAt",
+            align: "left",
+            label: "Update Time",
+            field: "lastModified",
+            sortable: true,
+          },
+        ]);
+      }
+      return cols;
+    },
   },
   methods: {
     getIcon(row) {
