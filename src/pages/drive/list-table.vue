@@ -1,40 +1,16 @@
 <style lang="scss">
-.table-list {
-  thead {
-    color: #94a3b8;
-    .q-checkbox {
-      display: none;
-    }
-  }
-  .q-tr {
-    user-select: none;
-    cursor: pointer;
-    &:active .cover {
-      opacity: 0.8;
-    }
-    &.active {
-      background: #1e293b;
-    }
-    &:hover {
-      background: #334155;
-    }
-  }
-}
 </style>
 
 <template>
   <q-table
-    class="table-list"
     color="primary"
     :loading="loading === true"
     flat
-    tabindex="0"
     :rows="rows"
     :columns="columns"
     row-key="name"
     :selection="selection"
     v-model:selected="selected"
-    :filter="filter"
     hide-pagination
     :rows-per-page-options="[0]"
   >
@@ -86,12 +62,6 @@
       </q-tr>
     </template>
   </q-table>
-  <!-- <q-drawer show-if-above v-model="showPop" side="right" bordered>
-    <div class="pos-s top-0">
-      <div>File Info</div>
-      <p v-for="i in 10" :key="i">{{ i }}</p>
-    </div>
-  </q-drawer> -->
 </template>
 
 <script>
@@ -106,7 +76,6 @@ export default {
   },
   data() {
     return {
-      filter: "",
       selected: [],
       activeIdx: -1,
     };

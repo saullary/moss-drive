@@ -71,7 +71,8 @@ export default {
     },
   },
   watch: {
-    searchKey() {
+    searchKey(val) {
+      this.searchKey = val.replace("/", "");
       debounce(() => {
         this.$bus.emit("search-key", this.searchKey);
       }, 500);

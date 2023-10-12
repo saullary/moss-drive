@@ -121,6 +121,9 @@ export default {
       if (this.isPage) return this.$route.path;
       return this.curPath;
     },
+    inDrive() {
+      return this.path.startsWith("/drive");
+    },
     breadLinks() {
       let arr = this.path.split("/").slice(1);
       let to = "/" + arr[0];
@@ -148,6 +151,7 @@ export default {
       this.getList();
     });
     this.$bus.on("search-key", (val) => {
+      if (!this.inDrive) return;
       if (this.searchKey == val) return;
       this.searchKey = val;
       this.getList();

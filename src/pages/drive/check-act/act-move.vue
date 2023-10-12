@@ -14,7 +14,7 @@
       </q-card-section>
 
       <q-card-actions class="text-primary pos-s btm-0 bg-dark">
-        <q-btn flat label="Create Folder" class="mr-auto" />
+        <q-btn flat label="New Folder" class="mr-auto" />
         <template v-if="!isDone">
           <q-btn flat color="white" label="Cancel" @click="showPop = false" />
         </template>
