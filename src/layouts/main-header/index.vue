@@ -26,6 +26,7 @@ import UploadIndex from "./upload-index.vue";
   </div>
 
   <q-btn
+    v-if="inDrive || inStone"
     class="ml-3"
     color="primary"
     rounded
@@ -34,9 +35,10 @@ import UploadIndex from "./upload-index.vue";
     :style="asMobile ? '' : 'width: 110px'"
     @click="onNew"
   >
-    <icon-add />
-    <span class="ml-2" v-if="!asMobile">NEW</span>
-    <upload-index />
+    <icon-new-stone v-if="inStone"></icon-new-stone>
+    <icon-add v-if="inDrive" />
+    <span class="ml-2" v-if="!asMobile">{{ inDrive ? "NEW" : "Stone" }}</span>
+    <upload-index v-if="inDrive" />
   </q-btn>
 
   <q-btn class="ml-3" color="info" rounded :round="asMobile" :size="btnSize" @click="onWallet">
@@ -62,6 +64,12 @@ export default {
   computed: {
     path() {
       return this.$route.path;
+    },
+    inDrive() {
+      return this.path.startsWith("/drive");
+    },
+    inStone() {
+      return this.path.startsWith("/stone");
     },
     asMobile() {
       return this.screen.width < 690;

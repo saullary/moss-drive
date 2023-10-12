@@ -127,7 +127,8 @@ export default {
         {
           title: "My Collections",
           icon: "star",
-          link: "https://quasar.dev/vue-components/table",
+          // link: "https://quasar.dev/vue-components/table",
+          to: "/collection",
         },
       ],
       leftDrawerOpen: false,

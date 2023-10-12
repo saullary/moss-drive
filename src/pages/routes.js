@@ -18,6 +18,13 @@ const routes = [
           title: "My Stones",
         },
       },
+      {
+        path: "/collection",
+        component: () => import("./stone/page-collection.vue"),
+        meta: {
+          title: "My Collections",
+        },
+      },
     ],
   },
   {
