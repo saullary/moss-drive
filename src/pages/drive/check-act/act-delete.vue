@@ -24,7 +24,7 @@
                 <span v-else class="op-5">{{ it.sizeUnit }}</span>
               </td>
               <td>
-                <span>{{ getDelStatus(i, it) }}</span>
+                <span>{{ getStatus(it, i) }}</span>
               </td>
             </tr>
           </tbody>
@@ -93,7 +93,7 @@ export default {
       if (num) return `${num} file${num > 1 ? "s" : ""}`;
       return "-";
     },
-    getDelStatus(i, it) {
+    getStatus(it, i) {
       if (this.isDelDone) {
         return "Deleted";
       }

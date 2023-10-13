@@ -90,6 +90,7 @@ import TableList from "./list-table.vue";
 import GridList from "./list-grid.vue";
 
 export default {
+  emits: ["update:prefix"],
   props: {
     isPage: Boolean,
   },
@@ -137,9 +138,7 @@ export default {
       });
     },
     bucketPrefix() {
-      let prefix = this.path.split("/").slice(2).join("/");
-      if (prefix) prefix += "/";
-      return prefix;
+      return this.$bucket.getPrefixByPath(this.path);
     },
     fileList() {
       return this.objList.filter((it) => !it.prefix);
@@ -173,6 +172,9 @@ export default {
       let isAll = len == this.objList.length;
       if (!isAll && len > 0) isAll = "not-empty";
       this.checkAll = isAll;
+    },
+    bucketPrefix(val) {
+      this.$emit("update:prefix", val);
     },
   },
   methods: {

@@ -52,7 +52,7 @@ export default {
       const len = this.checked.length;
       let isFile = false;
       if (len == 1) {
-        const row = this.objList.find((it) => it.key == this.checked[0]);
+        const row = this.checkList[0];
         isFile = !!row.url;
       }
       return [
@@ -66,6 +66,7 @@ export default {
         },
         {
           name: "move",
+          disabled: this.checkList.filter((it) => it.prefix).length > 0,
         },
         {
           name: "download",

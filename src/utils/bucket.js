@@ -21,6 +21,11 @@ const bucket = {
   checkClient() {
     if (!this.client) throw new Error("Please login first");
   },
+  getPrefixByPath(path, segFrom = 2) {
+    let prefix = path.split("/").slice(segFrom).join("/");
+    if (prefix) prefix += "/";
+    return prefix;
+  },
   uploadFile(params, opts = {}) {
     if (!params.Bucket) {
       const { Bucket, Prefix } = this.listParams;
@@ -114,12 +119,18 @@ const bucket = {
     if (!params.Bucket) {
       params.Bucket = this.listParams.Bucket;
     }
-    return new Promise((resolve, reject) => {
-      this.client.deleteObjects(params, (err, data) => {
-        // console.log(err, data);
-        if (err) reject(err);
-        else resolve(data);
-      });
+    return this.client.deleteObjects(params);
+  },
+  async moveObject(srcKey, Key) {
+    const { Bucket } = this.listParams;
+    await this.client.copyObject({
+      CopySource: encodeURIComponent(Bucket + "/" + srcKey),
+      Bucket,
+      Key,
+    });
+    await this.client.deleteObject({
+      Bucket,
+      Key: srcKey,
     });
   },
 };
