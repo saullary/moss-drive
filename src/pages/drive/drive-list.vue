@@ -179,8 +179,12 @@ export default {
   },
   methods: {
     goPath(to) {
-      if (this.isPage) this.$router.push(to);
-      else this.curPath = to;
+      if (this.isPage) {
+        const method = this.$q.platform.has.touch ? "replace" : "push";
+        this.$router[method](to);
+      } else {
+        this.curPath = to;
+      }
     },
     onRowCheck({ key }) {
       const idx = this.checked.indexOf(key);
@@ -194,9 +198,7 @@ export default {
       if (row.prefix) {
         if (this.objLoading !== false) return;
         this.objLoading = index;
-        const newPath = this.path + "/" + row.name;
-        if (this.isPage) this.$router.push(newPath);
-        else this.curPath = newPath;
+        this.goPath(this.path + "/" + row.name);
         return;
       }
       this.fileIdx = this.fileList.findIndex((it) => it.url == row.url);
