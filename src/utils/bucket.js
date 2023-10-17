@@ -133,6 +133,16 @@ const bucket = {
       Key: srcKey,
     });
   },
+  putObject(params) {
+    if (!params.Bucket) {
+      const { Bucket, Prefix } = this.listParams;
+      Object.assign(params, {
+        Bucket,
+        Key: Prefix + params.Key,
+      });
+    }
+    return this.client.putObject(params);
+  },
 };
 
 export default bucket;

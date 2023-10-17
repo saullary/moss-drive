@@ -31,7 +31,7 @@
 </style>
 
 <script setup>
-import MainHeader from "./main-header/index.vue";
+import MainHeader from "./main-header/main-header.vue";
 </script>
 
 <template>

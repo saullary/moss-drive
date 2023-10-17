@@ -40,13 +40,13 @@
         <q-btn v-if="isDone" color="primary" @click="showPop = false"> Done </q-btn>
         <q-btn
           v-else
+          rounded
           color="primary"
           :loading="moving"
           @click="onMove"
           :disable="curPrefix == moveToPrefix"
           >Move here</q-btn
         >
-        <!-- to do: parent dir can not be moved to children dir -->
       </q-card-actions>
     </q-card>
   </q-dialog>

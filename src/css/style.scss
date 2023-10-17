@@ -15,6 +15,9 @@ h1, h2, h3 {
 input {
   outline: none;
   border: none;
+  &::-webkit-input-placeholder {
+    color: #222;
+  }
 }
 
 
@@ -131,6 +134,12 @@ body {
 
 .q-dialog .q-dark {
   background: #1E293B;
+  .q-btn {
+    border-radius: 100px;
+  }
+  .q-btn.bg-primary {
+    min-width: 100px;
+  }
 }
 
 .q-table {

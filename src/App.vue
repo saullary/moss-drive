@@ -24,10 +24,14 @@ export default {
     window.$loading.close = (group) => {
       $q.loading.hide(group);
     };
-    window.$toast = (message, opts) => {
+    window.$toast = (message, opts = "warning") => {
+      if (opts > 0) {
+        opts = ["positive", "negative", "warning", "info", "ongoing"][opts - 1];
+        if (!opts) opts = "positive";
+      }
       if (typeof opts == "string") {
         opts = {
-          type: opts, // 'positive', 'negative', 'warning', 'info', 'ongoing'
+          type: opts, //
         };
       }
       $q.notify({

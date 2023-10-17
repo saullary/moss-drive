@@ -1,4 +1,8 @@
 
+<script setup>
+import NewFolder from "./new-folder.vue";
+</script>
+
 <template>
   <q-menu style="width: 130px" auto-close>
     <q-list>
@@ -8,7 +12,7 @@
       <q-item class="hide-in-touch" clickable @click="$refs.input2.click()">
         <q-item-section>Upload Folder</q-item-section>
       </q-item>
-      <q-item clickable>
+      <q-item clickable @click="$refs.newFolder.showPop = true">
         <q-item-section>New Folder</q-item-section>
       </q-item>
       <q-item clickable>
@@ -21,6 +25,7 @@
       <input ref="input" multiple type="file" @input="onInput" />
       <input ref="input2" multiple webkitdirectory type="file" @input="onInput" />
     </div>
+    <new-folder ref="newFolder"></new-folder>
   </div>
 </template>
 

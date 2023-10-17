@@ -58,7 +58,7 @@ import UploadMenu from "./upload-menu.vue";
             <q-btn v-else flat color="white" label="Cancel" @click="onCancel" />
           </template>
           <q-btn v-if="isDone" @click="onDone" color="primary"> Done </q-btn>
-          <q-btn v-else color="primary" :loading="uploading && !paused" @click="onOk">{{
+          <q-btn v-else rounded color="primary" :loading="uploading && !paused" @click="onOk">{{
             paused ? "Continue" : "OK"
           }}</q-btn>
         </q-card-actions>

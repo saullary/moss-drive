@@ -36,7 +36,7 @@
           <q-btn flat color="white" label="Cancel" @click="showPop = false" />
         </template>
         <q-btn v-if="isDelDone" @click="showPop = false" color="primary"> Done </q-btn>
-        <q-btn v-else color="primary" :loading="deleting" @click="onDel">OK</q-btn>
+        <q-btn v-else rounded color="primary" :loading="deleting" @click="onDel">OK</q-btn>
       </q-card-actions>
     </q-card>
   </q-dialog>

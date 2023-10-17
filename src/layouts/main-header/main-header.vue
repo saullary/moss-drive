@@ -4,9 +4,6 @@
   // width: 400px;
   padding-left: 36px;
   letter-spacing: 1px;
-  &::-webkit-input-placeholder {
-    color: #222;
-  }
 }
 </style>
 
