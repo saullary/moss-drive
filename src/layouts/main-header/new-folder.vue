@@ -7,6 +7,7 @@
 
       <q-card-section>
         <input
+          autofocus
           v-model.trim="inputVal"
           type="text"
           class="w100p bdrs-3 pa-2"
@@ -14,6 +15,7 @@
             'bg-info': !inputVal.length,
           }"
           placeholder="Enter the folder name"
+          @keyup.enter="onCreate"
         />
       </q-card-section>
 
@@ -42,6 +44,14 @@ export default {
       inputVal: "",
     };
   },
+  watch: {
+    showPop(val) {
+      if (!val) {
+        this.inputVal = "";
+        this.creating = false;
+      }
+    },
+  },
   methods: {
     async onCreate() {
       try {
@@ -58,12 +68,10 @@ export default {
         await this.$bucket.putObject({
           Key: name + "/",
         });
-        this.inputVal = "";
-        window.$toast(name + " created successfully", 1);
         this.showPop = false;
+        window.$toast(`Folder ${name}/ created successfully`, 1);
         this.$bus.emit("drive-refresh");
       } catch (error) {
-        console.log(error);
         window.$alert(error.message);
       }
       this.creating = false;
