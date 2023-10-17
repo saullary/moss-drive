@@ -9,5 +9,11 @@ export default {
 
     const bus = new EventBus();
     global.$bus = bus;
+
+    for (const func of ["toast", "alert", "confirm", "prompt"]) {
+      global["$" + func] = (...args) => {
+        return window["$" + func](...args);
+      };
+    }
   },
 };

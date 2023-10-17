@@ -88,7 +88,7 @@ export default {
       const item = this.checkList[0];
       if (name == "link") {
         await copyToClipboard(item.url);
-        window.$toast("Copied");
+        this.$toast("Copied", 1);
       } else if (name == "download") {
         window.open(item.url);
       } else if (name == "delete") {

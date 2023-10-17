@@ -124,8 +124,10 @@ body {
     display: none;
   }
   .q-notification {
-    background:var(--q-primary);
     color: #000!important;
+  }
+  .bg-negative {
+    color: #fff!important;
   }
   .q-card--dark {
     box-shadow: none;

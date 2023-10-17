@@ -91,10 +91,9 @@ export default {
       this.$bus.emit("click-new");
     },
     onWallet() {
-      window
-        .$alert("test")
+      this.$alert("test")
         .then(() => {
-          window.$toast("ok");
+          this.$toast("ok");
         })
         .catch(() => {
           console.log(11);
