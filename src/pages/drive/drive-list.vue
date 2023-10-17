@@ -7,6 +7,12 @@
     opacity: 0.7;
     pointer-events: none;
   }
+  thead tr:first-child {
+    height: 5px;
+    th {
+      display: none;
+    }
+  }
 }
 </style>
 
@@ -36,7 +42,7 @@ import FilePreview from "./preview/preview-index.vue";
     </div>
   </div>
   <div :class="isPage ? 'q-pa-md' : 'in-move-act'">
-    <div :class="isPage ? 'q-mt-md q-ml-sm' : 'pos-s z-100 bg-dark '" style="top: 50px">
+    <div :class="isPage ? 'q-mt-md q-ml-sm' : 'pos-s z-100 q-dark '" style="top: 50px">
       <q-breadcrumbs gutter="sm">
         <q-breadcrumbs-el
           :label="isPage ? 'All files' : 'My Drive'"

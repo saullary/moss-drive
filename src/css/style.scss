@@ -126,8 +126,11 @@ body {
   }
   .q-card--dark {
     box-shadow: none;
-    border: 1px solid #1E293B;
   }
+}
+
+.q-dialog .q-dark {
+  background: #1E293B;
 }
 
 .q-table {

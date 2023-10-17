@@ -13,7 +13,7 @@ import UploadMenu from "./upload-menu.vue";
   <div>
     <q-dialog v-model="showPop" position="top" :persistent="uploading">
       <q-card class="full-width" style="max-width: 600px">
-        <q-card-section class="pos-s top-0 bg-dark z-10">
+        <q-card-section class="pos-s top-0 q-dark z-10">
           <div class="al-c">
             <div class="text-h6">
               <span v-if="sucNum || isDone">{{ sucNum }}/{{ files.length }} uploaded</span>
@@ -52,7 +52,7 @@ import UploadMenu from "./upload-menu.vue";
           </q-markup-table>
         </q-card-section>
 
-        <q-card-actions v-show="!isEmpty" align="right" class="text-primary pos-s btm-0 bg-dark">
+        <q-card-actions v-show="!isEmpty" align="right" class="text-primary pos-s btm-0 q-dark">
           <template v-if="!isDone">
             <q-btn v-if="uploading && !paused" flat @click="paused = true">Pause</q-btn>
             <q-btn v-else flat color="white" label="Cancel" @click="onCancel" />

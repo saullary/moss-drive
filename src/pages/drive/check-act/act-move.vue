@@ -1,7 +1,7 @@
 <template>
   <q-dialog v-model="showPop" position="top" :persistent="moving">
     <q-card class="full-width" style="max-width: 600px">
-      <q-card-section class="pos-s top-0 bg-dark z-10">
+      <q-card-section class="pos-s top-0 q-dark z-10">
         <div class="al-c">
           <div class="text-h6">
             <span v-if="isDone">{{ "file".getCountName(movedArr.length) }} moved to</span>
@@ -30,7 +30,7 @@
         <drive-list v-else v-model:prefix="moveToPrefix" />
       </q-card-section>
 
-      <q-card-actions class="text-primary pos-s btm-0 bg-dark">
+      <q-card-actions class="text-primary pos-s btm-0 q-dark">
         <div class="mr-auto">
           <q-btn v-if="!isNext" flat label="New Folder" class="mr-auto" />
         </div>

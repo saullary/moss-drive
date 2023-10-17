@@ -1,7 +1,7 @@
 <template>
   <q-dialog v-model="showPop" position="top" :persistent="deleting">
     <q-card class="full-width" style="max-width: 600px">
-      <q-card-section class="pos-s top-0 bg-dark z-10">
+      <q-card-section class="pos-s top-0 q-dark z-10">
         <div class="al-c">
           <div class="text-h6">
             <span v-if="delTotal">{{ delTotal }} file{{ delTotal > 1 ? "s" : "" }} deleted</span>
@@ -31,7 +31,7 @@
         </q-markup-table>
       </q-card-section>
 
-      <q-card-actions align="right" class="text-primary pos-s btm-0 bg-dark">
+      <q-card-actions align="right" class="text-primary pos-s btm-0 q-dark">
         <template v-if="!isDelDone && !isDelRootFiles">
           <q-btn flat color="white" label="Cancel" @click="showPop = false" />
         </template>
