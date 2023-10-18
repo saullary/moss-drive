@@ -17,7 +17,7 @@ export default {
     src: String,
     height: {
       type: Number,
-      default: 200,
+      default: 150,
     },
   },
   data() {
