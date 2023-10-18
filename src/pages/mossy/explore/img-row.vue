@@ -1,6 +1,13 @@
 <template>
-  <a :href="src" :data-pswp-width="boxWidth" :data-pswp-height="boxHeight">
-    <img ref="img" class="w100p" :src="src" @load="onLoad" />
+  <a :href="src" :data-pswp-width="boxWidth" :data-pswp-height="boxHeight" data-cropped="true">
+    <img
+      ref="img"
+      class="w100p"
+      style="object-fit: cover"
+      :src="src"
+      :height="height"
+      @load="onLoad"
+    />
   </a>
 </template>
 
