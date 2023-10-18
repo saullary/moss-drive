@@ -1,6 +1,6 @@
 <style lang="scss">
 .example-item {
-  width: 290px;
+  width: 180px;
 }
 </style>
 
@@ -9,20 +9,22 @@ import ImgRow from "./img-row.vue";
 </script>
 
 <template>
-  <div class="q-pa-md">
+  <div class="">
     <div class="row justify-center q-gutter-sm" id="my-gallery">
-      <q-intersection v-for="index in 8" :key="index" transition="scale" once class="example-item">
-        <q-card flat bordered class="q-ma-sm">
+      <!-- <q-intersection v-for="index in 8" :key="index" transition="scale" once >
+      </q-intersection> -->
+
+      <div v-for="index in 8" :key="index" class="example-item">
+        <q-card flat bordered class="q-mb-sm">
           <img-row
             :src="`https://fastly.jsdelivr.net/npm/@vant/assets/apple-${index}.jpeg`"
           ></img-row>
 
           <q-card-section>
-            <div class="text-h6">Card #{{ index }}</div>
-            <div class="text-subtitle2">by John Doe</div>
+            <div class="text-">by John Doe</div>
           </q-card-section>
         </q-card>
-      </q-intersection>
+      </div>
     </div>
   </div>
 </template>
