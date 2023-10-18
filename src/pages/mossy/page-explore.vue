@@ -11,6 +11,10 @@
 }
 </style>
 
+<script setup>
+import ImgList from "./explore/img-list.vue";
+</script>
+
 <template>
   <div class="ta-c bg-top pt-9 pb-9">
     <div class="">
@@ -25,5 +29,8 @@
         />
       </div>
     </div>
+  </div>
+  <div>
+    <img-list></img-list>
   </div>
 </template>

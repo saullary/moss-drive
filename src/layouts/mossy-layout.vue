@@ -42,7 +42,6 @@ body.body--dark {
     </div>
   </div>
   <router-view></router-view>
-  <p v-for="i in 40" :key="i">{{ i }}</p>
 </template>
 
 <script>
