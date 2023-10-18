@@ -27,12 +27,35 @@
             </tr>
           </tbody>
         </q-markup-table>
-        <drive-list v-else v-model:prefix="moveToPrefix" />
+        <drive-list v-else ref="drive" v-model:prefix="moveToPrefix" />
       </q-card-section>
 
       <q-card-actions class="text-primary pos-s btm-0 q-dark">
         <div class="mr-auto">
-          <q-btn v-if="!isNext" flat label="New Folder" class="mr-auto" />
+          <q-btn v-if="!isNext" flat :loading="creating" label="New Folder" class="mr-auto" />
+          <q-popup-edit
+            v-model="newFolder"
+            :validate="(val) => !val || /^[a-z\d-_]+$/.test(val)"
+            v-slot="scope"
+          >
+            <q-input
+              v-model="scope.value"
+              placeholder="New folder name"
+              dense
+              autofocus
+              maxlength="30"
+              @keyup.enter="scope.set"
+              :rules="[
+                (val) =>
+                  scope.validate(val) ||
+                  'The name can consist only of lowercase letters, numbers, underscode (_), and hyphens (-).',
+              ]"
+            >
+              <template v-slot:prepend>
+                <q-img src="/img/driver/icon_folder.png" width="26px" />
+              </template>
+            </q-input>
+          </q-popup-edit>
         </div>
         <template v-if="!isDone">
           <q-btn flat color="white" label="Cancel" @click="showPop = false" />
@@ -71,6 +94,8 @@ export default {
       isNext: false,
       movedArr: [],
       curMoveIdx: -1,
+      newFolder: "",
+      creating: false,
     };
   },
   computed: {
@@ -81,8 +106,9 @@ export default {
   watch: {
     showPop(val) {
       if (!val) {
-        if (this.movedArr.length) {
+        if (this.movedArr.length || this.needRefreshDrive) {
           this.$bus.emit("drive-refresh");
+          this.needRefreshDrive = false;
         }
         this.isDone = false;
         this.isNext = false;
@@ -92,8 +118,28 @@ export default {
         this.curMoveIdx = -1;
       }
     },
+    newFolder(val) {
+      this.onNewFolder(val);
+    },
   },
   methods: {
+    async onNewFolder(val) {
+      if (!val) return;
+      try {
+        this.creating = true;
+        const newPrefix = this.moveToPrefix + val + "/";
+        await this.$bucket.putObject({
+          Bucket: this.$bucket.listParams.Bucket,
+          Key: newPrefix,
+        });
+        this.newFolder = "";
+        this.moveToPrefix = newPrefix;
+        this.needRefreshDrive = true;
+      } catch (error) {
+        console.log(error);
+      }
+      this.creating = false;
+    },
     getStatus(it, i) {
       if (this.movedArr.includes(it.name)) return "Moved";
       if (this.curMoveIdx > i || this.isDone) return "Failed";

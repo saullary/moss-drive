@@ -99,6 +99,7 @@ export default {
   emits: ["update:prefix"],
   props: {
     isPage: Boolean,
+    prefix: String,
   },
   components: {
     GridList,
@@ -182,6 +183,12 @@ export default {
     bucketPrefix(val) {
       this.$emit("update:prefix", val);
     },
+    prefix(val) {
+      if (val != this.bucketPrefix && val.includes(this.bucketPrefix)) {
+        const folder = val.replace(this.bucketPrefix, "").replace("/", "");
+        this.goNext(folder);
+      }
+    },
   },
   methods: {
     goPath(to) {
@@ -191,6 +198,9 @@ export default {
       } else {
         this.curPath = to;
       }
+    },
+    goNext(folder) {
+      this.goPath(this.path + "/" + folder);
     },
     onRowCheck({ key }) {
       const idx = this.checked.indexOf(key);
@@ -204,7 +214,7 @@ export default {
       if (row.prefix) {
         if (this.objLoading !== false) return;
         this.objLoading = index;
-        this.goPath(this.path + "/" + row.name);
+        this.goNext(row.name);
         return;
       }
       this.fileIdx = this.fileList.findIndex((it) => it.url == row.url);
