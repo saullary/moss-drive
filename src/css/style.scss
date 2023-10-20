@@ -54,12 +54,9 @@ body.body--dark {
   background: none;
 }
 
-.q-btn-group  {
+.q-btn-group.rounded  {
   .q-btn-item {
-    min-height: 40px;
-  }
-  .q-btn {
-    width: 46px;
+    border-radius: 100px!important;
   }
 }
 

@@ -12,7 +12,7 @@
 </style>
 
 <script setup>
-import ImgList from "./explore/img-list.vue";
+import ExploreList from "./explore/explore-list.vue";
 </script>
 
 <template>
@@ -30,7 +30,7 @@ import ImgList from "./explore/img-list.vue";
       </div>
     </div>
   </div>
-  <div>
-    <img-list></img-list>
+  <div class="main-wrap">
+    <ExploreList></ExploreList>
   </div>
 </template>

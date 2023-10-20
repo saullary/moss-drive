@@ -26,17 +26,41 @@ body.body--dark {
           <img src="/img/mossy/mossyland.svg" height="28" class="ml-2" />
         </div>
         <div class="ml-5">
-          <q-btn
-            v-for="it in menus"
-            :key="it.path"
+          <q-btn-dropdown
+            v-if="asMobile"
+            color="primary"
             rounded
-            flat
-            :class="{
-              'bg-active': it.path == path,
-            }"
-            :to="'/mossyland' + it.path"
-            >{{ it.label }}</q-btn
+            unelevated
+            :label="menus.find((it) => it.path == path).label"
           >
+            <q-list>
+              <q-item
+                v-for="it in menus"
+                :key="it.path"
+                clickable
+                v-close-popup
+                :to="'/mossyland' + it.path"
+              >
+                <q-item-section>
+                  <q-item-label>{{ it.label }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
+
+          <template v-else>
+            <q-btn
+              v-for="it in menus"
+              :key="it.path"
+              rounded
+              flat
+              :class="{
+                'bg-active': it.path == path,
+              }"
+              :to="'/mossyland' + it.path"
+              >{{ it.label }}</q-btn
+            >
+          </template>
         </div>
       </div>
     </div>
@@ -45,14 +69,21 @@ body.body--dark {
 </template>
 
 <script>
+import { useQuasar } from "quasar";
+
 export default {
   computed: {
     path() {
       return this.$route.path.replace("/mossyland", "");
     },
+    asMobile() {
+      return this.screen.width < 690;
+    },
   },
   data() {
+    const { screen } = useQuasar();
     return {
+      screen,
       menus: [
         {
           path: "/moments",
