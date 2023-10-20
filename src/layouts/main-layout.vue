@@ -57,9 +57,9 @@ import MainHeader from "./main-header/main-header.vue";
 
     <q-drawer :width="280" class="main-drawer bg-primary" v-model="leftDrawerOpen" show-if-above>
       <q-list>
-        <div class="">
+        <a href="./drive" class="">
           <img src="/img/logo.svg" height="80" />
-        </div>
+        </a>
         <div class="q-pa-md q-mb-lg ta-c">
           <q-btn href="/mossyland/explore" target="_blank" rounded class="btn-mossy">
             <img src="/img/mossy.png" width="40" />

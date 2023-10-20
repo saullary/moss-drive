@@ -19,14 +19,10 @@ import ExploreList from "./explore/explore-list.vue";
   <div class="ta-c bg-top pt-9 pb-9">
     <div class="">
       <div class="color-1 fz-30 fw-b">Welcome to Mossyland</div>
-      <div>Enter lens-handle or stone keywords Enter lens-handle or stone keywords</div>
+      <!-- <div>Enter</div> -->
       <div class="pos-r mt-5 d-ib">
         <img src="/img/mossy/ic-search.svg" width="32" class="y-center" style="left: 8px" />
-        <input
-          class="bdrs-100 m-search"
-          type="text"
-          placeholder="Enter lens-handle or stone keywords"
-        />
+        <input class="bdrs-100 m-search" type="text" placeholder="Enter stone keywords" />
       </div>
     </div>
   </div>

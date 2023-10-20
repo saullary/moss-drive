@@ -21,15 +21,16 @@ body.body--dark {
   <div class="pos-s z-100 top-0">
     <div class="main-wrap">
       <div class="bdrs-100 al-c bg-primary">
-        <div class="al-c q-py-sm">
-          <img src="/img/moss.svg" height="28" class="ml-5" />
-          <img src="/img/mossy/mossyland.svg" height="28" class="ml-2" />
-        </div>
+        <a href="./explore" class="al-c q-py-sm">
+          <img src="/img/moss.svg" :height="asMobile ? 24 : 28" class="ml-5" />
+          <img src="/img/mossy/mossyland.svg" :height="asMobile ? 22 : 28" class="ml-2" />
+        </a>
         <div class="ml-5">
           <q-btn-dropdown
             v-if="asMobile"
             color="primary"
             rounded
+            dense
             unelevated
             :label="menus.find((it) => it.path == path).label"
           >
