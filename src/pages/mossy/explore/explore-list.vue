@@ -22,8 +22,8 @@
   <div class="row q-col-gutter-md">
     <div class="col-6 col-sm-4 col-md-3" v-for="(it, i) in list" :key="i">
       <div class="d-flex bg-black pa-3 bdrs-10 pos-r">
-        <div class="flex-3 mr-2 h-flex">
-          <div class="fz-15 fw-b line-2">{{ it.title }}</div>
+        <div class="flex-3 shrink-1 mr-2 h-flex">
+          <div class="fz-15 fw-b line-2 wb-all mb-2">{{ it.title }}</div>
           <div class="al-c mt-auto">
             <q-checkbox
               v-model="it.star"
