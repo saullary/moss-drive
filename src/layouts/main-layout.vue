@@ -1,7 +1,6 @@
 <style lang="scss">
 .main-toolbar {
   min-height: 72px;
-  background: #1e293b;
   color: #fff;
 }
 @media (min-width: $breakpoint-md-min) {
@@ -22,7 +21,7 @@ import MainDrawer from "./main/main-drawer.vue";
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header class="bg-primary">
-      <q-toolbar class="main-toolbar">
+      <q-toolbar class="main-toolbar bg-header">
         <q-btn
           class="m-toggle-btn"
           flat

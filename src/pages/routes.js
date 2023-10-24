@@ -25,6 +25,13 @@ const routes = [
           title: "My Collections",
         },
       },
+      {
+        path: "/resource",
+        component: () => import("./resource/page-resource.vue"),
+        meta: {
+          title: "My Resources",
+        },
+      },
     ],
   },
   {

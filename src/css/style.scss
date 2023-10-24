@@ -20,7 +20,6 @@ input {
   }
 }
 
-
 $dark-color: #0F172A;
 :root {
   --q-dark: #0F172A;
@@ -35,6 +34,17 @@ body.body--dark {
 .bg-primary, .bg-info {
   color: $dark-color!important;
 }
+.bg-header, .bg-card-1 {
+  background: #1e293b;
+}
+.bg-card-1 {
+  border-radius: 4px;
+  .title {
+    font-weight: bold;
+    font-size: 15px;
+  }
+}
+
 .q-checkbox__inner {
   transform: scale(0.7)
 }

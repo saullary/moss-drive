@@ -64,7 +64,7 @@
         <img src="img/common/info-o.svg" width="16" class="ml-1" />
       </div>
       <div class="mt-3">
-        <q-btn outline class="full-width">Get More</q-btn>
+        <q-btn outline class="full-width" to="/resource">Get More</q-btn>
       </div>
     </div>
   </div>
@@ -72,6 +72,11 @@
 
 <script>
 export default {
+  computed: {
+    path() {
+      return this.$route.path;
+    },
+  },
   data() {
     return {
       links: [
