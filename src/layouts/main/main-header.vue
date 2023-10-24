@@ -18,7 +18,8 @@ import UploadIndex from "./upload-index.vue";
       v-model="searchKey"
       type="text"
       placeholder="Search"
-      class="bg-info bdrs-100 w100p top-search"
+      class="bdrs-100 w100p top-search"
+      :class="searchKey ? 'bg-white' : 'bg-info'"
     />
   </div>
 

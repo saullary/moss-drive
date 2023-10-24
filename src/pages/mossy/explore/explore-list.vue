@@ -32,7 +32,7 @@
               unchecked-icon="star_border"
               indeterminate-icon="star_border"
               size="lg"
-              label="1K"
+              :label="it.starNum"
               class="fz-12"
               :class="it.star ? 'color-1' : 'white-8'"
             />

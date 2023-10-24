@@ -1,20 +1,4 @@
 <style lang="scss">
-.main-drawer {
-  .q-item {
-    color: #333;
-    font-size: 15px;
-  }
-  .q-item.q-router-link--active,
-  .q-item--active {
-    color: #fff;
-    background: #0000006e;
-    font-weight: bold;
-  }
-}
-.btn-mossy {
-  padding: 6px 22px;
-  background: linear-gradient(0deg, rgb(0 0 0 / 50%), rgb(0 0 0 / 80%));
-}
 .main-toolbar {
   min-height: 72px;
   background: #1e293b;
@@ -31,7 +15,8 @@
 </style>
 
 <script setup>
-import MainHeader from "./main-header/main-header.vue";
+import MainHeader from "./main/main-header.vue";
+import MainDrawer from "./main/main-drawer.vue";
 </script>
 
 <template>
@@ -55,38 +40,8 @@ import MainHeader from "./main-header/main-header.vue";
       </q-toolbar>
     </q-header>
 
-    <q-drawer :width="280" class="main-drawer bg-primary" v-model="leftDrawerOpen" show-if-above>
-      <q-list>
-        <a href="./drive" class="">
-          <img src="/img/logo.svg" height="80" />
-        </a>
-        <div class="q-pa-md q-mb-lg ta-c">
-          <q-btn href="/mossyland/explore" target="_blank" rounded class="btn-mossy">
-            <img src="/img/mossy.png" width="40" />
-            <span class="fz-18 ml-2">Mossyland</span>
-          </q-btn>
-        </div>
-
-        <q-item
-          v-for="it in links"
-          :key="it.title"
-          clickable
-          tag="a"
-          :target="it.link ? '_blank' : null"
-          :href="it.link"
-          :to="it.to"
-          :active="isActive(it)"
-        >
-          <q-item-section v-if="it.icon" avatar>
-            <!-- <q-icon :name="it.icon" /> -->
-            <icon-drawer :name="it.icon" :active="isActive(it)" />
-          </q-item-section>
-
-          <q-item-section>
-            <q-item-label>{{ it.title }}</q-item-label>
-          </q-item-section>
-        </q-item>
-      </q-list>
+    <q-drawer :width="280" class="bg-primary" v-model="leftDrawerOpen" show-if-above>
+      <main-drawer />
     </q-drawer>
 
     <q-page-container>
@@ -113,31 +68,8 @@ export default {
   },
   data() {
     return {
-      links: [
-        {
-          title: "My Drive",
-          icon: "driver",
-          to: "/drive",
-        },
-        {
-          title: "My Stones",
-          icon: "stones",
-          to: "/stone",
-        },
-        {
-          title: "My Collections",
-          icon: "star",
-          // link: "https://quasar.dev/vue-components/table",
-          to: "/collection",
-        },
-      ],
       leftDrawerOpen: false,
     };
-  },
-  methods: {
-    isActive(it) {
-      return this.$route.path.indexOf(it.to) == 0;
-    },
   },
 };
 </script>
