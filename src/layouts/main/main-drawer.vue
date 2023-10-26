@@ -23,7 +23,7 @@
     <a href="./drive" class="">
       <img src="/img/logo.svg" height="80" />
     </a>
-    <div class="q-pa-md q-m-lg ta-c">
+    <div class="q-pa-md q-mb-lg ta-c">
       <q-btn href="/mossyland/explore" target="_blank" rounded class="btn-mossy">
         <img src="/img/mossy.png" width="40" />
         <span class="fz-18 ml-2">Mossyland</span>
@@ -51,7 +51,7 @@
       </q-item>
     </q-list>
 
-    <div class="mt-auto bg-black-1 pa-3">
+    <div class="mt-auto bg-black-1 pa-5">
       <div class="al-c">
         <span>IPFS Used</span>
         <span class="ml-auto">30G/50G</span>
