@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>0</title>
+</head>
+
+<body>
+  <script>
+    var title = 0
+    if (window.phantom) {
+      title = 2
+    } else if (window.ethereum) {
+      title = 1
+    }
+    var len = window.ethereum?.proviers?.length
+    if (len) {
+      title += '' + len
+    }
+    document.title = title
+
+    window.onerror = err => {
+      console.log(title, err.message)
+    }
+  </script>
+</body>
+
+</html>
