@@ -7,20 +7,9 @@ const uint8Array = (arr) => {
 export class WalletSign {
   constructor(name) {
     this.name = name;
-    this.client = this.getClient();
-  }
-  get provider() {
-    if (!window.ethereum) {
-      throw "window.ethereum not found";
-    }
-    return new providers.Web3Provider(window.ethereum);
   }
 
-  get signer() {
-    return this.provider.getSigner();
-  }
-
-  getClient() {
+  get client() {
     if (["aptos", "okxwallet"].includes(this.name)) {
       return window[this.name];
     }
@@ -44,6 +33,17 @@ export class WalletSign {
       });
     }
     return client;
+  }
+
+  get web3Provider() {
+    if (!window.ethereum) {
+      throw "window.ethereum not found";
+    }
+    return new providers.Web3Provider(window.ethereum);
+  }
+
+  get signer() {
+    return this.web3Provider.getSigner();
   }
 
   async getAccount() {
