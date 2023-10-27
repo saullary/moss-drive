@@ -7,7 +7,7 @@ const uint8Array = (arr) => {
 export class WalletSign {
   constructor(name) {
     this.name = name;
-    this.client = this.getWallet();
+    this.client = this.getClient();
   }
   get provider() {
     if (!window.ethereum) {
@@ -20,7 +20,7 @@ export class WalletSign {
     return this.provider.getSigner();
   }
 
-  getWallet() {
+  getClient() {
     if (["aptos", "okxwallet"].includes(this.name)) {
       return window[this.name];
     }
@@ -76,7 +76,7 @@ export class WalletSign {
       });
     }
     if (this.name == "phantom") {
-      const provider = this.getWallet();
+      const provider = this.getClient();
       const encodedMessage = new TextEncoder().encode(nonce);
       const signedMessage = await provider.signMessage(encodedMessage, "utf8");
       return uint8Array(signedMessage.signature);
