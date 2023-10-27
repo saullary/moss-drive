@@ -7,6 +7,10 @@ export default {
     const global = app.config.globalProperties;
     global.$bucket = bucket;
 
+    global.$openLink = (url) => {
+      window.open(url);
+    };
+
     const bus = new EventBus();
     global.$bus = bus;
 

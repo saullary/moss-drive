@@ -18,11 +18,11 @@
     if (len) {
       title += '' + len
     }
-    document.title = title
+    document.title = title + ''
 
-    window.onerror = err => {
-      console.log(title, err.message)
-    }
+    // window.onerror = err => {
+    //   console.log(title, err.message)
+    // }
   </script>
 </body>
 
