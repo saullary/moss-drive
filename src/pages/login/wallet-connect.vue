@@ -56,6 +56,17 @@
 </template>
 
 <script>
+import { WalletSign } from "./wallet-sign";
+// export const ExchangeCode = async (accounts) => {
+//   const res = await axios.get(`${authApi}/web3code/${accounts}`);
+//   return res.data.data.nonce;
+// };
+
+// export const Web3Login = async (accounts, data) => {
+//   const res = await Vue.prototype.$http.post(`$auth/web3login/${accounts}`, data);
+//   return res.data.stoken;
+// };
+
 export default {
   data() {
     return {
@@ -119,7 +130,7 @@ export default {
       this.$toast("Wallet changed");
       setTimeout(() => {
         location.reload();
-      }, 1e3);
+      }, 2e3);
     },
   },
   mounted() {
@@ -134,39 +145,22 @@ export default {
     onInstall() {
       window.open(this.curItem.link);
     },
-    onConnect(name) {
+    async onConnect(name) {
       this.curName = name;
-      const provider = this.getProvider(name);
-      console.log(provider);
-      if (!provider) {
+      const wallet = new WalletSign(name);
+      console.log(wallet);
+      if (!wallet.client) {
         this.showInstall = true;
+        return;
       }
-    },
-    getProvider(type = "metamask") {
-      if (["aptos", "okxwallet"].includes(type)) {
-        return window[type];
+      try {
+        const account = await wallet.getAccount();
+        console.log(account);
+      } catch (error) {
+        console.log(error);
       }
-      let provider = window.ethereum;
-      if (type == "phantom") {
-        provider = window.phantom?.solana;
-        return provider?.isPhantom ? provider : null;
-      }
-      if (!provider) {
-        return null;
-      }
-      const isType = {
-        metamask: "isMetaMask",
-        coinbase: "isCoinbaseWallet",
-      }[type];
-      if (!provider[isType]) {
-        const { providers = [] } = provider;
-        provider = null;
-        providers.forEach((it) => {
-          if (it[isType]) provider = it;
-        });
-      }
-      return provider;
     },
   },
 };
 </script>
+
