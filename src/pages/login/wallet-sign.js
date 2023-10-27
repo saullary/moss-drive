@@ -1,4 +1,4 @@
-// import ethers from "ethers";
+import { providers } from "ethers";
 
 const uint8Array = (arr) => {
   return Array.prototype.map.call(arr, (x) => ("00" + x.toString(16)).slice(-2)).join("");
@@ -13,7 +13,7 @@ export class WalletSign {
     if (!window.ethereum) {
       throw "window.ethereum not found";
     }
-    return new ethers.providers.Web3Provider(window.ethereum);
+    return new providers.Web3Provider(window.ethereum);
   }
 
   get signer() {
@@ -24,26 +24,26 @@ export class WalletSign {
     if (["aptos", "okxwallet"].includes(this.name)) {
       return window[this.name];
     }
-    let provider = window.ethereum;
+    let client = window.ethereum;
     if (this.name == "phantom") {
-      provider = window.phantom?.solana;
-      return provider?.isPhantom ? provider : null;
+      client = window.phantom?.solana;
+      return client?.isPhantom ? client : null;
     }
-    if (!provider) {
+    if (!client) {
       return null;
     }
     const isType = {
       metamask: "isMetaMask",
       coinbase: "isCoinbaseWallet",
     }[this.name];
-    if (!provider[isType]) {
-      const { providers = [] } = provider;
-      provider = null;
+    if (!client[isType]) {
+      const { providers = [] } = client;
+      client = null;
       providers.forEach((it) => {
-        if (it[isType]) provider = it;
+        if (it[isType]) client = it;
       });
     }
-    return provider;
+    return client;
   }
 
   async getAccount() {
@@ -69,10 +69,10 @@ export class WalletSign {
     }
     if (this.name == "okxwallet") {
       const msg = `0x${Buffer.from(nonce, "utf8").toString("hex")}`;
-      const accounts = await this.getAccounts();
+      const account = await this.getAccount();
       return window.okxwallet.request({
         method: "personal_sign",
-        params: [msg, accounts],
+        params: [msg, [account]],
       });
     }
     if (this.name == "phantom") {
