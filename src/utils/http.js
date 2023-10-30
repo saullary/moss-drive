@@ -1,15 +1,24 @@
 import Axios from "axios";
 
-let baseURL = "https://h.foreverland.xyz";
-if (/.com/.test(location.host)) {
-  baseURL = "https://api.4everland.org";
-}
+const { VITE_BASE_URL: baseURL, VITE_AUTH_URL: authURL } = import.meta.env;
+// console.log(baseURL, authURL);
 const http = Axios.create({
   baseURL,
-  headers: {
-    Authorization: localStorage.token, // "",
-  },
 });
+
+http.interceptors.request.use(
+  (config) => {
+    const { token } = localStorage;
+    config.url = config.url.replace("$auth", authURL);
+    if (token) {
+      config.headers.common["Authorization"] = token;
+    }
+    return config;
+  },
+  (err) => {
+    return Promise.reject(err);
+  }
+);
 
 http.interceptors.response.use(
   (res) => {

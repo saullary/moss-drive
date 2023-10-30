@@ -21,7 +21,7 @@ export default {
       }
       $q.loading.show(opts);
     };
-    window.$loading.close = (group) => {
+    window.$loadingClose = (group) => {
       $q.loading.hide(group);
     };
     window.$toast = (message, opts = "warning") => {

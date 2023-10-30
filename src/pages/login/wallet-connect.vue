@@ -1,6 +1,6 @@
 <template>
   <!-- <q-btn color="primary" @click="onConnect">Connect Wallet</q-btn> -->
-  <q-btn-dropdown split color="primary" @click="onConnect('metamask')">
+  <q-btn-dropdown split color="primary" @click="onConnect(defItem.type)">
     <template #label>
       <img :src="defItem.img" width="26" />
       <span class="ml-3">{{ defItem.label }}</span>
@@ -8,10 +8,10 @@
     <q-list>
       <q-item
         v-for="it in walletList.slice(1)"
-        :key="it.name"
+        :key="it.type"
         clickable
         v-close-popup
-        @click="onConnect(it.name)"
+        @click="onConnect(it.type)"
       >
         <q-item-section avatar>
           <img :src="it.img" width="26" />
@@ -73,6 +73,7 @@ export default {
       walletList: [
         {
           name: "metamask",
+          type: "METAMASK",
           label: "MetaMask",
           sub: "Popular",
           img: "https://dashboard.4everland.org/img/metamask.3a5d5844.png",
@@ -81,6 +82,7 @@ export default {
         },
         {
           name: "phantom",
+          type: "SOLANA",
           label: "Phantom",
           sub: "solana",
           img: "https://dashboard.4everland.org/img/phantom.e54e87fd.png",
@@ -89,6 +91,7 @@ export default {
         },
         {
           name: "coinbase",
+          type: "COINBASE",
           label: "CoinBase Wallet",
           img: "https://dashboard.4everland.org/img/coinbase.e8af2fcc.png",
           desc: "A crypto wallet on CoinBase",
@@ -96,6 +99,7 @@ export default {
         },
         {
           name: "aptos",
+          type: "PETRA",
           label: "Petra Aptos Wallet",
           img: "https://dashboard.4everland.org/img/petra.097a9d78.svg",
           desc: "A crypto wallet on Aptos",
@@ -103,6 +107,7 @@ export default {
         },
         {
           name: "okxwallet",
+          type: "OKX",
           label: "OKX Wallet",
           img: "https://dashboard.4everland.org/img/okx.1028cc3e.svg",
           desc: "One interoperable wallet for all your Web3 needs",
@@ -110,7 +115,7 @@ export default {
         },
       ],
       showInstall: false,
-      curName: "",
+      curType: "",
       checkFlag: -1,
       checkTimes: 0,
     };
@@ -120,7 +125,7 @@ export default {
       return this.walletList[0];
     },
     curItem() {
-      return this.walletList.find((it) => it.name == this.curName) || this.defItem;
+      return this.walletList.find((it) => it.type == this.curType) || this.defItem;
     },
   },
   watch: {
@@ -145,20 +150,49 @@ export default {
     onInstall() {
       window.open(this.curItem.link);
     },
-    async onConnect(name) {
-      this.curName = name;
-      const wallet = new WalletSign(name);
-      console.log(wallet);
+    async onConnect(type) {
+      this.curType = type;
+      const wallet = new WalletSign(type);
       if (!wallet.client) {
         this.showInstall = true;
         return;
       }
       try {
+        this.$loading();
         const account = await wallet.getAccount();
-        console.log(account);
+        const nonce = await this.getNonce(account);
+        const signature = await wallet.getSign(nonce);
+        console.log({
+          type,
+          account,
+          signature,
+        });
+        const stoken = await this.getStoken(account, {
+          signature,
+          walletType: type,
+        });
+        console.log({
+          stoken,
+        });
       } catch (error) {
         console.log(error);
       }
+      this.$loadingClose();
+    },
+    async getNonce(account) {
+      const { data } = await this.$http.get(`$auth/web3code/${account}`);
+      return data.nonce;
+    },
+    async getStoken(account, params) {
+      const body = {
+        appName: "BUCKET",
+        // inviteCode,
+        type: "ETH",
+        // capT: capToken,
+        ...params,
+      };
+      const { data } = await this.$http.post(`$auth/web3login/${account}`, body);
+      return data.stoken;
     },
   },
 };

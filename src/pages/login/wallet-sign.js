@@ -1,20 +1,33 @@
-import { providers } from "ethers";
+import { providers, utils } from "ethers";
 
-const uint8Array = (arr) => {
+function uint8Array() {
   return Array.prototype.map.call(arr, (x) => ("00" + x.toString(16)).slice(-2)).join("");
-};
+}
+function strToHex(str) {
+  //return `0x${Buffer.from(nonce, "utf8").toString("hex")}`;
+  return utils.hexlify(utils.toUtf8Bytes(str));
+}
+
+const METAMASK = "METAMASK";
+const SOLANA = "SOLANA";
+const COINBASE = "COINBASE";
+const PETRA = "PETRA";
+const OKX = "OKX";
 
 export class WalletSign {
-  constructor(name) {
-    this.name = name;
+  constructor(type) {
+    this.type = type;
   }
 
   get client() {
-    if (["aptos", "okxwallet"].includes(this.name)) {
-      return window[this.name];
+    if (this.type == PETRA) {
+      return window.aptos;
+    }
+    if (this.type == OKX) {
+      return window.okxwallet;
     }
     let client = window.ethereum;
-    if (this.name == "phantom") {
+    if (this.type == SOLANA) {
       client = window.phantom?.solana;
       return client?.isPhantom ? client : null;
     }
@@ -22,9 +35,9 @@ export class WalletSign {
       return null;
     }
     const isType = {
-      metamask: "isMetaMask",
-      coinbase: "isCoinbaseWallet",
-    }[this.name];
+      [METAMASK]: "isMetaMask",
+      [COINBASE]: "isCoinbaseWallet",
+    }[this.type];
     if (!client[isType]) {
       const { providers = [] } = client;
       client = null;
@@ -47,41 +60,40 @@ export class WalletSign {
   }
 
   async getAccount() {
-    if (["metamask", "okxwallet"].includes(this.name)) {
+    if ([METAMASK, OKX, COINBASE].includes(this.type)) {
       const accounts = await this.client.request({
         method: "eth_requestAccounts",
       });
       return accounts[0];
     }
-    if (this.name == "phantom") {
+    if (this.type == SOLANA) {
       const resp = await window.solana.connect();
       return resp.publicKey.toString();
     }
-    if (this.name == "aptos") {
+    if (this.type == PETRA) {
       const { address } = await window.aptos.connect();
       return address;
     }
   }
 
   async getSign(nonce) {
-    if (this.name == "metamask") {
+    if (this.type == METAMASK) {
       return this.signer.signMessage(nonce);
     }
-    if (this.name == "okxwallet") {
-      const msg = `0x${Buffer.from(nonce, "utf8").toString("hex")}`;
+    if (this.type == OKX || this.type == COINBASE) {
+      const msg = strToHex(nonce);
       const account = await this.getAccount();
-      return window.okxwallet.request({
+      return this.client.request({
         method: "personal_sign",
-        params: [msg, [account]],
+        params: [msg, account],
       });
     }
-    if (this.name == "phantom") {
-      const provider = this.getClient();
+    if (this.type == SOLANA) {
       const encodedMessage = new TextEncoder().encode(nonce);
-      const signedMessage = await provider.signMessage(encodedMessage, "utf8");
+      const signedMessage = await this.client.signMessage(encodedMessage, "utf8");
       return uint8Array(signedMessage.signature);
     }
-    if (this.name == "aptos") {
+    if (this.type == PETRA) {
       const { signature } = await window.aptos.signMessage({
         nonce,
         message: nonce,
