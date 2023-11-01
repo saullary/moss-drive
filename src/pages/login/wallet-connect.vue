@@ -112,6 +112,7 @@ const walletList = [
   },
 ];
 export default {
+  emits: ["login"],
   data() {
     return {
       walletList,
@@ -154,12 +155,12 @@ export default {
     },
     async onConnect(type) {
       this.curType = type;
-      const wallet = new WalletSign(type);
-      if (!wallet.client) {
-        this.showInstall = true;
-        return;
-      }
       try {
+        const wallet = new WalletSign(type);
+        if (!wallet.client) {
+          this.showInstall = true;
+          return;
+        }
         this.loading = true;
         const account = await wallet.getAccount();
         const nonce = await this.getNonce(account);
@@ -174,6 +175,9 @@ export default {
           walletType: type,
         });
         console.log({
+          stoken,
+        });
+        this.$emit("login", {
           stoken,
         });
       } catch (error) {

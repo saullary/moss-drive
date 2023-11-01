@@ -6,11 +6,14 @@ import "@quasar/extras/material-icons/material-icons.css";
 import "quasar/src/css/index.sass";
 
 import router from "./router";
+import store, { setState, setStore } from "./store";
 import utils from "./utils";
 import "./css/style.scss";
 import Components from "./components";
 
 const app = createApp(App);
+const global = app.config.globalProperties;
+
 app.use(Quasar, {
   plugins: {
     Dialog,
@@ -22,6 +25,10 @@ app.use(Quasar, {
 app.use(utils);
 
 app.use(router);
+app.use(store);
+global.$setState = setState;
+global.$setStore = setStore;
+
 app.use(Components);
 
 app.mount("#app");
