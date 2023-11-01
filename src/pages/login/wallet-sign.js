@@ -1,6 +1,6 @@
 import { providers, utils } from "ethers";
 
-function uint8Array() {
+function uint8Array(arr) {
   return Array.prototype.map.call(arr, (x) => ("00" + x.toString(16)).slice(-2)).join("");
 }
 function strToHex(str) {
