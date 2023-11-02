@@ -1,5 +1,6 @@
 import Axios from "axios";
-import store from "../store";
+import store, { setStore } from "../store";
+import router from "../router";
 
 const { VITE_BASE_URL: baseURL, VITE_AUTH_URL: authURL } = import.meta.env;
 // console.log(baseURL, authURL);
@@ -10,14 +11,14 @@ const http = Axios.create({
 let refreshing = false;
 const pendingQueue = [];
 
-function getToken(isAccess) {
-  const key = isAccess ? "accessToken" : "refreshToken";
+function getToken(isRefresh) {
+  const key = isRefresh ? "refreshToken" : "accessToken";
   return store.state.loginData[key];
 }
 
 http.interceptors.request.use(
   (config) => {
-    const token = getToken(1);
+    const token = getToken();
     if (token) {
       config.headers.common["Authorization"] = token;
     }
@@ -75,28 +76,47 @@ async function handleError(status, config, data) {
   }
   if (status == 401 || data.code == 401) {
     refreshing = true;
-    const res = await refreshToken();
-    if (res.status === 200) {
+    const isOk = await refreshToken();
+    if (isOk) {
       pendingQueue.forEach(({ config, resolve }) => {
         resolve(http(config));
       });
       return http(config);
     } else {
-      console.log("refresh token invalid");
+      console.log("redirect to login");
+      router.replace({
+        path: "/login",
+        // query: {
+        //   redirect:
+        // }
+      });
+      return;
     }
   }
   window.$alert(data.msg);
 }
 
 async function refreshToken() {
-  const res = await Axios.get(authURL + "/refresh", {
-    params: {
-      token: getToken(0),
-    },
-  });
-  // localStorage.setItem("access_token", res.data.accessToken);
-  // localStorage.setItem("refresh_token", res.data.refreshToken);
-  return res;
+  try {
+    const res = await Axios.post(
+      authURL + "/refresh",
+      {
+        refreshToken: getToken(1),
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + getToken(),
+        },
+      }
+    );
+    setStore({
+      loginData: res.data,
+    });
+    return res.status == 200;
+  } catch (error) {
+    console.log("refresh err", error);
+  }
+  return false;
 }
 
 export default http;
