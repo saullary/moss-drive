@@ -2,7 +2,7 @@ import Axios from "axios";
 import store, { setStore } from "../store";
 import router from "../router";
 
-const { VITE_BASE_URL: baseURL, VITE_AUTH_URL: authURL } = import.meta.env;
+const { VITE_BASE_URL: baseURL, VITE_AUTH_API, VITE_PAY_API } = import.meta.env;
 // console.log(baseURL, authURL);
 const http = Axios.create({
   baseURL,
@@ -18,11 +18,14 @@ function getToken(isRefresh) {
 
 http.interceptors.request.use(
   (config) => {
+    config.url = config.url.replace("$auth", VITE_AUTH_API).replace("$pay", VITE_PAY_API);
     const token = getToken();
-    if (token) {
-      config.headers.common["Authorization"] = token;
+    if (config.url.includes(VITE_AUTH_API)) {
+      token = "Bearer " + token;
     }
-    config.url = config.url.replace("$auth", authURL);
+    if (token) {
+      config.headers["Authorization"] = token;
+    }
     return config;
   },
   (err) => {
@@ -84,11 +87,9 @@ async function handleError(status, config, data) {
       return http(config);
     } else {
       console.log("redirect to login");
+      localStorage.loginTo = location.pathname + location.search;
       router.replace({
         path: "/login",
-        // query: {
-        //   redirect:
-        // }
       });
       return;
     }
@@ -99,7 +100,7 @@ async function handleError(status, config, data) {
 async function refreshToken() {
   try {
     const res = await Axios.post(
-      authURL + "/refresh",
+      VITE_AUTH_API + "/refresh",
       {
         refreshToken: getToken(1),
       },

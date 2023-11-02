@@ -9,11 +9,27 @@ import WalletConnect from "./wallet-connect.vue";
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   data() {
     return {};
   },
+  computed: {
+    ...mapState({
+      loginData: (s) => s.loginData,
+    }),
+  },
+  created() {
+    if (this.loginData.uid) {
+      this.$router.replace("/");
+    }
+  },
   methods: {
+    onRedirect() {
+      const redirectTo = localStorage.loginTo || "/";
+      this.$router.replace(redirectTo);
+    },
     async ssoLogin({ stoken }) {
       try {
         this.$loading("Login....");
@@ -21,7 +37,7 @@ export default {
         this.$setStore({
           loginData: data,
         });
-        console.log(this.$store.state.loginData);
+        this.onRedirect();
       } catch (error) {
         console.log(error);
       }

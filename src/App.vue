@@ -5,9 +5,15 @@
 
 <script>
 import { useQuasar } from "quasar";
+import { mapState } from "vuex";
 
 export default {
   name: "App",
+  computed: {
+    ...mapState({
+      loginData: (s) => s.loginData,
+    }),
+  },
   setup() {
     const $q = useQuasar();
     window.$q = $q;
@@ -77,6 +83,17 @@ export default {
         ...opts,
       });
     };
+  },
+  mounted() {
+    if (this.loginData.uid) {
+      this.getUsageInfo();
+    }
+  },
+  methods: {
+    async getUsageInfo() {
+      const { data } = await this.$http.get(`$pay/usage`);
+      console.log(data);
+    },
   },
 };
 </script>

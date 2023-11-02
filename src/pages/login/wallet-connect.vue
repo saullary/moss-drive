@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { WalletSign } from "./wallet-sign";
 // export const ExchangeCode = async (accounts) => {
 //   const res = await axios.get(`${authApi}/web3code/${accounts}`);
@@ -124,6 +125,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      isFocus: (s) => s.isFocus,
+    }),
     defItem() {
       return this.walletList[0];
     },
@@ -132,6 +136,9 @@ export default {
     },
   },
   watch: {
+    isFocus(val) {
+      if (val) this.checkTimes++;
+    },
     checkFlag(val, old) {
       console.log("wallet-check", val);
       if (old == -1) return;
@@ -141,11 +148,7 @@ export default {
       }, 2e3);
     },
   },
-  mounted() {
-    window.onfocus = () => {
-      this.checkTimes++;
-    };
-  },
+  mounted() {},
   methods: {
     onLoad() {
       this.checkFlag = this.$refs.iframe.contentDocument.title;
