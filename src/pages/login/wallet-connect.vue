@@ -48,6 +48,7 @@
   </q-dialog>
 
   <iframe
+    class="d-n"
     @load="onLoad"
     ref="iframe"
     :src="'/check-wallet.html?t=' + checkTimes"

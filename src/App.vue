@@ -11,7 +11,8 @@ export default {
   name: "App",
   computed: {
     ...mapState({
-      loginData: (s) => s.loginData,
+      uid: (s) => s.loginData.uid,
+      // token: (s) => s.loginData.accessToken,
     }),
   },
   setup() {
@@ -84,12 +85,20 @@ export default {
       });
     };
   },
+  watch: {
+    uid() {
+      this.onInit();
+    },
+  },
   mounted() {
-    if (this.loginData.uid) {
-      this.getUsageInfo();
-    }
+    this.onInit();
   },
   methods: {
+    async onInit() {
+      if (this.uid) {
+        this.getUsageInfo();
+      }
+    },
     async getUsageInfo() {
       const { data } = await this.$http.get(`$pay/usage`);
       console.log(data);

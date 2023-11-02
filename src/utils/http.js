@@ -19,7 +19,7 @@ function getToken(isRefresh) {
 http.interceptors.request.use(
   (config) => {
     config.url = config.url.replace("$auth", VITE_AUTH_API).replace("$pay", VITE_PAY_API);
-    const token = getToken();
+    let token = getToken();
     if (config.url.includes(VITE_AUTH_API)) {
       token = "Bearer " + token;
     }
@@ -57,13 +57,15 @@ http.interceptors.response.use(
   async (error) => {
     // , status, statusText, config = {}
     const { data = {}, status, config } = error.response || {};
-    data.msg = data.message || error.message;
-    const pending = await handleError(status, config, data);
+    const msg = data.message || error.message;
+    const pending = await handleError(status, config, {
+      msg,
+    });
     if (pending) {
       return pending;
     }
-    error.message = data.msg;
-    error.code = data.code;
+    error.message = msg;
+    // error.code = data.code;
     return Promise.reject(error);
   }
 );
@@ -111,7 +113,7 @@ async function refreshToken() {
       }
     );
     setStore({
-      loginData: res.data,
+      loginData: res.data.data,
     });
     return res.status == 200;
   } catch (error) {
