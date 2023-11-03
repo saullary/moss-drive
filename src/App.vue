@@ -123,17 +123,22 @@ export default {
       const {
         usedIpfsStorage,
         ipfsStorage,
+        airdropIpfsStorage,
         // ipfsDefaultStorage,
         // ipfsStorageExpired,
         // ipfsStorageStart,
       } = data;
+      let totalStorage = ipfsStorage;
+      if (!totalStorage) {
+        totalStorage = airdropIpfsStorage;
+      }
       this.$setStore({
         usageInfo: {
-          usedIpfsStorage,
+          totalStorage,
           ipfsStorage,
-          perc: usedIpfsStorage / ipfsStorage,
+          perc: usedIpfsStorage / totalStorage,
           used: getFileSize(usedIpfsStorage),
-          total: getFileSize(ipfsStorage),
+          total: getFileSize(totalStorage),
         },
       });
     },
