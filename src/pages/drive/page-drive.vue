@@ -76,7 +76,9 @@ export default {
         });
         this.bucketName = "moss-bucket-" + this.uid.slice(-8);
         this.$bucket.defBucket = this.bucketName;
-        await this.checkBucket();
+        if (localStorage.moss_bucket != this.bucketName) {
+          await this.checkBucket();
+        }
         this.isCreated = true;
       } catch (error) {
         console.log(error);
@@ -88,6 +90,7 @@ export default {
       if (!list.find((it) => it.Name == this.bucketName)) {
         await this.$bucket.createBucket(this.bucketName);
       }
+      localStorage.moss_bucket = this.bucketName;
     },
   },
 };
