@@ -2,20 +2,19 @@
 import { S3 } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
 import { getFileSize, limitTask } from "./helper";
+const { VITE_BUCKET_ENDPOINT } = import.meta.env;
 
 const bucket = {
   client: null,
+  defBucket: null,
   listParams: null,
   getFileSize,
   limitTask,
-  setClient(apiKey, apiSecret) {
+  setClient(credentials) {
     this.client = new S3({
-      endpoint: "https://endpoint.4everland.co",
+      endpoint: VITE_BUCKET_ENDPOINT,
       region: "eu-west-2",
-      credentials: {
-        accessKeyId: apiKey,
-        secretAccessKey: apiSecret,
-      },
+      credentials,
     });
   },
   checkClient() {
@@ -60,7 +59,7 @@ const bucket = {
   },
   listObjects(params) {
     if (!params.Bucket) {
-      params.Bucket = this.listParams.Bucket;
+      params.Bucket = this.defBucket;
     }
     let prefix = params.Prefix;
     if ("folder" in params) {

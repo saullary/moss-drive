@@ -152,7 +152,7 @@ export default {
     },
   },
   created() {
-    this.initBucket();
+    this.getList();
     this.$bus.on("drive-refresh", () => {
       this.getList();
     });
@@ -220,26 +220,7 @@ export default {
       this.fileIdx = this.fileList.findIndex((it) => it.url == row.url);
       this.showPreview = true;
     },
-    async initBucket() {
-      try {
-        const testKey = this.$route.query.testKey;
-        if (testKey) {
-          localStorage.testKey = testKey;
-        }
-        if (localStorage.testKey) {
-          this.$bucket.setClient(localStorage.testKey, "ZraPQHA7T6y0Ut3+Dd3eV5yDxE3hC2bvRFgcLYIE");
-          this.bucketName = "qs3";
-          this.$bucket.defBucket = this.bucketName;
-          this.objLoading = true;
-          await this.checkBucket();
-          await this.getList();
-        }
-      } catch (error) {
-        console.log(error);
-        this.loadErr = error.message;
-      }
-      this.objLoading = false;
-    },
+
     async onLoad(index, done) {
       console.log(index);
       await this.getList(true);
@@ -287,12 +268,6 @@ export default {
           window.$toast(this.loadErr);
         }
         this.objLoading = false;
-      }
-    },
-    async checkBucket() {
-      const list = await this.$bucket.listBuckets();
-      if (!list.find((it) => it.Name == this.bucketName)) {
-        await this.$bucket.createBucket(this.bucketName);
       }
     },
   },

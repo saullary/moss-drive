@@ -95,8 +95,22 @@ export default {
   },
   methods: {
     async onInit() {
-      if (this.uid) {
-        this.getUsageInfo();
+      try {
+        this.checkRoute();
+        if (this.uid) {
+          await this.getUsageInfo();
+          if (this.$route.path == "/") {
+            this.$router.replace("/drive");
+          }
+        }
+      } catch (error) {
+        this.$alert(error.message);
+      }
+    },
+    checkRoute() {
+      const { meta } = this.$route;
+      if (!this.uid && !meta.noUid) {
+        this.$router.replace("/login");
       }
     },
     async getUsageInfo() {

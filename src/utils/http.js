@@ -2,7 +2,7 @@ import Axios from "axios";
 import store, { setStore } from "../store";
 import router from "../router";
 
-const { VITE_BASE_URL: baseURL, VITE_AUTH_API, VITE_PAY_API } = import.meta.env;
+const { VITE_BASE_URL: baseURL, VITE_AUTH_API, VITE_BUCKET_API, VITE_PAY_API } = import.meta.env;
 // console.log(baseURL, authURL);
 const http = Axios.create({
   baseURL,
@@ -18,7 +18,10 @@ function getToken(isRefresh) {
 
 http.interceptors.request.use(
   (config) => {
-    config.url = config.url.replace("$auth", VITE_AUTH_API).replace("$pay", VITE_PAY_API);
+    config.url = config.url
+      .replace("$auth", VITE_AUTH_API)
+      .replace("$bucket", VITE_BUCKET_API)
+      .replace("$pay", VITE_PAY_API);
     let token = getToken();
     if (config.url.includes(VITE_AUTH_API)) {
       token = "Bearer " + token;
@@ -96,7 +99,9 @@ async function handleError(status, config, data) {
       return;
     }
   }
-  window.$alert(data.msg);
+  if (config._tipMsg) {
+    window.$alert(data.msg);
+  }
 }
 
 async function refreshToken() {

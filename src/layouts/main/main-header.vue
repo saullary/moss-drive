@@ -39,15 +39,35 @@ import UploadIndex from "./upload-index.vue";
     <upload-index v-if="inDrive" />
   </q-btn>
 
-  <q-btn class="ml-3" color="info" rounded :round="asMobile" :size="btnSize" @click="onWallet">
-    <q-avatar size="22px">
-      <img src="/img/metamask.png" />
-    </q-avatar>
-    <span v-if="!asMobile" class="q-ml-sm">Connect Wallet</span>
+  <q-btn
+    v-if="uid"
+    class="ml-3"
+    :class="{
+      'q-px-sm': !asMobile,
+    }"
+    color="info"
+    rounded
+    :round="asMobile"
+    :size="btnSize"
+  >
+    <m-avatar :hash="uid"></m-avatar>
+    <span v-if="!asMobile" class="q-ml-sm">{{ uid.cutStr(4, 4) }}</span>
+
+    <q-menu style="width: 130px" auto-close>
+      <q-list>
+        <q-item clickable v-if="asMobile">
+          <q-item-section>{{ uid.cutStr(6, 4) }}</q-item-section>
+        </q-item>
+        <q-item clickable @click="onLogout">
+          <q-item-section>Logout</q-item-section>
+        </q-item>
+      </q-list>
+    </q-menu>
   </q-btn>
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { debounce } from "../../utils/helper";
 import { useQuasar } from "quasar";
 
@@ -60,6 +80,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      uid: (s) => s.loginData.uid,
+    }),
     path() {
       return this.$route.path;
     },
@@ -91,14 +114,11 @@ export default {
     onNew() {
       this.$bus.emit("click-new");
     },
-    onWallet() {
-      this.$alert("test")
-        .then(() => {
-          this.$toast("ok");
-        })
-        .catch(() => {
-          console.log(11);
-        });
+    onLogout() {
+      this.$setStore({
+        loginData: {},
+      });
+      this.$router.replace("/login");
     },
   },
 };

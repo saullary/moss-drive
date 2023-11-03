@@ -4,6 +4,7 @@ const SET_DATA = "setData";
 
 const storState = {
   loginData: {},
+  stsData: {},
   userInfo: {},
 };
 for (const key in storState) {
