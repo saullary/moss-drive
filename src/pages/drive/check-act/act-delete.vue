@@ -136,6 +136,7 @@ export default {
         await this.delMulti(rootFiles);
         this.deleting = false;
         this.isDelDone = true;
+        this.$bus.emit("update-usage");
       } catch (error) {
         window.$alert(error.message).then(() => {
           this.showPop = false;

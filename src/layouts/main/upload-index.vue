@@ -93,6 +93,7 @@ export default {
       if (val && val == this.files.length) {
         this.uploading = false;
         this.isDone = true;
+        this.$bus.emit("update-usage");
       }
     },
     showPop(val) {

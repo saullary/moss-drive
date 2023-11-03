@@ -14,12 +14,15 @@
     <div class="bg-card-1 pa-4">
       <div class="al-c">
         <span class="title">IPFS Storage</span>
-        <span class="ml-auto fz-13">Total 120GB July 3,2022</span>
+        <span class="ml-auto fz-13">
+          <!-- Total 120GB July 3,2022 -->
+          {{ usage.used }}/{{ usage.total }}
+        </span>
       </div>
       <div class="mt-4">
         <q-linear-progress
-          :value="0.4"
-          :buffer="0.6"
+          :value="0"
+          :buffer="usage.perc"
           size="10px"
           rounded
           color="accent"
@@ -29,3 +32,15 @@
     </div>
   </div>
 </template>
+
+<script>
+import { mapState } from "vuex";
+
+export default {
+  computed: {
+    ...mapState({
+      usage: (s) => s.usageInfo,
+    }),
+  },
+};
+</script>

@@ -6,6 +6,7 @@
 <script>
 import { useQuasar } from "quasar";
 import { mapState } from "vuex";
+import { getFileSize } from "./utils/helper";
 
 export default {
   name: "App",
@@ -92,6 +93,9 @@ export default {
   },
   mounted() {
     this.onInit();
+    this.$bus.on("update-usage", () => {
+      this.getUsageInfo();
+    });
   },
   methods: {
     async onInit() {
@@ -115,7 +119,23 @@ export default {
     },
     async getUsageInfo() {
       const { data } = await this.$http.get(`$pay/usage`);
-      console.log(data);
+      // console.log(data);
+      const {
+        usedIpfsStorage,
+        ipfsStorage,
+        // ipfsDefaultStorage,
+        // ipfsStorageExpired,
+        // ipfsStorageStart,
+      } = data;
+      this.$setStore({
+        usageInfo: {
+          usedIpfsStorage,
+          ipfsStorage,
+          perc: usedIpfsStorage / ipfsStorage,
+          used: getFileSize(usedIpfsStorage),
+          total: getFileSize(ipfsStorage),
+        },
+      });
     },
   },
 };

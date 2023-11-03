@@ -6,6 +6,7 @@ const storState = {
   loginData: {},
   stsData: {},
   userInfo: {},
+  usageInfo: {},
 };
 for (const key in storState) {
   let val = localStorage[key];
