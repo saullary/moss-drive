@@ -1,5 +1,12 @@
 
 <template>
+  <q-linear-progress
+    v-show="showProgress"
+    color="warning"
+    query
+    class="pos-f top-0 w100p"
+    style="z-index: 10000"
+  />
   <RouterView />
 </template>
 
@@ -12,6 +19,7 @@ export default {
   name: "App",
   computed: {
     ...mapState({
+      showProgress: (s) => s.showProgress,
       uid: (s) => s.loginData.uid,
       // token: (s) => s.loginData.accessToken,
     }),

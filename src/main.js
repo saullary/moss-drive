@@ -28,6 +28,17 @@ app.use(router);
 app.use(store);
 global.$setState = setState;
 global.$setStore = setStore;
+router.beforeEach((to, _, next) => {
+  setState({
+    showProgress: true,
+  });
+  next();
+});
+router.afterEach(() => {
+  setState({
+    showProgress: false,
+  });
+});
 
 app.use(Components);
 

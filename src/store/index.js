@@ -23,9 +23,7 @@ const store = createStore({
     nowDate: new Date(),
     isTouch: "ontouchstart" in window,
     isFocus: true,
-    token: () => {
-      return localStorage.token;
-    },
+    showProgress: false,
   },
   mutations: {
     [SET_DATA](state, data) {

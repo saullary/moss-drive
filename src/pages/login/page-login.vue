@@ -3,7 +3,9 @@ import WalletConnect from "./wallet-connect.vue";
 </script>
 
 <template>
-  <div class="q-pa-lg">
+  <div class="q-pa-lg ta-c">
+    <div class="mt-5 fz-30">Connect Wallet</div>
+    <div class="pa-6"></div>
     <wallet-connect @login="ssoLogin" />
   </div>
 </template>
