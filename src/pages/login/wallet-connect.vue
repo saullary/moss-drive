@@ -59,15 +59,6 @@
 <script>
 import { mapState } from "vuex";
 import { WalletSign } from "./wallet-sign";
-// export const ExchangeCode = async (accounts) => {
-//   const res = await axios.get(`${authApi}/web3code/${accounts}`);
-//   return res.data.data.nonce;
-// };
-
-// export const Web3Login = async (accounts, data) => {
-//   const res = await Vue.prototype.$http.post(`$auth/web3login/${accounts}`, data);
-//   return res.data.stoken;
-// };
 
 const walletList = [
   {

@@ -117,6 +117,7 @@ export default {
     onLogout() {
       this.$setStore({
         loginData: {},
+        stsData: {},
       });
       this.$router.replace("/login");
     },
