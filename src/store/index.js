@@ -32,7 +32,21 @@ const store = createStore({
       }
     },
   },
-  actions: {},
+  actions: {
+    login(_, data) {
+      data.accessExpireAt = new Date(data.accessTokenExpireAt).format();
+      data.refreshExpireAt = new Date(data.refreshTokenExpireAt).format();
+      setStore({
+        loginData: data,
+      });
+    },
+    logout() {
+      setStore({
+        loginData: {},
+        stsData: {},
+      });
+    },
+  },
 });
 
 export const setState = (data) => {

@@ -264,6 +264,9 @@ export default {
       } catch (error) {
         console.log(error);
         this.loadErr = error.message;
+        if (this.loadErr == "Access Denied.") {
+          this.$emit("error", error);
+        }
         if (isMore) {
           window.$toast(this.loadErr);
         }

@@ -92,6 +92,7 @@ async function handleError(status, config, data) {
       return http(config);
     } else {
       console.log("redirect to login");
+      store.dispatch("logout");
       localStorage.loginTo = location.pathname + location.search;
       router.replace({
         path: "/login",
@@ -117,9 +118,7 @@ async function refreshToken() {
         },
       }
     );
-    setStore({
-      loginData: res.data.data,
-    });
+    store.dispatch("login", res.data.data);
     return res.status == 200;
   } catch (error) {
     console.log("refresh err", error);

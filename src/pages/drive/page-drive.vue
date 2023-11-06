@@ -4,15 +4,15 @@ import DriveList from "./drive-list.vue";
 </script>
 
 <template>
-  <drive-list v-if="isCreated" is-page>
+  <div class="pa-6 mt-9 ta-c" v-if="loadErr">
+    <p class="op-8 mb-3">{{ loadErr }}</p>
+    <q-btn color="info" @click="onRetry">Retry</q-btn>
+  </div>
+  <drive-list v-else-if="isCreated" is-page @error="onError">
     <template v-slot:act="props">
       <check-act v-bind="props" />
     </template>
   </drive-list>
-  <div class="pa-6 mt-9 ta-c" v-else-if="loadErr">
-    <p class="op-8 mb-3">{{ loadErr }}</p>
-    <q-btn color="info" @click="onRetry">Retry</q-btn>
-  </div>
   <div class="q-pa-md" v-else>
     <div class="pa-2" style="width: 200px">
       <q-skeleton type="text" class="text-subtitle1" />
@@ -74,7 +74,7 @@ export default {
           secretAccessKey: secretKey,
           sessionToken,
         });
-        this.bucketName = "moss-bucket-" + this.uid.slice(-8);
+        this.bucketName = `moss-${this.$inDev ? "dev" : "bucket"}-` + this.uid.slice(-8);
         this.$bucket.defBucket = this.bucketName;
         if (localStorage.moss_bucket != this.bucketName) {
           await this.checkBucket();
@@ -82,8 +82,12 @@ export default {
         this.isCreated = true;
       } catch (error) {
         console.log(error);
-        this.loadErr = error.message;
+        this.onError(error);
       }
+    },
+    onError(error) {
+      localStorage.moss_bucket = "";
+      this.loadErr = error.message;
     },
     async checkBucket() {
       const list = await this.$bucket.listBuckets();

@@ -36,9 +36,7 @@ export default {
       try {
         this.$loading("Login....");
         const { data } = await this.$http.post(`$auth/st/${stoken}`);
-        this.$setStore({
-          loginData: data,
-        });
+        this.$store.dispatch("login", data);
         this.onRedirect();
       } catch (error) {
         console.log(error);
