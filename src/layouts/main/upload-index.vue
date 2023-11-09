@@ -78,6 +78,7 @@ export default {
       isDone: false,
       finishNum: 0,
       sucNum: 0,
+      taskList: [],
     };
   },
   computed: {
@@ -120,6 +121,10 @@ export default {
       this.showPop = true;
     },
     onCancel() {
+      for (const task of this.taskList) {
+        task.abort();
+      }
+      this.taskList = [];
       this.files = [];
       // this.uploading = false;
       this.showPop = false;
@@ -146,8 +151,9 @@ export default {
 
     async onUpload(row) {
       if (this.paused) throw new Error("user paused");
+      let task;
       try {
-        await this.$bucket.uploadFile(
+        task = this.$bucket.uploadFile(
           {
             Key: row.name,
             Body: row.file,
@@ -161,12 +167,17 @@ export default {
             },
           }
         );
+        this.taskList.push(task);
+        await task.done();
         row.progress = 100;
         this.sucNum += 1;
       } catch (error) {
         console.log(error);
         row.error = error.message;
       }
+      const taskIdx = this.taskList.indexOf(task);
+      this.taskList.splice(taskIdx, 1);
+      // console.log("task over", taskIdx, this.taskList.length);
       row.finished = true;
       this.finishNum += 1;
     },

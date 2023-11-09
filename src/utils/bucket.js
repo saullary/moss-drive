@@ -45,7 +45,7 @@ const bucket = {
       const fn = opts.onProgress;
       fn && fn(e);
     });
-    return task.done();
+    return task;
   },
   async listBuckets() {
     const res = await this.client.listBuckets({});
