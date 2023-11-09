@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moss</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000 url(./img/bg.png) 0 0 no-repeat;
+      background-size: cover;
+      color: #fff;
+    }
+
+    img {
+      display: block;
+    }
+
+    .pos-r {
+      position: relative;
+    }
+
+    .y-center {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 0;
+      width: 160px;
+      background: #1EEFA4;
+      border-radius: 20px;
+      text-align: center;
+      color: #000;
+
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    a:hover {
+      opacity: .86;
+    }
+
+    .btm-wrap {
+      position: absolute;
+      bottom: 30px;
+    }
+
+    .left-1 {
+      left: 90px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="y-center left-1">
+    <img src="./img/moss-txt.svg" height="80px">
+    <div style="margin-top: 40px; opacity: 0.7;">Share Files, Make Bucks, All Around Moss!</div>
+
+    <div style="margin-top: 20px;">
+      <a class="btn"
+        href="https://builder.gitcoin.co/#/chains/10/registry/0x8e1bD5Da87C14dd8e08F7ecc2aBf9D1d558ea174/projects/1395"
+        target="_blank">White Paper</a>
+    </div>
+  </div>
+  <div class="btm-wrap left-1">
+    <a href="https://twitter.com/mymoss_io" target="_blank">
+      <img src="./img/x.svg" width="30">
+    </a>
+  </div>
+
+  <div style="min-width: 800px; height: 100vh; position: relative; pointer-events: none;">
+    <div style="position: absolute;right: 0; top: 0; bottom: 0;">
+      <img src="./img/banner.svg" style="height: 100%;">
+    </div>
+
+    <div class="y-center" style="right: 90px">
+      <img src="./img/moss-logo.svg" height="350px">
+    </div>
+  </div>
+</body>
+
+</html>
