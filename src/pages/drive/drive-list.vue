@@ -96,7 +96,7 @@ import TableList from "./list-table.vue";
 import GridList from "./list-grid.vue";
 
 export default {
-  emits: ["update:prefix"],
+  emits: ["update:prefix", "refresh"],
   props: {
     isPage: Boolean,
     prefix: String,
@@ -271,6 +271,9 @@ export default {
           window.$toast(this.loadErr);
         }
         this.objLoading = false;
+      }
+      if (!isMore) {
+        this.$emit("refresh");
       }
     },
   },

@@ -110,10 +110,10 @@ export default {
       try {
         this.checkRoute();
         if (this.uid) {
-          await this.getUsageInfo();
           if (this.$route.path == "/") {
             this.$router.replace("/drive");
           }
+          await this.getUsageInfo();
         }
       } catch (error) {
         this.$alert(error.message);

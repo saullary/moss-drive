@@ -4,16 +4,18 @@ import DriveList from "./drive-list.vue";
 </script>
 
 <template>
+  <div v-if="isCreated" v-show="listLoaded">
+    <drive-list is-page @error="onError" @refresh="onRefresh">
+      <template v-slot:act="props">
+        <check-act v-bind="props" />
+      </template>
+    </drive-list>
+  </div>
   <div class="pa-6 mt-9 ta-c" v-if="loadErr">
     <p class="op-8 mb-3">{{ loadErr }}</p>
     <q-btn color="info" @click="onRetry">Retry</q-btn>
   </div>
-  <drive-list v-else-if="isCreated" is-page @error="onError">
-    <template v-slot:act="props">
-      <check-act v-bind="props" />
-    </template>
-  </drive-list>
-  <div class="q-pa-md" v-else>
+  <div class="q-pa-md" v-else-if="!listLoaded">
     <div class="pa-2" style="width: 200px">
       <q-skeleton type="text" class="text-subtitle1" />
       <q-skeleton type="text" width="50%" class="text-subtitle1 mt-6 mb-6" />
@@ -41,6 +43,7 @@ export default {
     return {
       isCreated: false,
       loadErr: "",
+      listLoaded: false,
     };
   },
   computed: {
@@ -53,6 +56,9 @@ export default {
     this.initBucket();
   },
   methods: {
+    onRefresh() {
+      this.listLoaded = true;
+    },
     onRetry() {
       this.$setStore({
         stsData: {},
@@ -88,6 +94,7 @@ export default {
     onError(error) {
       localStorage.moss_bucket = "";
       this.loadErr = error.message;
+      this.listLoaded = false;
     },
     async checkBucket() {
       const list = await this.$bucket.listBuckets();
