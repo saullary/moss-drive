@@ -264,7 +264,7 @@ export default {
       } catch (error) {
         console.log(error);
         this.loadErr = error.message;
-        if (this.loadErr == "Access Denied.") {
+        if (/Access/i.test(this.loadErr)) {
           this.$emit("error", error);
         }
         if (isMore) {
