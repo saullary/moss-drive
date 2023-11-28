@@ -4,9 +4,24 @@ import WalletConnect from "./wallet-connect.vue";
 
 <template>
   <div class="q-pa-lg ta-c">
-    <div class="mt-5 fz-30">Connect Wallet</div>
-    <div class="pa-6"></div>
-    <wallet-connect @login="ssoLogin" />
+    <div v-if="!xInfo">
+      <div class="mt-5 fz-30">Login</div>
+      <div class="pa-6"></div>
+      <q-btn
+        @click="onTwitter"
+        :loading="xLoading"
+        flat
+        rounded
+        style="background: #000; width: 200px"
+      >
+        <img src="/img/common/x.svg" width="20" />
+      </q-btn>
+    </div>
+    <div v-else>
+      <div class="mt-5 fz-30">Connect Wallet</div>
+      <div class="pa-6"></div>
+      <wallet-connect @login="ssoLogin" />
+    </div>
   </div>
 </template>
 
@@ -15,7 +30,10 @@ import { mapState } from "vuex";
 
 export default {
   data() {
-    return {};
+    return {
+      xInfo: null,
+      xLoading: false,
+    };
   },
   computed: {
     ...mapState({
@@ -28,6 +46,16 @@ export default {
     }
   },
   methods: {
+    async onTwitter() {
+      try {
+        this.xLoading = true;
+        const { data } = await this.$http.get("$auth/login/twitter");
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+      this.xLoading = false;
+    },
     onRedirect() {
       const redirectTo = localStorage.loginTo || "/";
       this.$router.replace(redirectTo);
