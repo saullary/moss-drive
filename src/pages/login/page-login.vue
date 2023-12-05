@@ -41,16 +41,27 @@ export default {
     }),
   },
   created() {
-    if (this.loginData.uid) {
+    const { code } = this.$route.query;
+    if (code) {
+      this.onTwitterCode(code);
+    } else if (this.loginData.uid) {
       this.$router.replace("/");
     }
   },
   methods: {
+    async onTwitterCode(code) {
+      try {
+        this.xLoading = true;
+        const { profiles } = await this.$http.get(`/twitter/user/code/${code}/profile`);
+        this.xInfo = profiles;
+      } catch (error) {}
+    },
     async onTwitter() {
       try {
         this.xLoading = true;
         const { data } = await this.$http.get("$auth/login/twitter");
-        console.log(data);
+        // console.log(data);
+        location.href = data;
       } catch (error) {
         console.log(error);
       }

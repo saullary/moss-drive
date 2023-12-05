@@ -59,7 +59,7 @@ http.interceptors.response.use(
   },
   async (error) => {
     // , status, statusText, config = {}
-    const { data = {}, status, config } = error.response || {};
+    const { data = {}, status, config = {} } = error.response || {};
     const msg = data.message || error.message;
     const pending = await handleError(status, config, {
       msg,

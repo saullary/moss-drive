@@ -23,6 +23,9 @@ export default {
       uid: (s) => s.loginData.uid,
       // token: (s) => s.loginData.accessToken,
     }),
+    path() {
+      return this.$route.path;
+    },
   },
   setup() {
     const $q = useQuasar();
@@ -121,8 +124,9 @@ export default {
     },
     checkRoute() {
       const { meta } = this.$route;
-      if (!this.uid && !meta.noUid) {
-        this.$router.replace("/login");
+      const Login = "/login";
+      if (!this.uid && !meta.noUid && this.path != Login) {
+        this.$router.replace(Login);
       }
     },
     async getUsageInfo() {
